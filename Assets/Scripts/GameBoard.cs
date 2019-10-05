@@ -1,15 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GameBoard : MonoBehaviour
 {
     public Road[] Roads;
-
-    public Transform TestSpawnPosition;
+    
     public FollowerController followerPrefab;
     [SerializeField] GameObject[] placableObjects;
+    public Dragon CenterDragon;
 
     public void Update()
     {
@@ -31,7 +33,8 @@ public class GameBoard : MonoBehaviour
         var searchResult = GetClosestPoint(newFollower.transform.position);
         newFollower.currentRoad = searchResult.ParentRoad;
         searchResult.ParentRoad.RegisterWalker(newFollower, searchResult.PointIndex);
-        followerPrefab.TresureHeld = (Tresure)Random.Range(1,3);
+        newFollower.TresureHeld = GetRandomTreasure();
+        newFollower.Master = CenterDragon;
     }
     public void spawnMine(Vector2 mousePos)
     {
@@ -54,5 +57,11 @@ public class GameBoard : MonoBehaviour
     {
         public static int content;
         static Vector2 position;
+    }
+
+    public static Treasure GetRandomTreasure()
+    {
+        var v = Enum.GetValues(typeof(Treasure));
+        return (Treasure)v.GetValue(Random.Range(1, v.Length));
     }
 }
