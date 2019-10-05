@@ -24,7 +24,6 @@ public class Road : MonoBehaviour
     private void FixedUpdate()
     {
         //Move all walkers registered to this path forward along this path.
-
         foreach (var walker in registeredRoadWalkers)
         {
             if (walker.HasReachedRoadEnd)

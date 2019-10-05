@@ -9,17 +9,7 @@ public class GameBoard : MonoBehaviour
 
     public Transform TestSpawnPosition;
     public RoadWalker TestWalkerPrefab;
-
-    private void Start()
-    {
-        //var newFollower = Instantiate(TestWalkerPrefab, TestSpawnPosition.position, Quaternion.identity, null);
-
-        //var searchResult = GetClosestPoint(newFollower.transform.position);
-
-        //newFollower.currentRoad = searchResult.ParentRoad;
-        //searchResult.ParentRoad.RegisterWalker(newFollower, searchResult.PointIndex);
-    }
-
+    
     public void Update()
     {
         if(Input.GetKeyDown(KeyCode.Mouse0))
