@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Follower
+  - Dragon
   layers:
   - Default
   - TransparentFX
@@ -13,8 +15,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Dragon
+  - Follower
   - 
   - 
   - 
@@ -40,4 +42,19 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 1384185781
+    locked: 0
+  - name: Roads
+    uniqueID: 2026619081
+    locked: 0
+  - name: Entities
+    uniqueID: 706673823
+    locked: 0
+  - name: Mines
+    uniqueID: 2264654985
+    locked: 0
+  - name: GUI
+    uniqueID: 1218738235
     locked: 0
