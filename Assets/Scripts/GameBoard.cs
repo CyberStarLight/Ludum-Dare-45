@@ -8,7 +8,7 @@ public class GameBoard : MonoBehaviour
     public Road[] Roads;
 
     public Transform TestSpawnPosition;
-    public RoadWalker TestWalkerPrefab;
+    public FollowerController followerPrefab;
     [SerializeField] GameObject[] placableObjects;
 
     public void Update()
@@ -27,10 +27,11 @@ public class GameBoard : MonoBehaviour
     }
     public void spawnFollower(Vector2 mousePos)
     {
-        var newFollower = Instantiate(TestWalkerPrefab, mousePos, Quaternion.identity, null);
+        var newFollower = Instantiate(followerPrefab, mousePos, Quaternion.identity, null);
         var searchResult = GetClosestPoint(newFollower.transform.position);
         newFollower.currentRoad = searchResult.ParentRoad;
         searchResult.ParentRoad.RegisterWalker(newFollower, searchResult.PointIndex);
+        followerPrefab.TresureHeld = (Tresure)Random.Range(1,3);
     }
     public void spawnMine(Vector2 mousePos)
     {
