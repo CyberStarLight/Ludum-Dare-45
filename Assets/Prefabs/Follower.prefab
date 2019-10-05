@@ -102,6 +102,7 @@ MonoBehaviour:
   currentTargetPointIndex: 0
   currentTargetPosition: {x: 0, y: 0, z: 0}
   HasReachedRoadEnd: 0
+  Master: {fileID: 0}
   tresureSprite: {fileID: 8805424281198790186}
   tresureSprites:
   - {fileID: -7400427947525412896, guid: 9cd0ed98d516b0d4c9d8897562775d0e, type: 3}

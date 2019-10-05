@@ -5,7 +5,7 @@ using UnityEngine;
 public class MineController : MonoBehaviour
 {
     [SerializeField] float spawnRate;
-    public Tresure ore;
+    public Treasure ore;
     private GameBoard board;
 
     void Start()

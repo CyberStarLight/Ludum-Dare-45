@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 public class GameBoard : MonoBehaviour
 {
     public Road[] Roads;
-    
+
     public FollowerController followerPrefab;
     [SerializeField] GameObject[] placableObjects;
     public Dragon CenterDragon;
@@ -24,24 +24,30 @@ public class GameBoard : MonoBehaviour
 
             default: break;
         }
-        Debug.Log("gameboard::UpdateSelf");
     }
-    public void spawnFollower(Vector2 mousePos, Tresure tresureHeld = Tresure.None)
+    public void spawnFollower(Vector2 mousePos, Treasure tresureHeld = Treasure.None)
     {
         var newFollower = Instantiate(followerPrefab, mousePos, Quaternion.identity, null);
         var searchResult = GetClosestPoint(newFollower.transform.position);
         newFollower.currentRoad = searchResult.ParentRoad;
         searchResult.ParentRoad.RegisterWalker(newFollower, searchResult.PointIndex);
-        followerPrefab.TresureHeld = tresureHeld;
-        newFollower.TresureHeld = GetRandomTreasure();
-        newFollower.Master = CenterDragon;
+        newFollower.TresureHeld = tresureHeld;
+        //newFollower.TresureHeld = GetRandomTreasure();
+        //newFollower.Master = CenterDragon;
     }
     public void spawnMine(Vector2 mousePos)
     {
         bool ableToPlace = true;
+        foreach (var G in FindObjectsOfType<MineController>())
+            if (((Vector2)G.transform.position - mousePos).magnitude < 0.6f)
+                ableToPlace = false;
+        //foreach (var G in GameBoard.Roads.SelectMany(x => x.points))
+            //if (((Vector2)G.position - mousePos).magnitude < 0.6f)
+            //    ableToPlace = false;
+
         if (ableToPlace)
         {
-            var newMine = Instantiate(placableObjects[0], mousePos, Quaternion.identity, null).GetComponent<MineController>().ore = (Tresure)brush.contentState;
+            var newMine = Instantiate(placableObjects[0], mousePos, Quaternion.identity, null).GetComponent<MineController>().ore = (Treasure)brush.contentState;
         }
     }
 

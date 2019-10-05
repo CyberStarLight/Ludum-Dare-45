@@ -25,6 +25,7 @@ public class FollowerController : RoadWalker
             if (spritesByTresureTypes == null) initSpritesByTresureTypes();
             treasureHeld = value;
             tresureSprite.sprite = spritesByTresureTypes[value];
+            Debug.Log(value);
         }
     }
 
