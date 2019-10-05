@@ -9,9 +9,11 @@ public class Dragon : MonoBehaviour
     public CircleCollider2D FireballArea;
     public Fireball FireballPrefab;
 
+    public GameObject[] GoldPiles;
+
     public int GoldCoins;
     public int MaxGoldCoins;
-    public float GoldRatio { get { return GoldCoins / MaxGoldCoins; } }
+    public float GoldRatio { get { return (float)GoldCoins / (float)MaxGoldCoins; } }
 
     public float Rage;
     public float MaxRage;
@@ -42,8 +44,15 @@ public class Dragon : MonoBehaviour
             }
         }
 
+        //Update gold piles
+        int pileCount = Mathf.FloorToInt(GoldRatio * 10f);
+        for (int i = 0; i < 10; i++)
+        {
+            GoldPiles[i].SetActive(i < pileCount);
+        }
+
         //Check victory / defeat
-        if(RageRatio > 0.999f)
+        if (RageRatio > 0.999f)
         {
             //Game over
             SceneManager.LoadScene("GameOver");
