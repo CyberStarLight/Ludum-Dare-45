@@ -11,34 +11,33 @@ public class GameBoard : MonoBehaviour
     public FollowerController followerPrefab;
     [SerializeField] GameObject[] placableObjects;
 
-    public void Update()
+    public void UpdateSelf()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        switch (brush.content)
         {
-            var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            switch (brush.content)
-            {
-                case 0: break;
-                case 1: spawnFollower(mousePos); break;
-                case 2: spawnMine(mousePos); break;
-                default: break;
-            }
+            case 0: break;
+            case 1: spawnFollower(mousePos); break;
+            case 2: spawnMine(mousePos); break;
+
+            default: break;
         }
+        Debug.Log("gameboard::UpdateSelf");
     }
-    public void spawnFollower(Vector2 mousePos)
+    public void spawnFollower(Vector2 mousePos, Tresure tresureHeld = Tresure.None)
     {
         var newFollower = Instantiate(followerPrefab, mousePos, Quaternion.identity, null);
         var searchResult = GetClosestPoint(newFollower.transform.position);
         newFollower.currentRoad = searchResult.ParentRoad;
         searchResult.ParentRoad.RegisterWalker(newFollower, searchResult.PointIndex);
-        followerPrefab.TresureHeld = (Tresure)Random.Range(1,3);
+        followerPrefab.TresureHeld = tresureHeld;
     }
     public void spawnMine(Vector2 mousePos)
     {
         bool ableToPlace = true;
         if (ableToPlace)
         {
-            var newMine = Instantiate(placableObjects[0], mousePos, Quaternion.identity, null);
+            var newMine = Instantiate(placableObjects[0], mousePos, Quaternion.identity, null).GetComponent<MineController>().ore = (Tresure)brush.contentState;
         }
     }
 
@@ -50,9 +49,11 @@ public class GameBoard : MonoBehaviour
         return closestRoadPoint;
     }
     public void setBrushContent(int value) { brush.content = value; }
+    public void setBrushContentState(int value) { brush.contentState = value; }
     private static class brush
     {
         public static int content;
+        public static int contentState;
         static Vector2 position;
     }
 }

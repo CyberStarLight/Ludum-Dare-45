@@ -5,6 +5,7 @@ using UnityEngine;
 public class MineController : MonoBehaviour
 {
     [SerializeField] float spawnRate;
+    public Tresure ore;
     private GameBoard board;
 
     void Start()
@@ -18,7 +19,7 @@ public class MineController : MonoBehaviour
             if (board == null)
                 board = FindObjectOfType<GameBoard>();
 
-            board.spawnFollower(this.transform.position);
+            board.spawnFollower(this.transform.position, ore);
             yield return new WaitForSeconds(60 / spawnRate);
         }
     }
