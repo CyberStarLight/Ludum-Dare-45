@@ -144,7 +144,9 @@ public class Dragon : MonoBehaviour
         Treasure wantedTresure = Treasure.None;
         if(
             DesiredTreasure1 != DesiredTreasure2 && 
-            DesiredTreasure1 != DesiredTreasure3)
+            DesiredTreasure1 != DesiredTreasure3 &&
+            DesiredTreasure1 != oldDesire
+            )
         {
             wantedTresure = DesiredTreasure1;
         }
@@ -237,8 +239,8 @@ public class Dragon : MonoBehaviour
             }
 
             ThoughtBubble.gameObject.SetActive(false);
-
-            _ThoughtBubbleCorutine = null;
         }
+
+        _ThoughtBubbleCorutine = null;
     }
 }
