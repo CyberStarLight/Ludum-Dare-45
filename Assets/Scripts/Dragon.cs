@@ -1,12 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Dragon : MonoBehaviour
 {
     public Transform FireballOrigin;
     public CircleCollider2D FireballArea;
     public Fireball FireballPrefab;
+
+    public GameObject[] GoldPiles;
+
+    public int GoldCoins;
+    public int MaxGoldCoins;
+    public float GoldRatio { get { return (float)GoldCoins / (float)MaxGoldCoins; } }
+
+    public float Rage;
+    public float MaxRage;
+    public float RageRatio { get { return Rage / MaxRage; } }
+
+    public float Greed;
+    public float MaxGreed;
+    public float GreedRatio { get { return Greed / MaxGreed; } }
 
     void Update()
     {
@@ -28,5 +43,26 @@ public class Dragon : MonoBehaviour
                 }
             }
         }
+
+        //Update gold piles
+        int pileCount = Mathf.FloorToInt(GoldRatio * 10f);
+        for (int i = 0; i < 10; i++)
+        {
+            GoldPiles[i].SetActive(i < pileCount);
+        }
+
+        //Check victory / defeat
+        if (RageRatio > 0.999f)
+        {
+            //Game over
+            SceneManager.LoadScene("GameOver");
+        }
+
+        if(GoldRatio > 0.999f)
+        {
+            //Victory
+            SceneManager.LoadScene("Victory");
+        }
+
     }
 }
