@@ -3,26 +3,42 @@ using System.Collections.Generic;
 
 public class FollowerController : RoadWalker
 {
-    private Tresure tresureHeld;
+    public Dragon Master;
+
+    private Treasure treasureHeld;
     [SerializeField] SpriteRenderer tresureSprite;
-    private static Dictionary<Tresure, Sprite> spritesByTresureTypes;
+    private static Dictionary<Treasure, Sprite> spritesByTresureTypes;
     [SerializeField] Sprite[] tresureSprites;
     private void initSpritesByTresureTypes()
     {
-        spritesByTresureTypes = new Dictionary<Tresure, Sprite>();
+        spritesByTresureTypes = new Dictionary<Treasure, Sprite>();
         for (int i = 0; i < tresureSprites.Length; i++)
         {
-            spritesByTresureTypes.Add((Tresure)i + 1, tresureSprites[i]);
+            spritesByTresureTypes.Add((Treasure)i + 1, tresureSprites[i]);
         }
     }
-    public Tresure TresureHeld
+    public Treasure TresureHeld
     {
-        get => tresureHeld;
+        get => treasureHeld;
         set
         {
             if (spritesByTresureTypes == null) initSpritesByTresureTypes();
-            tresureHeld = value;
+            treasureHeld = value;
             tresureSprite.sprite = spritesByTresureTypes[value];
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Dragon")
+        {
+            Master.GiveTreasure(treasureHeld);
+            Destroy(gameObject);
+        }
+    }
+
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
     }
 }

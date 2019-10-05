@@ -1,4 +1,4 @@
-public enum Tresure
+public enum Treasure
 {
     None = 0,
     Gold,
