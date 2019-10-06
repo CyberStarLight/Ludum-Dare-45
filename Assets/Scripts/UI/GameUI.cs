@@ -10,7 +10,8 @@ public class GameUI : MonoBehaviour
 
     [Header("UI References")]
     public Sprite TranparentSprite;
-    public Image GreedBar;
+    public Image PanicBar;
+    public Image MinPanicBar;
     public Image RageBar;
     public TextMeshPro GoldText;
     public Image Desire01;
@@ -26,7 +27,8 @@ public class GameUI : MonoBehaviour
 
     public void UpdateUI()
     {
-        GreedBar.fillAmount = Dragon.PanicRatio;
+        PanicBar.fillAmount = Dragon.PanicRatio;
+        MinPanicBar.fillAmount = Dragon.RageRatio * 0.5f;
         RageBar.fillAmount = Dragon.RageRatio;
         GoldText.text = GOLD_COUNTER_PREFIX + Dragon.GoldCoins.ToString("N0");
 
