@@ -3,10 +3,16 @@ using System.Collections.Generic;
 
 public class FollowerController : RoadWalker
 {
+    public float PanicAmountOnDeath = 2.5f;
+    public float MaxPanicSpeedBonus = 2f;
+
+    [HideInInspector]
     public Dragon Master;
 
     private Treasure treasureHeld;
-    [SerializeField] SpriteRenderer tresureSprite;
+    [SerializeField] SpriteRenderer treasureSprite;
+    [SerializeField] SpriteRenderer deathMarkRenderer;
+    [SerializeField] Collider2D MainCollider;
     private static Dictionary<Treasure, Sprite> spritesByTresureTypes;
     [SerializeField] Sprite[] tresureSprites;
     private void initSpritesByTresureTypes()
@@ -24,8 +30,27 @@ public class FollowerController : RoadWalker
         {
             if (spritesByTresureTypes == null) initSpritesByTresureTypes();
             treasureHeld = value;
-            tresureSprite.sprite = spritesByTresureTypes[value];
+            treasureSprite.sprite = spritesByTresureTypes[value];
         }
+    }
+
+    public void Panic()
+    {
+        Master.Panic += PanicAmountOnDeath;
+    }
+
+    public void OnTargeted()
+    {
+        //show death mark
+        deathMarkRenderer.gameObject.SetActive(true);
+
+        //push sprites to the back
+        MainRenderer.sortingOrder -= 10;
+        treasureSprite.sortingOrder -= 10;
+        deathMarkRenderer.sortingOrder -= 10;
+
+        //disable collider
+        MainCollider.enabled = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -39,6 +64,7 @@ public class FollowerController : RoadWalker
 
     public override void OnDestroy()
     {
+        currentRoad.UnregisterWalker(this);
         base.OnDestroy();
     }
 }

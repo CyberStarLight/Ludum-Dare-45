@@ -25,7 +25,7 @@ public class GameUI : MonoBehaviour
 
     public void UpdateUI()
     {
-        GreedBar.fillAmount = Dragon.GreedRatio;
+        GreedBar.fillAmount = Dragon.PanicRatio;
         RageBar.fillAmount = Dragon.RageRatio;
         GoldText.text = GOLD_COUNTER_PREFIX + Dragon.GoldCoins.ToString("N0");
 

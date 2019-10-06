@@ -28,6 +28,6 @@ public class RoadWalker : MonoBehaviour
 
     public virtual void OnDestroy()
     {
-        currentRoad.UnregisterWalker(this);
+        //If we ever add walker that are not followers, unregister them from the road here.
     }
 }

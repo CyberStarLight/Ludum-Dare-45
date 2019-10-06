@@ -132,6 +132,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad60fcc60da90214caa81bab42075035, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 5
+  Speed: 7
   Target: {fileID: 0}
   LastKnownPosition: {x: 0, y: 0}
