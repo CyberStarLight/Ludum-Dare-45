@@ -103,17 +103,12 @@ MonoBehaviour:
   currentTargetPointIndex: 0
   currentTargetPosition: {x: 0, y: 0, z: 0}
   HasReachedRoadEnd: 0
-<<<<<<< HEAD
-  Master: {fileID: 0}
-  tresureSprite: {fileID: 8805424281198790186}
-=======
   PanicAmountOnDeath: 9
   MaxPanicSpeedBonus: 2
   Master: {fileID: 0}
   treasureSprite: {fileID: 8805424281198790186}
   deathMarkRenderer: {fileID: 8079004070106738290}
   MainCollider: {fileID: 4469285462554485088}
->>>>>>> 8e1494f4b9ca6fb0db288ebb853867efd6fb9638
   tresureSprites:
   - {fileID: -7400427947525412896, guid: 9cd0ed98d516b0d4c9d8897562775d0e, type: 3}
   - {fileID: -3326622904683057523, guid: 9cd0ed98d516b0d4c9d8897562775d0e, type: 3}
