@@ -89,14 +89,18 @@ public class Dragon : MonoBehaviour
         //Shoot fire ball when right clicking on followers within range
         if (Input.GetKeyDown(KeyCode.Mouse0) && !fireballInProgress)
         {
+            print("Click Mouse0");
             var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             if(FireballArea.OverlapPoint(mousePos))
             {
                 RaycastHit2D hit = Physics2D.Raycast(new Vector2(mousePos.x, mousePos.y), Vector2.zero, 0f, LayerMask.GetMask("Follower", "Mine"));
 
+                print("In range");
+
                 if (hit)
                 {
+
                     var target = hit.transform;
 
                     if(target.gameObject.tag == "Follower")
@@ -104,13 +108,19 @@ public class Dragon : MonoBehaviour
                     else if(target.gameObject.tag == "Mine")
                         target.GetComponent<MineController>().OnTargeted();
 
+                    print("Marked target");
 
                     //Flip dragon in the right direction
                     transform.localScale = mousePos.x < 0 ? new Vector3(-1f, 1f, 1f) : new Vector3(1f, 1f, 1f);
 
                     _fireballTarget = target;
                     fireballInProgress = true;
-                    DragonAnimator.Play("Dragon Fireball", 0);
+                    print("fireballInProgress = true");
+
+                    //DragonAnimator.Play("Dragon Fireball", 0);
+                    DragonAnimator.SetTrigger("StartFireball");
+                    
+                    print("Attempted to start fireball animation...");
                 }
             }
         }
@@ -301,6 +311,8 @@ public class Dragon : MonoBehaviour
     //Animation
     private void actuallyShootFireball()
     {
+        print("Frame event: actuallyShootFireball()");
+
         var newFireball = Instantiate(FireballPrefab, FireballOrigin.position, Quaternion.identity, null);
         newFireball.Target = _fireballTarget;
         newFireball.LastKnownPosition = _fireballTarget.position;
@@ -310,7 +322,10 @@ public class Dragon : MonoBehaviour
 
     private void fireballAnimationFinished()
     {
+        print("Frame event: fireballAnimationFinished()");
+
         fireballInProgress = false;
+        print("fireballInProgress = false");
     }
 
     //Sounds

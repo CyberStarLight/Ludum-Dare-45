@@ -14,13 +14,16 @@ public class MineController : MonoBehaviour
     [SerializeField] Collider2D MainCollider;
     [SerializeField] SpriteRenderer deathMarkRenderer;
     private GameBoard board;
-
-
-
+    
     void Start()
     {
+        if (board == null)
+            board = FindObjectOfType<GameBoard>();
+
+        var closestRoadPos = board.GetClosestPoint(spawnPoint.position).PointPosition;
+
         //Flip mine
-        if (transform.position.x > 0f)
+        if (closestRoadPos.x < spawnPoint.position.x)
         {
             transform.localScale = new Vector3(-1f, 1f, 1f);
         }
