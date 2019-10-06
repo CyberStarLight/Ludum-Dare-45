@@ -7,21 +7,37 @@ using Random = UnityEngine.Random;
 
 public class Dragon : MonoBehaviour
 {
-    public int GoldCoins;
+    private int _goldCoins;
+    public int GoldCoins
+    {
+        get { return _goldCoins; }
+        set { _goldCoins = Mathf.Clamp(value, 0, MaxGoldCoins); }
+    }
     public int MaxGoldCoins;
     public float GoldRatio { get { return (float)GoldCoins / (float)MaxGoldCoins; } }
 
-    public float Rage;
+    private float _rage;
+    public float Rage
+    {
+        get { return _rage; }
+        set { _rage = Mathf.Clamp(value, 0f, MaxRage); }
+    }
     public float MaxRage;
     public float RageRatio { get { return Rage / MaxRage; } }
 
-    public float Greed;
-    public float MaxGreed;
-    public float GreedRatio { get { return Greed / MaxGreed; } }
+    private float _panic;
+    public float Panic
+    {
+        get { return _panic; }
+        set { _panic = Mathf.Clamp(value, 0f, MaxPanic); }
+    }
+    public float MaxPanic;
+    public float PanicRatio { get { return Panic / MaxPanic; } }
 
     public float DesireIntervalMin = 1f;
     public float DesireIntervalMax = 5f;
 
+    public float PanicDownPerSec = 0.5f;
     public int GoldCoinsPerTreasue = 1000;
     public int RagePerUnwantedTreasue = 10;
     public Treasure DesiredTreasure1;
@@ -47,23 +63,35 @@ public class Dragon : MonoBehaviour
     public Sprite Treasue04;
     public Sprite Treasue05;
 
+    [Header("Audio")]
+    public AudioSource SoundEffectsSource;
+    public AudioClip PositiveTreasureSound;
+    public AudioClip NegativeTreasureSound;
+    public AudioClip FireballSound;
+
     //State variables
     private float nextDesireChangeTime = 0f;
 
     void Update()
     {
         //Shoot fire ball when right clicking on followers within range
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             if(FireballArea.OverlapPoint(mousePos))
             {
-                RaycastHit2D hit = Physics2D.Raycast(new Vector2(mousePos.x, mousePos.y), Vector2.zero, 0f, LayerMask.GetMask("Follower"));
+                RaycastHit2D hit = Physics2D.Raycast(new Vector2(mousePos.x, mousePos.y), Vector2.zero, 0f, LayerMask.GetMask("Follower", "Mine"));
 
                 if (hit)
                 {
                     var target = hit.transform;
+
+                    if(target.gameObject.tag == "Follower")
+                        target.GetComponent<FollowerController>().OnTargeted();
+                    else if(target.gameObject.tag == "Mine")
+                        target.GetComponent<MineController>().OnTargeted();
+
 
                     //Flip dragon in the right direction
                     transform.localScale = mousePos.x < 0 ? new Vector3(-1f, 1f, 1f) : new Vector3(1f, 1f, 1f);
@@ -71,6 +99,8 @@ public class Dragon : MonoBehaviour
                     var newFireball = Instantiate(FireballPrefab, FireballOrigin.position, Quaternion.identity, null);
                     newFireball.Target = target;
                     newFireball.LastKnownPosition = target.position;
+
+                    PlayFireballSound();
                 }
             }
         }
@@ -88,6 +118,9 @@ public class Dragon : MonoBehaviour
             GenerateNewDesire();
             nextDesireChangeTime = Time.time + Random.Range(DesireIntervalMin, DesireIntervalMax);
         }
+
+        //Update panic
+        Panic -= PanicDownPerSec * Time.deltaTime;
 
         //Check victory / defeat
         if (RageRatio > 0.999f)
@@ -113,10 +146,12 @@ public class Dragon : MonoBehaviour
             )
         {
             GoldCoins += GoldCoinsPerTreasue;
+            PlayPositiveTreasure();
         }
         else
         {
             Rage += RagePerUnwantedTreasue;
+            PlayNegativeTreasure();
         }
     }
 
@@ -242,5 +277,21 @@ public class Dragon : MonoBehaviour
         }
 
         _ThoughtBubbleCorutine = null;
+    }
+    
+    //Sounds
+    public void PlayPositiveTreasure()
+    {
+        SoundEffectsSource.PlayOneShot(PositiveTreasureSound, 3f);
+    }
+
+    public void PlayNegativeTreasure()
+    {
+        SoundEffectsSource.PlayOneShot(NegativeTreasureSound, 5f);
+    }
+
+    public void PlayFireballSound()
+    {
+        SoundEffectsSource.PlayOneShot(FireballSound, 3f);
     }
 }
