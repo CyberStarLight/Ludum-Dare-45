@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fec0355067ec4940a4b47a9d17b0170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 0.7
+  Speed: 0.65
   MainRenderer: {fileID: 565793531071843580}
   currentRoad: {fileID: 0}
   currentTargetPointIndex: 0

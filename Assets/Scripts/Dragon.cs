@@ -34,9 +34,10 @@ public class Dragon : MonoBehaviour
     public float Panic
     {
         get { return _panic; }
-        set { _panic = Mathf.Clamp(value, 0f, MaxPanic); }
+        set { _panic = Mathf.Clamp(value, MinPanic, MaxPanic); }
     }
     public float MaxPanic;
+    public float MinPanic { get { return MaxPanic * (RageRatio * 0.5f); } }
     public float PanicRatio { get { return Panic / MaxPanic; } }
 
     public float DesireIntervalMin = 1f;
@@ -44,8 +45,8 @@ public class Dragon : MonoBehaviour
 
     public float PanicDownPerSec = 0.5f;
     public int GoldCoinsPerTreasue = 1000;
-    public int RagePerUnwantedTreasue = 10;
-    public int RagePerTrash = 20;
+    public float RagePerUnwantedTreasue = 10;
+    public float RagePerTrash = 20;
     public TreasureInfo DesiredTreasure1;
     public TreasureInfo DesiredTreasure2;
     public TreasureInfo DesiredTreasure3;

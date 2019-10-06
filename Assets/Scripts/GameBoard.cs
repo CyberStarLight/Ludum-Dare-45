@@ -15,20 +15,25 @@ public class GameBoard : MonoBehaviour
     public Dragon CenterDragon;
     public Image MineButtonIcon;
     public int MineCost = 10000;
-    
+
     [Header("Treasures")]
     public TreasureInfo[] Treasures;
+    [Header("FollowerSpanner")]
+    [SerializeField] float spawnRate;
+    [SerializeField] [Range(0, 1)] float trashRatio;
+    [SerializeField] float distanceFromDragon;
 
     private void Start()
     {
         //Reset brush
         brush.content = 2;
         setBrushContentState(0);
+        StartCoroutine(randomFollowersSpawnCycle());
     }
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Mouse1))
+        if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             UpdateSelf();
         }
@@ -60,10 +65,9 @@ public class GameBoard : MonoBehaviour
     {
         bool ableToPlace = true;
         foreach (var G in FindObjectsOfType<MineController>())
-            if (((Vector2)G.transform.position - mousePos).magnitude < 0.6f)
+            if (((Vector2)G.transform.position - mousePos).magnitude < .9f)
                 ableToPlace = false;
-        //foreach (var G in GameBoard.Roads.SelectMany(x => x.points))
-        //if (((Vector2)G.position - mousePos).magnitude < 0.6f)
+        //if (((Vector2)GetClosestPoint(mousePos).PointPosition - mousePos).magnitude < 0.5f)
         //    ableToPlace = false;
 
         //Check the player has enough gold to pay
@@ -106,8 +110,8 @@ public class GameBoard : MonoBehaviour
     public void setBrushContentState(int value)
     {
         var goodTreasure = Treasures.Where(x => !x.IsTrash).ToArray();
-        
-        brush.contentState = Mathf.Clamp(value, 0, goodTreasure.Length-1);
+
+        brush.contentState = Mathf.Clamp(value, 0, goodTreasure.Length - 1);
         brush.treasureState = goodTreasure[value];
 
         MineButtonIcon.sprite = brush.treasureState.UISprite;
@@ -152,5 +156,19 @@ public class GameBoard : MonoBehaviour
         var trashTreasure = Treasures.Where(x => x.IsTrash).ToArray();
 
         return trashTreasure[Random.Range(0, trashTreasure.Length)];
+    }
+    private Vector2 randomVector()
+    {
+        return new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+    }
+    private IEnumerator randomFollowersSpawnCycle()
+    {
+        while (true)
+        {
+            TreasureInfo followerTresure = Random.Range(0f, 1f) > trashRatio ? GetRandomTreasure() : GetRandomTrash();
+            Vector2 followerPosition = randomVector().normalized * distanceFromDragon;
+            spawnFollower(followerPosition, followerTresure);
+            yield return new WaitForSeconds(60 / spawnRate);
+        }
     }
 }
