@@ -50,11 +50,11 @@ TagManager:
   - name: Roads
     uniqueID: 2026619081
     locked: 0
-  - name: Entities
-    uniqueID: 706673823
-    locked: 0
   - name: Mines
     uniqueID: 2264654985
+    locked: 0
+  - name: Entities
+    uniqueID: 706673823
     locked: 0
   - name: GUI
     uniqueID: 1218738235

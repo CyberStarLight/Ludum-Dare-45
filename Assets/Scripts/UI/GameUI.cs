@@ -9,6 +9,7 @@ public class GameUI : MonoBehaviour
     public const string GOLD_COUNTER_PREFIX = "Gold: ";
 
     [Header("UI References")]
+    public Sprite TranparentSprite;
     public Image GreedBar;
     public Image RageBar;
     public TextMeshPro GoldText;
@@ -30,8 +31,8 @@ public class GameUI : MonoBehaviour
         GoldText.text = GOLD_COUNTER_PREFIX + Dragon.GoldCoins.ToString("N0");
 
         //Update desires
-        Desire01.sprite = Dragon.getSpriteForTreasure(Dragon.DesiredTreasure1);
-        Desire02.sprite = Dragon.getSpriteForTreasure(Dragon.DesiredTreasure2);
-        Desire03.sprite = Dragon.getSpriteForTreasure(Dragon.DesiredTreasure3);
+        Desire01.sprite = Dragon.DesiredTreasure1 == null ? TranparentSprite : Dragon.DesiredTreasure1.UISprite;
+        Desire02.sprite = Dragon.DesiredTreasure2 == null ? TranparentSprite : Dragon.DesiredTreasure2.UISprite;
+        Desire03.sprite = Dragon.DesiredTreasure3 == null ? TranparentSprite : Dragon.DesiredTreasure3.UISprite;
     }
 }

@@ -9,30 +9,30 @@ public class FollowerController : RoadWalker
     [HideInInspector]
     public Dragon Master;
 
-    private Treasure treasureHeld;
-    [SerializeField] SpriteRenderer treasureSprite;
+    //private Treasure treasureHeld;
+    public SpriteRenderer TreasureRenderer;
     [SerializeField] SpriteRenderer deathMarkRenderer;
     [SerializeField] Collider2D MainCollider;
     private static Dictionary<Treasure, Sprite> spritesByTresureTypes;
     [SerializeField] Sprite[] tresureSprites;
-    private void initSpritesByTresureTypes()
-    {
-        spritesByTresureTypes = new Dictionary<Treasure, Sprite>();
-        for (int i = 0; i < tresureSprites.Length; i++)
-        {
-            spritesByTresureTypes.Add((Treasure)i + 1, tresureSprites[i]);
-        }
-    }
-    public Treasure TresureHeld
-    {
-        get => treasureHeld;
-        set
-        {
-            if (spritesByTresureTypes == null) initSpritesByTresureTypes();
-            treasureHeld = value;
-            treasureSprite.sprite = spritesByTresureTypes[value];
-        }
-    }
+    //private void initSpritesByTresureTypes()
+    //{
+    //    spritesByTresureTypes = new Dictionary<Treasure, Sprite>();
+    //    for (int i = 0; i < tresureSprites.Length; i++)
+    //    {
+    //        spritesByTresureTypes.Add((Treasure)i + 1, tresureSprites[i]);
+    //    }
+    //}
+    public TreasureInfo TreasureHeld;
+    //{
+    //    get => treasureHeld;
+    //    set
+    //    {
+    //        if (spritesByTresureTypes == null) initSpritesByTresureTypes();
+    //        treasureHeld = value;
+    //        treasureSprite.sprite = spritesByTresureTypes[value];
+    //    }
+    //}
     private void Start()
     {
         Master = FindObjectOfType<Dragon>();
@@ -49,7 +49,7 @@ public class FollowerController : RoadWalker
 
         //push sprites to the back
         MainRenderer.sortingOrder -= 10;
-        treasureSprite.sortingOrder -= 10;
+        TreasureRenderer.sortingOrder -= 10;
         deathMarkRenderer.sortingOrder -= 10;
 
         //disable collider
@@ -60,7 +60,7 @@ public class FollowerController : RoadWalker
     {
         if (collision.gameObject.tag == "Dragon")
         {
-            Master.GiveTreasure(treasureHeld);
+            Master.GiveTreasure(TreasureHeld);
             Destroy(gameObject);
         }
     }
