@@ -2524,6 +2524,9 @@ MonoBehaviour:
     Sprite: {fileID: 21300000, guid: 34c0219e89c16c7479b5a8b314c52b65, type: 3}
     UISprite: {fileID: 0}
     IsTrash: 1
+  spawnRate: 17.5
+  trashRatio: 0.22
+  distanceFromDragon: 12
 --- !u!4 &225363439
 Transform:
   m_ObjectHideFlags: 0
@@ -2666,13 +2669,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f59579326b40494390653989661ac73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartingGold: 100000
+  StartingGold: 0
   MaxGoldCoins: 1000000
   MaxRage: 100
   MaxPanic: 100
   DesireIntervalMin: 10
   DesireIntervalMax: 15
-  PanicDownPerSec: 2.5
+  PanicDownPerSec: 1.9
   GoldCoinsPerTreasue: 10000
   RagePerUnwantedTreasue: 5
   RagePerTrash: 10
@@ -2777,7 +2780,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 706673823
   m_SortingLayer: 4
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 7f5c77a6983b6134d92f2d0ae6ae564b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -12864,7 +12867,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1218738235
   m_SortingLayer: 5
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: b6c64a30d31f99a4c8bb11a1ad629bc0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

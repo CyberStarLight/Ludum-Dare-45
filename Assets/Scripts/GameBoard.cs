@@ -67,8 +67,8 @@ public class GameBoard : MonoBehaviour
         foreach (var G in FindObjectsOfType<MineController>())
             if (((Vector2)G.transform.position - mousePos).magnitude < .9f)
                 ableToPlace = false;
-        if (((Vector2)GetClosestPoint(mousePos).PointPosition - mousePos).magnitude < 0.5f)
-            ableToPlace = false;
+        //if (((Vector2)GetClosestPoint(mousePos).PointPosition - mousePos).magnitude < 0.5f)
+        //    ableToPlace = false;
 
         //Check the player has enough gold to pay
         if (CenterDragon.GoldCoins < MineCost)
