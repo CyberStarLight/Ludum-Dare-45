@@ -129,7 +129,7 @@ public class Dragon : MonoBehaviour
             SceneManager.LoadScene("GameOver");
         }
 
-        if(GoldRatio > 0.999f)
+        if (GoldRatio > 0.999f)
         {
             //Victory
             SceneManager.LoadScene("Victory");
