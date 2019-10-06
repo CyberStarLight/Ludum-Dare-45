@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 
 public class GameBoard : MonoBehaviour
 {
+    public float MinRoadDistanceForMines = 1f;
     public Road[] Roads;
     public FollowerController followerPrefab;
     [SerializeField] GameObject[] placableObjects;
@@ -72,6 +73,14 @@ public class GameBoard : MonoBehaviour
             CenterDragon.PlayNegativeTreasure();
         }
 
+        //Check that the mine is not too close to a road
+        var offset = new Vector2(0f, -0.2f);
+        if(GetClosestPoint(mousePos + offset).Distance < MinRoadDistanceForMines)
+        {
+            ableToPlace = false;
+            CenterDragon.PlayNegativeTreasure();
+        }
+
         if (ableToPlace)
         {
             var newMine = Instantiate(placableObjects[0], mousePos, Quaternion.identity, null).GetComponent<MineController>();
@@ -102,6 +111,13 @@ public class GameBoard : MonoBehaviour
         brush.treasureState = goodTreasure[value];
 
         MineButtonIcon.sprite = brush.treasureState.UISprite;
+    }
+
+    public void SetBrushToTreasure(TreasureInfo t)
+    {
+        brush.contentState = -1;
+        brush.treasureState = t;
+        MineButtonIcon.sprite = t.UISprite;
     }
 
     public void ToggleBrushState()
