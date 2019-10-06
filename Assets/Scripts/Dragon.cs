@@ -40,11 +40,12 @@ public class Dragon : MonoBehaviour
     public float PanicDownPerSec = 0.5f;
     public int GoldCoinsPerTreasue = 1000;
     public int RagePerUnwantedTreasue = 10;
-    public Treasure DesiredTreasure1;
-    public Treasure DesiredTreasure2;
-    public Treasure DesiredTreasure3;
+    public TreasureInfo DesiredTreasure1;
+    public TreasureInfo DesiredTreasure2;
+    public TreasureInfo DesiredTreasure3;
 
     [Header("References")]
+    public GameBoard MainGameBoard;
     public Transform FireballOrigin;
     public CircleCollider2D FireballArea;
     public Fireball FireballPrefab;
@@ -56,12 +57,6 @@ public class Dragon : MonoBehaviour
     public SpriteRenderer ThoughtBubbleXMark;
     public SpriteRenderer ThoughtBubbleTreasure;
 
-    [Header("Treasure Sprites")]
-    public Sprite Treasue01;
-    public Sprite Treasue02;
-    public Sprite Treasue03;
-    public Sprite Treasue04;
-    public Sprite Treasue05;
 
     [Header("Audio")]
     public AudioSource SoundEffectsSource;
@@ -137,12 +132,11 @@ public class Dragon : MonoBehaviour
 
     }
 
-    public void GiveTreasure(Treasure t)
+    public void GiveTreasure(TreasureInfo t)
     {
         if(
-            DesiredTreasure1 == t ||
-            DesiredTreasure2 == t ||
-            DesiredTreasure3 == t
+            !t.IsTrash &&
+            (DesiredTreasure1.Value == t.Value || DesiredTreasure2.Value == t.Value || DesiredTreasure3.Value == t.Value)
             )
         {
             GoldCoins += GoldCoinsPerTreasue;
@@ -159,68 +153,72 @@ public class Dragon : MonoBehaviour
     {
         //Push new desire to queue
         var oldDesire = DesiredTreasure3;
+        var newDesire = MainGameBoard.GetRandomTreasure();
 
         DesiredTreasure3 = DesiredTreasure2;
         DesiredTreasure2 = DesiredTreasure1;
-        DesiredTreasure1 = GameBoard.GetRandomTreasure();
+        DesiredTreasure1 = newDesire;
 
         //check if last removed desire is no longer wanted
-        Treasure unwantedTreasure = Treasure.None;
+        TreasureInfo unwantedTreasure = null;
         if(
-            oldDesire != Treasure.None &&
-            oldDesire != DesiredTreasure1 &&
-            oldDesire != DesiredTreasure2 &&
-            oldDesire != DesiredTreasure3
+            oldDesire != null &&
+            oldDesire.Value != DesiredTreasure1.Value &&
+            oldDesire.Value != DesiredTreasure2.Value &&
+            oldDesire.Value != DesiredTreasure3.Value
             )
         {
             unwantedTreasure = oldDesire;
         }
 
-        Treasure wantedTresure = Treasure.None;
+        TreasureInfo wantedTresure = null;
         if(
-            DesiredTreasure1 != DesiredTreasure2 && 
-            DesiredTreasure1 != DesiredTreasure3 &&
-            DesiredTreasure1 != oldDesire
+            DesiredTreasure1.Value != DesiredTreasure2.Value && 
+            DesiredTreasure1.Value != DesiredTreasure3.Value &&
+            DesiredTreasure1.Value != oldDesire.Value
             )
         {
             wantedTresure = DesiredTreasure1;
         }
 
         //Display thought bubble for the new desire or new undesired treasure (or both)
-        if (_ThoughtBubbleCorutine == null && (unwantedTreasure != Treasure.None || wantedTresure != Treasure.None))
+        if (_ThoughtBubbleCorutine == null && (unwantedTreasure != null || wantedTresure != null))
         {
             _ThoughtBubbleCorutine = ThoughtBubbleCorutine(wantedTresure, unwantedTreasure);
             StartCoroutine(_ThoughtBubbleCorutine);
         }
     }
 
-    public Sprite getSpriteForTreasure(Treasure t)
-    {
-        switch (t)
-        {
-            case Treasure.Gold:
-                return Treasue01;
-            case Treasure.Diamond:
-                return Treasue02;
-            case Treasure.Emerald:
-                return Treasue03;
-            case Treasure.None:
-            default:
-                return null;
-        }
-    }
+    //public Sprite getSpriteForTreasure(Treasure t)
+    //{
+    //    switch (t)
+    //    {
+    //        case Treasure.Gem_Green:
+    //            break;
+    //        case Treasure.Gem_Red:
+    //            break;
+    //        case Treasure.Gem_Purple:
+    //            break;
+    //        case Treasure.Metal_Gold:
+    //            break;
+    //        case Treasure.Metal_Silver:
+    //            break;
+    //    }
+
+    //    return null;
+    //}
     
     IEnumerator _ThoughtBubbleCorutine;
-    IEnumerator ThoughtBubbleCorutine(Treasure t, Treasure undesired)
+    IEnumerator ThoughtBubbleCorutine(TreasureInfo desired, TreasureInfo undesired)
     {
         float alphaPerSec;
 
-        if (undesired != Treasure.None)
+        if (undesired != null)
         {
             //Show a thought buble for unwanted treasure first
             ThoughtBubble.gameObject.SetActive(true);
             ThoughtBubbleXMark.gameObject.SetActive(true);
-            ThoughtBubbleTreasure.sprite = getSpriteForTreasure(undesired);
+            ThoughtBubbleTreasure.sprite = undesired.UISprite;
 
             ThoughtBubble.color = new Color(1f, 1f, 1f, 0f);
             ThoughtBubbleTreasure.color = new Color(1f, 1f, 1f, 0f);
@@ -247,10 +245,10 @@ public class Dragon : MonoBehaviour
             ThoughtBubbleXMark.gameObject.SetActive(false);
         }
         
-        if(t != Treasure.None)
+        if(desired != null)
         {
             ThoughtBubble.gameObject.SetActive(true);
-            ThoughtBubbleTreasure.sprite = getSpriteForTreasure(t);
+            ThoughtBubbleTreasure.sprite = desired.UISprite;
 
             ThoughtBubble.color = new Color(1f, 1f, 1f, 0f);
             ThoughtBubbleTreasure.color = new Color(1f, 1f, 1f, 0f);

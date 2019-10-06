@@ -30,8 +30,8 @@ public class GameUI : MonoBehaviour
         GoldText.text = GOLD_COUNTER_PREFIX + Dragon.GoldCoins.ToString("N0");
 
         //Update desires
-        Desire01.sprite = Dragon.getSpriteForTreasure(Dragon.DesiredTreasure1);
-        Desire02.sprite = Dragon.getSpriteForTreasure(Dragon.DesiredTreasure2);
-        Desire03.sprite = Dragon.getSpriteForTreasure(Dragon.DesiredTreasure3);
+        Desire01.sprite = Dragon.DesiredTreasure1.Sprite;
+        Desire02.sprite = Dragon.DesiredTreasure2.Sprite;
+        Desire03.sprite = Dragon.DesiredTreasure3.Sprite;
     }
 }

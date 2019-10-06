@@ -57,7 +57,7 @@ public class FollowerController : RoadWalker
     {
         if (collision.gameObject.tag == "Dragon")
         {
-            Master.GiveTreasure(treasureHeld);
+            Master.GiveTreasure(new TreasureInfo() { Value = treasureHeld } );
             Destroy(gameObject);
         }
     }
