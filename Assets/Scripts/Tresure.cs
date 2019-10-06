@@ -1,3 +1,6 @@
+using System;
+
+[Serializable]
 public enum Treasure
 {
     None = 0,

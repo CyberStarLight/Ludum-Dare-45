@@ -7,12 +7,17 @@ using Random = UnityEngine.Random;
 
 public class Dragon : MonoBehaviour
 {
+    [Header("Testing")]
+    public int StartingGold;
+
     private int _goldCoins;
     public int GoldCoins
     {
         get { return _goldCoins; }
         set { _goldCoins = Mathf.Clamp(value, 0, MaxGoldCoins); }
     }
+
+    [Header("Config")]
     public int MaxGoldCoins;
     public float GoldRatio { get { return (float)GoldCoins / (float)MaxGoldCoins; } }
 
@@ -40,6 +45,7 @@ public class Dragon : MonoBehaviour
     public float PanicDownPerSec = 0.5f;
     public int GoldCoinsPerTreasue = 1000;
     public int RagePerUnwantedTreasue = 10;
+    public int RagePerTrash = 20;
     public TreasureInfo DesiredTreasure1;
     public TreasureInfo DesiredTreasure2;
     public TreasureInfo DesiredTreasure3;
@@ -50,11 +56,13 @@ public class Dragon : MonoBehaviour
     public CircleCollider2D FireballArea;
     public Fireball FireballPrefab;
     public GameObject[] GoldPiles;
+    public Animator DragonAnimator;
     public float ThoughtBubleFadeInDuration;
     public float ThoughtBubleStayDuration;
     public float ThoughtBubleFadeOutDuration;
     public SpriteRenderer ThoughtBubble;
     public SpriteRenderer ThoughtBubbleXMark;
+    public SpriteRenderer ThoughtBubbleXMark2;
     public SpriteRenderer ThoughtBubbleTreasure;
 
 
@@ -66,11 +74,19 @@ public class Dragon : MonoBehaviour
 
     //State variables
     private float nextDesireChangeTime = 0f;
+    private Transform _fireballTarget;
+    private bool fireballInProgress;
+
+    private void Start()
+    {
+        GoldCoins = StartingGold;
+        DesiredTreasure1 = DesiredTreasure2 = DesiredTreasure3 = null;
+    }
 
     void Update()
     {
         //Shoot fire ball when right clicking on followers within range
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !fireballInProgress)
         {
             var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
@@ -91,11 +107,9 @@ public class Dragon : MonoBehaviour
                     //Flip dragon in the right direction
                     transform.localScale = mousePos.x < 0 ? new Vector3(-1f, 1f, 1f) : new Vector3(1f, 1f, 1f);
 
-                    var newFireball = Instantiate(FireballPrefab, FireballOrigin.position, Quaternion.identity, null);
-                    newFireball.Target = target;
-                    newFireball.LastKnownPosition = target.position;
-
-                    PlayFireballSound();
+                    _fireballTarget = target;
+                    fireballInProgress = true;
+                    DragonAnimator.Play("Dragon Fireball", 0);
                 }
             }
         }
@@ -136,7 +150,11 @@ public class Dragon : MonoBehaviour
     {
         if(
             !t.IsTrash &&
-            (DesiredTreasure1.Value == t.Value || DesiredTreasure2.Value == t.Value || DesiredTreasure3.Value == t.Value)
+            (
+            (DesiredTreasure1 != null && DesiredTreasure1.Value == t.Value) ||
+            (DesiredTreasure2 != null && DesiredTreasure2.Value == t.Value) || 
+            (DesiredTreasure3 != null && DesiredTreasure3.Value == t.Value)
+            )
             )
         {
             GoldCoins += GoldCoinsPerTreasue;
@@ -144,7 +162,7 @@ public class Dragon : MonoBehaviour
         }
         else
         {
-            Rage += RagePerUnwantedTreasue;
+            Rage += (t.IsTrash ? RagePerTrash : RagePerUnwantedTreasue);
             PlayNegativeTreasure();
         }
     }
@@ -173,9 +191,9 @@ public class Dragon : MonoBehaviour
 
         TreasureInfo wantedTresure = null;
         if(
-            DesiredTreasure1.Value != DesiredTreasure2.Value && 
-            DesiredTreasure1.Value != DesiredTreasure3.Value &&
-            DesiredTreasure1.Value != oldDesire.Value
+            (DesiredTreasure2 == null || DesiredTreasure1.Value != DesiredTreasure2.Value) && 
+            (DesiredTreasure3 == null || DesiredTreasure1.Value != DesiredTreasure3.Value) &&
+            (oldDesire == null || DesiredTreasure1.Value != oldDesire.Value)
             )
         {
             wantedTresure = DesiredTreasure1;
@@ -218,6 +236,7 @@ public class Dragon : MonoBehaviour
             //Show a thought buble for unwanted treasure first
             ThoughtBubble.gameObject.SetActive(true);
             ThoughtBubbleXMark.gameObject.SetActive(true);
+            ThoughtBubbleXMark2.gameObject.SetActive(true);
             ThoughtBubbleTreasure.sprite = undesired.UISprite;
 
             ThoughtBubble.color = new Color(1f, 1f, 1f, 0f);
@@ -227,7 +246,7 @@ public class Dragon : MonoBehaviour
             while (ThoughtBubble.color.a < 1f)
             {
                 ThoughtBubble.color += new Color(0f, 0f, 0f, alphaPerSec * Time.deltaTime);
-                ThoughtBubbleXMark.color = ThoughtBubbleTreasure.color = ThoughtBubble.color;
+                ThoughtBubbleXMark.color = ThoughtBubbleXMark2.color = ThoughtBubbleTreasure.color = ThoughtBubble.color;
                 yield return null;
             }
 
@@ -237,12 +256,13 @@ public class Dragon : MonoBehaviour
             while (ThoughtBubble.color.a > 0f)
             {
                 ThoughtBubble.color -= new Color(0f, 0f, 0f, alphaPerSec * Time.deltaTime);
-                ThoughtBubbleXMark.color = ThoughtBubbleTreasure.color = ThoughtBubble.color;
+                ThoughtBubbleXMark.color = ThoughtBubbleXMark2.color = ThoughtBubbleTreasure.color = ThoughtBubble.color;
                 yield return null;
             }
 
             ThoughtBubble.gameObject.SetActive(false);
             ThoughtBubbleXMark.gameObject.SetActive(false);
+            ThoughtBubbleXMark2.gameObject.SetActive(false);
         }
         
         if(desired != null)
@@ -276,7 +296,22 @@ public class Dragon : MonoBehaviour
 
         _ThoughtBubbleCorutine = null;
     }
-    
+
+    //Animation
+    private void actuallyShootFireball()
+    {
+        var newFireball = Instantiate(FireballPrefab, FireballOrigin.position, Quaternion.identity, null);
+        newFireball.Target = _fireballTarget;
+        newFireball.LastKnownPosition = _fireballTarget.position;
+
+        PlayFireballSound();
+    }
+
+    private void fireballAnimationFinished()
+    {
+        fireballInProgress = false;
+    }
+
     //Sounds
     public void PlayPositiveTreasure()
     {
