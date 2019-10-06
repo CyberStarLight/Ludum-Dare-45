@@ -8,8 +8,6 @@ using Random = UnityEngine.Random;
 public class GameBoard : MonoBehaviour
 {
     public Road[] Roads;
-
-
     public FollowerController followerPrefab;
     [SerializeField] GameObject[] placableObjects;
     public Dragon CenterDragon;
@@ -17,21 +15,19 @@ public class GameBoard : MonoBehaviour
     [Header("Treasures")]
     public TreasureInfo[] Treasures;
 
-    public void Update()
+    public void UpdateSelf()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        switch (brush.content)
         {
-            var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            switch (brush.content)
-            {
-                case 0: break;
-                case 1: spawnFollower(mousePos); break;
-                case 2: spawnMine(mousePos); break;
-                default: break;
-            }
+            case 0: break;
+            case 1: spawnFollower(mousePos); break;
+            case 2: spawnMine(mousePos); break;
+
+            default: break;
         }
     }
-    public void spawnFollower(Vector2 mousePos)
+    public void spawnFollower(Vector2 mousePos, Treasure tresureHeld = Treasure.None)
     {
         var newFollower = Instantiate(followerPrefab, mousePos, Quaternion.identity, null);
         var searchResult = GetClosestPoint(newFollower.transform.position);
@@ -43,9 +39,16 @@ public class GameBoard : MonoBehaviour
     public void spawnMine(Vector2 mousePos)
     {
         bool ableToPlace = true;
+        foreach (var G in FindObjectsOfType<MineController>())
+            if (((Vector2)G.transform.position - mousePos).magnitude < 0.6f)
+                ableToPlace = false;
+        //foreach (var G in GameBoard.Roads.SelectMany(x => x.points))
+            //if (((Vector2)G.position - mousePos).magnitude < 0.6f)
+            //    ableToPlace = false;
+
         if (ableToPlace)
         {
-            var newMine = Instantiate(placableObjects[0], mousePos, Quaternion.identity, null);
+            var newMine = Instantiate(placableObjects[0], mousePos, Quaternion.identity, null).GetComponent<MineController>().ore = (Treasure)brush.contentState;
         }
     }
 
@@ -57,9 +60,11 @@ public class GameBoard : MonoBehaviour
         return closestRoadPoint;
     }
     public void setBrushContent(int value) { brush.content = value; }
+    public void setBrushContentState(int value) { brush.contentState = value; }
     private static class brush
     {
         public static int content;
+        public static int contentState;
         static Vector2 position;
     }
 

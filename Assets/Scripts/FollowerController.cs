@@ -33,7 +33,10 @@ public class FollowerController : RoadWalker
             treasureSprite.sprite = spritesByTresureTypes[value];
         }
     }
-
+    private void Start()
+    {
+        Master = FindObjectOfType<Dragon>();
+    }
     public void Panic()
     {
         Master.Panic += PanicAmountOnDeath;
