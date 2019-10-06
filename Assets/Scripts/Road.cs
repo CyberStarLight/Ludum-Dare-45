@@ -8,11 +8,11 @@ public class Road : MonoBehaviour
 {
     public Transform[] points;
 
-    private HashSet<RoadWalker> registeredRoadWalkers;
+    private HashSet<FollowerController> registeredFollowers;
 
     private void Awake()
     {
-        registeredRoadWalkers = new HashSet<RoadWalker>();
+        registeredFollowers = new HashSet<FollowerController>();
 
         points = new Transform[transform.childCount];
         for (int i = 0; i < points.Length; i++)
@@ -24,13 +24,13 @@ public class Road : MonoBehaviour
     private void FixedUpdate()
     {
         //Move all walkers registered to this path forward along this path.
-        foreach (var walker in registeredRoadWalkers)
+        foreach (var walker in registeredFollowers)
         {
             if (walker.HasReachedRoadEnd)
                 continue;
 
             //Get distance the walker needs to walk this frame
-            float distanceToTravel = walker.Speed * Time.fixedDeltaTime;
+            float distanceToTravel = (walker.Speed + (walker.Master.PanicRatio * walker.MaxPanicSpeedBonus)) * Time.fixedDeltaTime;
             
             while (distanceToTravel > 0f)
             {
@@ -68,17 +68,18 @@ public class Road : MonoBehaviour
         }
     }
 
-    public void RegisterWalker(RoadWalker walker, int targetPointIndex)
+
+    public void RegisterWalker(FollowerController walker, int targetPointIndex)
     {
         walker.currentTargetPointIndex = targetPointIndex;
         walker.currentTargetPosition = GetPositionFromPoint(targetPointIndex);
 
-        registeredRoadWalkers.Add(walker);
+        registeredFollowers.Add(walker);
     }
 
-    public void UnregisterWalker(RoadWalker walker)
+    public void UnregisterWalker(FollowerController walker)
     {
-        registeredRoadWalkers.Remove(walker);
+        registeredFollowers.Remove(walker);
     }
 
     public Vector3 GetPositionFromPoint(int pointIndex)

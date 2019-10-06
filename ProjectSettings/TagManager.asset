@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Follower
   - Dragon
+  - Mine
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - 
   - Dragon
   - Follower
-  - 
+  - Mine
   - 
   - 
   - 

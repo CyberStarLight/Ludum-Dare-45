@@ -15,7 +15,7 @@ public class GameBoard : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             switch (brush.content)

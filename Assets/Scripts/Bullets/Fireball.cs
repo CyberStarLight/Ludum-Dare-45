@@ -35,8 +35,13 @@ public class Fireball : MonoBehaviour
     public void Expload()
     {
         if(Target != null)
-            Destroy(Target.gameObject);
+        {
+            if(Target.gameObject.tag  == "Follower")
+                Target.GetComponent<FollowerController>().Panic();
 
+            Destroy(Target.gameObject);
+        }
+        
         Destroy(gameObject);
     }
 }
