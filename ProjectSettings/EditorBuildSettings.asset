@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BlueFlameLion/Victory.unity
     guid: 9a4fe0e7ff6c2e14d87d45bc867798d6
+  - enabled: 1
+    path: Assets/Scenes/BlueFlameLion/Credits.unity
+    guid: 195810a005ede5345b1fce583e894146
+  - enabled: 1
+    path: Assets/Scenes/BlueFlameLion/HowTo.unity
+    guid: b182a150a5e1a984d8632ddd365b44c7
   m_configObjects: {}

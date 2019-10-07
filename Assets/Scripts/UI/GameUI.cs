@@ -26,7 +26,10 @@ public class GameUI : MonoBehaviour
     public AudioClip PauseMusic;
     public Button BuildMineButton;
     public Image BuildMineButton_Icon;
+    public Image BuildMineButton_Icon2;
     public TextMeshProUGUI BuildMineButton_Text;
+    public TextMeshProUGUI BuildMineButton_Text2;
+    public Animator MineButtonAnimator;
     public TextMeshProUGUI CapMaxText;
     public Image CapStart;
     public Image CapEnd;
@@ -58,14 +61,20 @@ public class GameUI : MonoBehaviour
         if(Dragon.GoldCoins >= MainGameBoard.MineCost)
         {
             BuildMineButton.interactable = true;
+            MineButtonAnimator.SetBool("Available", true);
             BuildMineButton_Icon.color = new Color(BuildMineButton_Icon.color.r, BuildMineButton_Icon.color.g, BuildMineButton_Icon.color.b, 1f);
+            BuildMineButton_Icon2.color = new Color(BuildMineButton_Icon2.color.r, BuildMineButton_Icon2.color.g, BuildMineButton_Icon2.color.b, 1f);
             BuildMineButton_Text.color = new Color(BuildMineButton_Text.color.r, BuildMineButton_Text.color.g, BuildMineButton_Text.color.b, 1f);
+            BuildMineButton_Text2.color = new Color(BuildMineButton_Text2.color.r, BuildMineButton_Text2.color.g, BuildMineButton_Text2.color.b, 1f);
         }
         else
         {
             BuildMineButton.interactable = false;
+            MineButtonAnimator.SetBool("Available", false);
             BuildMineButton_Icon.color = new Color(BuildMineButton_Icon.color.r, BuildMineButton_Icon.color.g, BuildMineButton_Icon.color.b, 0.5f);
+            BuildMineButton_Icon2.color = new Color(BuildMineButton_Icon2.color.r, BuildMineButton_Icon2.color.g, BuildMineButton_Icon2.color.b, 0.5f);
             BuildMineButton_Text.color = new Color(BuildMineButton_Text.color.r, BuildMineButton_Text.color.g, BuildMineButton_Text.color.b, 0.5f);
+            BuildMineButton_Text2.color = new Color(BuildMineButton_Text2.color.r, BuildMineButton_Text2.color.g, BuildMineButton_Text2.color.b, 0.5f);
         }
 
         //Update gold cap

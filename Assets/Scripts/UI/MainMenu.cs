@@ -22,6 +22,22 @@ public class MainMenu : MonoBehaviour
         Invoke("LoadGame", ClickSound.length);
     }
 
+    public void ClickedCredits()
+    {
+        MainAudioSource.PlayOneShot(ClickSound, 2f);
+        CreditsButton.interactable = false;
+
+        Invoke("LoadCredits", ClickSound.length);
+    }
+
+    public void ClickedHowTo()
+    {
+        MainAudioSource.PlayOneShot(ClickSound, 2f);
+        HowToPlayButton.interactable = false;
+
+        Invoke("LoadHowTo", ClickSound.length);
+    }
+
     public void ClickedExit()
     {
         MainAudioSource.PlayOneShot(ClickSound, 2f);
@@ -33,6 +49,16 @@ public class MainMenu : MonoBehaviour
     public void LoadGame()
     {
         SceneManager.LoadScene(1);
+    }
+
+    public void LoadCredits()
+    {
+        SceneManager.LoadScene("Credits");
+    }
+
+    public void LoadHowTo()
+    {
+        SceneManager.LoadScene("HowTo");
     }
 
     public void Exit()

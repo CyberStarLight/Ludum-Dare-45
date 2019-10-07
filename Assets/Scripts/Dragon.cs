@@ -75,6 +75,7 @@ public class Dragon : MonoBehaviour
     public AudioSource SoundEffectsSource;
     public AudioClip PositiveTreasureSound;
     public AudioClip NegativeTreasureSound;
+    public AudioClip NegativeBuildSound;
     public AudioClip FireballSound;
     public AudioClip FireballHitSound;
     public AudioClip MoleDeathSound;
@@ -343,6 +344,11 @@ public class Dragon : MonoBehaviour
         SoundEffectsSource.PlayOneShot(NegativeTreasureSound, 5f);
     }
 
+    public void PlayNegativeBuild()
+    {
+        SoundEffectsSource.PlayOneShot(NegativeBuildSound, 5f);
+    }
+
     public void PlayFireballSound()
     {
         SoundEffectsSource.PlayOneShot(FireballSound, 1f);
@@ -354,6 +360,13 @@ public class Dragon : MonoBehaviour
     }
 
     public void PlayMoleDeath()
+    {
+        PlayFireballHitSound();
+
+        Invoke("PlayDelayedMoleDeath", 0.25f);
+    }
+
+    private void PlayDelayedMoleDeath()
     {
         SoundEffectsSource.PlayOneShot(MoleDeathSound, 1f);
     }

@@ -155,7 +155,7 @@ public class GameBoard : MonoBehaviour
         if (CenterDragon.GoldCoins < MineCost)
         {
             ableToPlace = false;
-            CenterDragon.PlayNegativeTreasure();
+            CenterDragon.PlayNegativeBuild();
         }
 
         //Check that the mine is not too close to a road
@@ -163,7 +163,7 @@ public class GameBoard : MonoBehaviour
         if(GetClosestPoint(mousePos + offset).Distance < MinRoadDistanceForMines)
         {
             ableToPlace = false;
-            CenterDragon.PlayNegativeTreasure();
+            CenterDragon.PlayNegativeBuild();
         }
 
         if (ableToPlace)
