@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d97c405e0dccc3458f02880fb58afbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnRate: 4
+  spawnRate: 3
   TrashRate: 0.1
   ore:
     Name: 

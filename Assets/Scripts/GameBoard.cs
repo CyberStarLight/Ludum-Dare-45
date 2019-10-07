@@ -33,6 +33,7 @@ public class GameBoard : MonoBehaviour
     public AudioSource SoundEffectsSource;
     public AudioClip MusicIntro;
     public AudioClip Music;
+    public AudioClip MusicPanic;
     public AudioClip GameOverFanfare;
     public AudioClip VictoryFanfare;
     public SpriteRenderer Crosshair;
@@ -43,6 +44,8 @@ public class GameBoard : MonoBehaviour
 
     [HideInInspector]
     public int MineCount = 0;
+
+    private bool wasPanicMusic;
 
     private void Start()
     {
@@ -98,6 +101,15 @@ public class GameBoard : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Mouse1))
         {
             IsBuildingAMine = false;
+        }
+
+        //Panic music
+        if(!wasPanicMusic && CenterDragon.RageRatio >= 0.75)
+        {
+            wasPanicMusic = true;
+
+            MusicAudioSource.clip = MusicPanic;
+            MusicAudioSource.Play();
         }
 
         //Cheats XD

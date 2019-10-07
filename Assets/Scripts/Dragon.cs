@@ -14,7 +14,7 @@ public class Dragon : MonoBehaviour
     private int _goldCoins;
     public int GoldCoins
     {
-        get { return _goldCoins; }
+        get { return Mathf.Clamp(_goldCoins, 0, Mathf.Min(GoldCoinCap, MaxGoldCoins)); }
         set { _goldCoins = Mathf.Clamp(value, 0, Mathf.Min(GoldCoinCap, MaxGoldCoins)); }
     }
 

@@ -100,7 +100,7 @@ public class MineController : MonoBehaviour
     {
         if (isTargeted)
             board.CenterDragon.PlayFireballHitSound();
-
+        
         board.MineCount -= 1;
     }
 }

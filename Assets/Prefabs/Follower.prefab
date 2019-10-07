@@ -4859,8 +4859,8 @@ MonoBehaviour:
   currentTargetPointIndex: 0
   currentTargetPosition: {x: 0, y: 0, z: 0}
   HasReachedRoadEnd: 0
-  PanicAmountOnDeath: 9
-  MaxPanicSpeedBonus: 2
+  PanicAmountOnDeath: 7
+  MaxPanicSpeedBonus: 1.5
   Master: {fileID: 0}
   Dust: {fileID: 3767855182444866345}
   MainAnimator: {fileID: 2044852316835185727}
