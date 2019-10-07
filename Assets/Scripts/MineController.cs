@@ -10,6 +10,7 @@ public class MineController : MonoBehaviour
     public TreasureInfo ore;
     public SpriteRenderer MainRenderer;
     public SpriteRenderer treasureSprite;
+    public bool isRandom;
     [SerializeField] Transform spawnPoint;
     [SerializeField] Collider2D MainCollider;
     [SerializeField] SpriteRenderer deathMarkRenderer;
@@ -28,7 +29,14 @@ public class MineController : MonoBehaviour
             transform.localScale = new Vector3(-1f, 1f, 1f);
         }
 
-        treasureSprite.sprite = ore.UISprite;
+        if(isRandom)
+        {
+            treasureSprite.gameObject.SetActive(false);
+        }
+        else
+        {
+            treasureSprite.sprite = ore.UISprite;
+        }
         
         StartCoroutine(spawnCycle());
     }
@@ -38,8 +46,13 @@ public class MineController : MonoBehaviour
         {
             if (board == null)
                 board = FindObjectOfType<GameBoard>();
-            
-            if(Random.Range(0f, 1f) <= TrashRate)
+
+            while (board.HasGameEnded)
+            {
+                yield return null;
+            }
+
+            if (Random.Range(0f, 1f) <= TrashRate)
             {
                 //Spawn trash
                 board.spawnFollower(spawnPoint.position, board.GetRandomTrash());
@@ -47,7 +60,14 @@ public class MineController : MonoBehaviour
             else
             {
                 //Spawn treasure
-                board.spawnFollower(spawnPoint.position, ore);
+                if(isRandom)
+                {
+                    board.spawnFollower(spawnPoint.position, board.GetRandomTreasure());
+                }
+                else
+                {
+                    board.spawnFollower(spawnPoint.position, ore);
+                }
             }
 
             yield return new WaitForSeconds(60 / spawnRate);

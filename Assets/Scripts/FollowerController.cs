@@ -8,6 +8,8 @@ public class FollowerController : RoadWalker
 
     [HideInInspector]
     public Dragon Master;
+    public ParticleSystem Dust;
+    public Animator MainAnimator;
 
     //private Treasure treasureHeld;
     public SpriteRenderer TreasureRenderer;

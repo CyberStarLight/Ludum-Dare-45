@@ -7,6 +7,7 @@ using UnityEngine;
 public class Road : MonoBehaviour
 {
     public Transform[] points;
+    public GameBoard MainGameBoard;
 
     private HashSet<FollowerController> registeredFollowers;
 
@@ -23,14 +24,21 @@ public class Road : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (MainGameBoard.HasGameEnded)
+            return;
+
         //Move all walkers registered to this path forward along this path.
         foreach (var walker in registeredFollowers)
         {
             if (walker.HasReachedRoadEnd)
                 continue;
-
+            
             //Get distance the walker needs to walk this frame
-            float distanceToTravel = (walker.Speed + (walker.Master.PanicRatio * walker.MaxPanicSpeedBonus)) * Time.fixedDeltaTime;
+            float currentSpeed = walker.Speed + (walker.Master.PanicRatio * walker.MaxPanicSpeedBonus);
+
+            walker.MainAnimator.speed = currentSpeed * 2;
+            
+            float distanceToTravel = currentSpeed * Time.fixedDeltaTime;
             
             while (distanceToTravel > 0f)
             {
@@ -38,8 +46,9 @@ public class Road : MonoBehaviour
 
                 //flip the sprite if needed
                 walker.MainRenderer.flipX = walker.currentTargetPosition.x < walker.transform.position.x;
+                //walker.Dust.transform.localScale = walker.MainRenderer.flipX ? new Vector3(-1f, 1f, 1f) : new Vector3(1f, 1f, 1f);
 
-                if(distanceToNextPoint > distanceToTravel)
+                if (distanceToNextPoint > distanceToTravel)
                 {
                     //Move walker forward
                     walker.transform.position = Vector2.MoveTowards(walker.transform.position, walker.currentTargetPosition, distanceToTravel);

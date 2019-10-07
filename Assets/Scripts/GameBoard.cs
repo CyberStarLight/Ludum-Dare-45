@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -23,19 +25,51 @@ public class GameBoard : MonoBehaviour
     [SerializeField] [Range(0, 1)] float trashRatio;
     [SerializeField] float distanceFromDragon;
 
+    public bool HasGameEnded { get; set; }
+
+    [Header("References")]
+    public AudioSource MusicAudioSource;
+    public AudioSource SoundEffectsSource;
+    public AudioClip MusicIntro;
+    public AudioClip Music;
+    public AudioClip GameOverFanfare;
+    public AudioClip VictoryFanfare;
+
     private void Start()
     {
         //Reset brush
         brush.content = 2;
         setBrushContentState(0);
         StartCoroutine(randomFollowersSpawnCycle());
+
+        MusicAudioSource.clip = MusicIntro;
+        MusicAudioSource.Play();
+
+        Invoke("PlayNormalMusic", MusicIntro.length - 0.01f);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (
+            Input.GetKeyDown(KeyCode.Mouse1) &&
+            !EventSystem.current.IsPointerOverGameObject()
+            )
         {
             UpdateSelf();
+        }
+
+        //Cheats XD
+        if(Input.GetKeyDown(KeyCode.G))
+        {
+            CenterDragon.GoldCoins += 10000;
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            CenterDragon.Rage += CenterDragon.MaxRage * 0.1f;
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            CenterDragon.Panic += CenterDragon.MaxPanic * 0.1f;
         }
     }
 
@@ -89,6 +123,7 @@ public class GameBoard : MonoBehaviour
         {
             var newMine = Instantiate(placableObjects[0], mousePos, Quaternion.identity, null).GetComponent<MineController>();
             newMine.ore = brush.treasureState;
+            newMine.isRandom = true;
 
             CenterDragon.GoldCoins -= MineCost;
         }
@@ -157,18 +192,61 @@ public class GameBoard : MonoBehaviour
 
         return trashTreasure[Random.Range(0, trashTreasure.Length)];
     }
+    
     private Vector2 randomVector()
     {
         return new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
     }
+
+    public void PlayNormalMusic()
+    {
+        MusicAudioSource.clip = Music;
+        MusicAudioSource.Play();
+    }
+
+    public void GameOver()
+    {
+        HasGameEnded = true;
+        StartCoroutine("gameOverCoroutine");
+    }
+
+    public void Victory()
+    {
+        HasGameEnded = true;
+        StartCoroutine("victoryCoroutine");
+    }
+
     private IEnumerator randomFollowersSpawnCycle()
     {
         while (true)
         {
             TreasureInfo followerTresure = Random.Range(0f, 1f) > trashRatio ? GetRandomTreasure() : GetRandomTrash();
-            Vector2 followerPosition = randomVector().normalized * distanceFromDragon;
+            Vector2 followerOffset = randomVector().normalized * distanceFromDragon;
+            Vector2 followerPosition = (Vector2)CenterDragon.transform.position + followerOffset;
             spawnFollower(followerPosition, followerTresure);
             yield return new WaitForSeconds(60 / spawnRate);
         }
+    }
+    
+    private IEnumerator gameOverCoroutine()
+    {
+        SoundEffectsSource.PlayOneShot(GameOverFanfare);
+
+        MusicAudioSource.Stop();
+
+        yield return new WaitForSeconds(4.2f);
+        
+        SceneManager.LoadScene("GameOver");
+    }
+
+    private IEnumerator victoryCoroutine()
+    {
+        SoundEffectsSource.PlayOneShot(VictoryFanfare);
+
+        MusicAudioSource.Stop();
+
+        yield return new WaitForSeconds(4.4f);
+        
+        SceneManager.LoadScene("Victory");
     }
 }

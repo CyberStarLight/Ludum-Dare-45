@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
@@ -54,6 +55,7 @@ public class Dragon : MonoBehaviour
     [Header("References")]
     public GameBoard MainGameBoard;
     public Transform FireballOrigin;
+    public Animator BubbleAnimator;
     public CircleCollider2D FireballArea;
     public Fireball FireballPrefab;
     public GameObject[] GoldPiles;
@@ -63,8 +65,9 @@ public class Dragon : MonoBehaviour
     public float ThoughtBubleFadeOutDuration;
     public SpriteRenderer ThoughtBubble;
     public SpriteRenderer ThoughtBubbleXMark;
-    public SpriteRenderer ThoughtBubbleXMark2;
     public SpriteRenderer ThoughtBubbleTreasure;
+    public ThoughtBubble ThoughtBubbleAnimation;
+    public Animator DragonHuff;
 
 
     [Header("Audio")]
@@ -77,6 +80,7 @@ public class Dragon : MonoBehaviour
     private float nextDesireChangeTime = 0f;
     private Transform _fireballTarget;
     private bool fireballInProgress;
+    private bool thoughtInProgress;
 
     private void Start()
     {
@@ -86,8 +90,15 @@ public class Dragon : MonoBehaviour
 
     void Update()
     {
+        if (MainGameBoard.HasGameEnded)
+            return;
+
         //Shoot fire ball when right clicking on followers within range
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !fireballInProgress)
+        if (
+            Input.GetKeyDown(KeyCode.Mouse0) && 
+            !fireballInProgress &&
+            !EventSystem.current.IsPointerOverGameObject()
+            )
         {
             var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
@@ -107,7 +118,7 @@ public class Dragon : MonoBehaviour
                     
 
                     //Flip dragon in the right direction
-                    transform.localScale = mousePos.x < 0 ? new Vector3(-1f, 1f, 1f) : new Vector3(1f, 1f, 1f);
+                    transform.localScale = mousePos.x < transform.position.x ? new Vector3(-1f, 1f, 1f) : new Vector3(1f, 1f, 1f);
 
                     _fireballTarget = target;
                     fireballInProgress = true;
@@ -125,7 +136,7 @@ public class Dragon : MonoBehaviour
         }
 
         //Update desires
-        if(Time.time >= nextDesireChangeTime)
+        if(Time.time >= nextDesireChangeTime && !thoughtInProgress)
         {
             GenerateNewDesire();
             nextDesireChangeTime = Time.time + Random.Range(DesireIntervalMin, DesireIntervalMax);
@@ -138,13 +149,12 @@ public class Dragon : MonoBehaviour
         if (RageRatio > 0.999f)
         {
             //Game over
-            SceneManager.LoadScene("GameOver");
+            MainGameBoard.GameOver();
         }
-
-        if (GoldRatio > 0.999f)
+        else if (GoldRatio > 0.999f)
         {
             //Victory
-            SceneManager.LoadScene("Victory");
+            MainGameBoard.Victory();
         }
 
     }
@@ -167,6 +177,7 @@ public class Dragon : MonoBehaviour
         {
             Rage += (t.IsTrash ? RagePerTrash : RagePerUnwantedTreasue);
             PlayNegativeTreasure();
+            DragonHuff.SetTrigger("Show");
         }
     }
 
@@ -193,6 +204,7 @@ public class Dragon : MonoBehaviour
         }
 
         TreasureInfo wantedTresure = null;
+        TreasureInfo repeatedDesire = null;
         if(
             (DesiredTreasure2 == null || DesiredTreasure1.Value != DesiredTreasure2.Value) && 
             (DesiredTreasure3 == null || DesiredTreasure1.Value != DesiredTreasure3.Value) &&
@@ -201,12 +213,29 @@ public class Dragon : MonoBehaviour
         {
             wantedTresure = DesiredTreasure1;
         }
+        else if (
+            newDesire != null && newDesire.Value != Treasure.None &&
+            (newDesire == DesiredTreasure2 || newDesire == DesiredTreasure3)
+            )
+        {
+            //desire for an existing treasure
+            repeatedDesire = newDesire;
+        }
+
 
         //Display thought bubble for the new desire or new undesired treasure (or both)
         if (_ThoughtBubbleCorutine == null && (unwantedTreasure != null || wantedTresure != null))
         {
-            _ThoughtBubbleCorutine = ThoughtBubbleCorutine(wantedTresure, unwantedTreasure);
-            StartCoroutine(_ThoughtBubbleCorutine);
+            thoughtInProgress = true;
+
+            ThoughtBubbleAnimation.Show(wantedTresure, unwantedTreasure, repeatedDesire);
+            DesiredTreasure1 = DesiredTreasure2;
+            DesiredTreasure2 = DesiredTreasure3;
+            DesiredTreasure3 = oldDesire;
+
+            //BubbleAnimator.SetTrigger("Spawn");
+            //_ThoughtBubbleCorutine = ThoughtBubbleCorutine(wantedTresure, unwantedTreasure);
+            //StartCoroutine(_ThoughtBubbleCorutine);
         }
     }
     
@@ -220,7 +249,6 @@ public class Dragon : MonoBehaviour
             //Show a thought buble for unwanted treasure first
             ThoughtBubble.gameObject.SetActive(true);
             ThoughtBubbleXMark.gameObject.SetActive(true);
-            ThoughtBubbleXMark2.gameObject.SetActive(true);
             ThoughtBubbleTreasure.sprite = undesired.UISprite;
 
             ThoughtBubble.color = new Color(1f, 1f, 1f, 0f);
@@ -230,7 +258,7 @@ public class Dragon : MonoBehaviour
             while (ThoughtBubble.color.a < 1f)
             {
                 ThoughtBubble.color += new Color(0f, 0f, 0f, alphaPerSec * Time.deltaTime);
-                ThoughtBubbleXMark.color = ThoughtBubbleXMark2.color = ThoughtBubbleTreasure.color = ThoughtBubble.color;
+                ThoughtBubbleXMark.color = ThoughtBubbleTreasure.color = ThoughtBubble.color;
                 yield return null;
             }
 
@@ -240,13 +268,12 @@ public class Dragon : MonoBehaviour
             while (ThoughtBubble.color.a > 0f)
             {
                 ThoughtBubble.color -= new Color(0f, 0f, 0f, alphaPerSec * Time.deltaTime);
-                ThoughtBubbleXMark.color = ThoughtBubbleXMark2.color = ThoughtBubbleTreasure.color = ThoughtBubble.color;
+                ThoughtBubbleXMark.color = ThoughtBubbleTreasure.color = ThoughtBubble.color;
                 yield return null;
             }
 
             ThoughtBubble.gameObject.SetActive(false);
             ThoughtBubbleXMark.gameObject.SetActive(false);
-            ThoughtBubbleXMark2.gameObject.SetActive(false);
         }
         
         if(desired != null)
@@ -294,6 +321,11 @@ public class Dragon : MonoBehaviour
     private void fireballAnimationFinished()
     {
         fireballInProgress = false;
+    }
+
+    public void ThoughtEnded()
+    {
+        thoughtInProgress = false;
     }
 
     //Sounds

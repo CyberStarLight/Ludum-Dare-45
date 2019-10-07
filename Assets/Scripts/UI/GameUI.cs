@@ -6,7 +6,7 @@ using TMPro;
 
 public class GameUI : MonoBehaviour
 {
-    public const string GOLD_COUNTER_PREFIX = "Gold: ";
+    public const string GOLD_COUNTER_PREFIX = "x ";
 
     [Header("UI References")]
     public GameBoard MainGameBoard;
@@ -14,12 +14,21 @@ public class GameUI : MonoBehaviour
     public Image PanicBar;
     public Image MinPanicBar;
     public Image RageBar;
-    public TextMeshPro GoldText;
+    public TextMeshProUGUI GoldText;
     public Image Desire01;
     public Image Desire02;
     public Image Desire03;
+    public Image PauseButton;
+    public Sprite PauseSprite;
+    public Sprite PlaySprite;
+    public GameObject PauseOverlay;
+    public AudioClip PauseMusic;
 
     public Dragon Dragon;
+
+    private bool isGamePaused;
+    private AudioClip PreviousMusic;
+    private float PreviousMusicPos;
 
     private void Update()
     {
@@ -61,5 +70,34 @@ public class GameUI : MonoBehaviour
             return;
 
         MainGameBoard.SetBrushToTreasure(Dragon.DesiredTreasure3);
+    }
+
+    public void TogglePauseGame()
+    {
+        if(isGamePaused)
+        {
+            Time.timeScale = 1f;
+            PauseButton.sprite = PauseSprite;
+            PauseOverlay.SetActive(false);
+            isGamePaused = false;
+
+            MainGameBoard.MusicAudioSource.clip = PreviousMusic;
+            MainGameBoard.MusicAudioSource.time = PreviousMusicPos;
+            MainGameBoard.MusicAudioSource.Play();
+        }
+        else
+        {
+            Time.timeScale = 0f;
+            PauseButton.sprite = PlaySprite;
+            PauseOverlay.SetActive(true);
+
+            PreviousMusic = MainGameBoard.MusicAudioSource.clip;
+            PreviousMusicPos = MainGameBoard.MusicAudioSource.time;
+
+            MainGameBoard.MusicAudioSource.clip = PauseMusic;
+            MainGameBoard.MusicAudioSource.Play();
+
+            isGamePaused = true;
+        }
     }
 }

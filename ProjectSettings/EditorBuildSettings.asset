@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/BlueFlameLion/MainMenu.unity
     guid: 4b323091f2fa26b4694f298dd1708091
   - enabled: 1
-    path: Assets/Scenes/BlueFlameLion/WorldScreen (BFL).unity
-    guid: 4ee94b01551413143bed33e81473b173
+    path: Assets/Scenes/BlueFlameLion/WorldScreen (BFL) B.unity
+    guid: c264b45060453a342bd796830e2f88fb
   - enabled: 1
     path: Assets/Scenes/BlueFlameLion/GameOver.unity
     guid: 1986af587c1fa4b469342daaa3bda647
