@@ -8,6 +8,7 @@ public class Fireball : MonoBehaviour
 
     public float Speed;
 
+    public Animator MainAnimator;
     [HideInInspector]
     public Transform Target;
     [HideInInspector]
@@ -34,14 +35,20 @@ public class Fireball : MonoBehaviour
 
     public void Expload()
     {
-        if(Target != null)
+        MainAnimator.SetTrigger("Explode");
+
+        if (Target != null)
         {
             if(Target.gameObject.tag  == "Follower")
                 Target.GetComponent<FollowerController>().Panic();
 
             Destroy(Target.gameObject);
         }
-        
+    }
+
+    //Animator events
+    private void FinishedExploding()
+    {
         Destroy(gameObject);
     }
 }

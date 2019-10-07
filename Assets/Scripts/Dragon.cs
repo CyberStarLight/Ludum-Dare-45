@@ -15,11 +15,12 @@ public class Dragon : MonoBehaviour
     public int GoldCoins
     {
         get { return _goldCoins; }
-        set { _goldCoins = Mathf.Clamp(value, 0, MaxGoldCoins); }
+        set { _goldCoins = Mathf.Clamp(value, 0, Mathf.Min(GoldCoinCap, MaxGoldCoins)); }
     }
 
     [Header("Config")]
     public int MaxGoldCoins;
+    public int GoldCoinCap { get { return Mathf.Clamp((MainGameBoard.MineCount+1) * MainGameBoard.MineCapBonus, 0, MaxGoldCoins); } }
     public float GoldRatio { get { return (float)GoldCoins / (float)MaxGoldCoins; } }
 
     private float _rage;
@@ -75,6 +76,8 @@ public class Dragon : MonoBehaviour
     public AudioClip PositiveTreasureSound;
     public AudioClip NegativeTreasureSound;
     public AudioClip FireballSound;
+    public AudioClip FireballHitSound;
+    public AudioClip MoleDeathSound;
 
     //State variables
     private float nextDesireChangeTime = 0f;
@@ -96,6 +99,7 @@ public class Dragon : MonoBehaviour
         //Shoot fire ball when right clicking on followers within range
         if (
             Input.GetKeyDown(KeyCode.Mouse0) && 
+            !MainGameBoard.IsBuildingAMine &&
             !fireballInProgress &&
             !EventSystem.current.IsPointerOverGameObject()
             )
@@ -341,6 +345,17 @@ public class Dragon : MonoBehaviour
 
     public void PlayFireballSound()
     {
-        SoundEffectsSource.PlayOneShot(FireballSound, 3f);
+        SoundEffectsSource.PlayOneShot(FireballSound, 1f);
     }
+
+    public void PlayFireballHitSound()
+    {
+        SoundEffectsSource.PlayOneShot(FireballHitSound, 1f);
+    }
+
+    public void PlayMoleDeath()
+    {
+        SoundEffectsSource.PlayOneShot(MoleDeathSound, 1f);
+    }
+
 }

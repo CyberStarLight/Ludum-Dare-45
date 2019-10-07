@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d97c405e0dccc3458f02880fb58afbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnRate: 2.5
+  spawnRate: 4
   TrashRate: 0.1
   ore:
     Name: 
@@ -307,7 +307,7 @@ SpriteRenderer:
   m_SortingLayerID: -2030312311
   m_SortingLayer: 3
   m_SortingOrder: 12
-  m_Sprite: {fileID: 21300000, guid: 1bb7e1a68fda15740be1b00f09afcab9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0fe2761b863bc6c45a36e57c22c46ee5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

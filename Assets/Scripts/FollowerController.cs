@@ -42,6 +42,8 @@ public class FollowerController : RoadWalker
     public void Panic()
     {
         Master.Panic += PanicAmountOnDeath;
+        Master.PlayMoleDeath();
+        Master.PlayFireballHitSound();
     }
 
     public void OnTargeted()

@@ -17,6 +17,7 @@ public class GameBoard : MonoBehaviour
     public Dragon CenterDragon;
     public Image MineButtonIcon;
     public int MineCost = 10000;
+    public int MineCapBonus = 100000;
 
     [Header("Treasures")]
     public TreasureInfo[] Treasures;
@@ -34,6 +35,14 @@ public class GameBoard : MonoBehaviour
     public AudioClip Music;
     public AudioClip GameOverFanfare;
     public AudioClip VictoryFanfare;
+    public SpriteRenderer Crosshair;
+    public SpriteRenderer MineCursor;
+
+    [HideInInspector]
+    public bool IsBuildingAMine;
+
+    [HideInInspector]
+    public int MineCount = 0;
 
     private void Start()
     {
@@ -50,12 +59,45 @@ public class GameBoard : MonoBehaviour
 
     private void Update()
     {
+        var mousPos = Camera.main.ScreenToWorldPoint(Input.mousePosition); ;
+        bool isMouseOverUI = EventSystem.current.IsPointerOverGameObject();
+        
+        if(!HasGameEnded && !isMouseOverUI)
+        {
+            Cursor.visible = false;
+
+            if (IsBuildingAMine)
+            {
+                MineCursor.gameObject.SetActive(true);
+                Crosshair.gameObject.SetActive(false);
+                MineCursor.transform.position = (Vector2)mousPos;
+            }
+            else
+            {
+                Crosshair.gameObject.SetActive(true);
+                MineCursor.gameObject.SetActive(false);
+                Crosshair.transform.position = (Vector2)mousPos;
+            }
+        }
+        else
+        {
+            Cursor.visible = true;
+            Crosshair.gameObject.SetActive(false);
+            MineCursor.gameObject.SetActive(false);
+        }
+
         if (
-            Input.GetKeyDown(KeyCode.Mouse1) &&
-            !EventSystem.current.IsPointerOverGameObject()
+            Input.GetKeyDown(KeyCode.Mouse0) &&
+            !isMouseOverUI &&
+            IsBuildingAMine
             )
         {
             UpdateSelf();
+        }
+
+        if(Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            IsBuildingAMine = false;
         }
 
         //Cheats XD
@@ -71,6 +113,11 @@ public class GameBoard : MonoBehaviour
         {
             CenterDragon.Panic += CenterDragon.MaxPanic * 0.1f;
         }
+    }
+
+    private void OnDestroy()
+    {
+        Cursor.visible = true;
     }
 
     public void UpdateSelf()
@@ -126,6 +173,8 @@ public class GameBoard : MonoBehaviour
             newMine.isRandom = true;
 
             CenterDragon.GoldCoins -= MineCost;
+
+            Invoke("StopBuildingMine", 0.1f);
         }
     }
 
@@ -196,6 +245,30 @@ public class GameBoard : MonoBehaviour
     private Vector2 randomVector()
     {
         return new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+    }
+
+    private void StopBuildingMine()
+    {
+        IsBuildingAMine = false;
+    }
+
+    public void PickUpMine()
+    {
+        if(!IsBuildingAMine)
+        {
+            if(CenterDragon.GoldCoins >= MineCost)
+            {
+                IsBuildingAMine = true;
+            }
+            else
+            {
+                CenterDragon.PlayNegativeTreasure();
+            }
+        }
+        else
+        {
+            IsBuildingAMine = false;
+        }
     }
 
     public void PlayNormalMusic()

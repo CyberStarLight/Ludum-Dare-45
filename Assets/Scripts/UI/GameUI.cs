@@ -7,6 +7,7 @@ using TMPro;
 public class GameUI : MonoBehaviour
 {
     public const string GOLD_COUNTER_PREFIX = "x ";
+    public const string CAP_PREFIX = "MAX:\n";
 
     [Header("UI References")]
     public GameBoard MainGameBoard;
@@ -23,6 +24,13 @@ public class GameUI : MonoBehaviour
     public Sprite PlaySprite;
     public GameObject PauseOverlay;
     public AudioClip PauseMusic;
+    public Button BuildMineButton;
+    public Image BuildMineButton_Icon;
+    public TextMeshProUGUI BuildMineButton_Text;
+    public TextMeshProUGUI CapMaxText;
+    public Image CapStart;
+    public Image CapEnd;
+    public Image CapLine;
 
     public Dragon Dragon;
 
@@ -46,6 +54,30 @@ public class GameUI : MonoBehaviour
         Desire01.sprite = Dragon.DesiredTreasure1 == null || Dragon.DesiredTreasure1.Value == Treasure.None ? TranparentSprite : Dragon.DesiredTreasure1.UISprite;
         Desire02.sprite = Dragon.DesiredTreasure2 == null || Dragon.DesiredTreasure2.Value == Treasure.None ? TranparentSprite : Dragon.DesiredTreasure2.UISprite;
         Desire03.sprite = Dragon.DesiredTreasure3 == null || Dragon.DesiredTreasure3.Value == Treasure.None ? TranparentSprite : Dragon.DesiredTreasure3.UISprite;
+
+        if(Dragon.GoldCoins >= MainGameBoard.MineCost)
+        {
+            BuildMineButton.interactable = true;
+            BuildMineButton_Icon.color = new Color(BuildMineButton_Icon.color.r, BuildMineButton_Icon.color.g, BuildMineButton_Icon.color.b, 1f);
+            BuildMineButton_Text.color = new Color(BuildMineButton_Text.color.r, BuildMineButton_Text.color.g, BuildMineButton_Text.color.b, 1f);
+        }
+        else
+        {
+            BuildMineButton.interactable = false;
+            BuildMineButton_Icon.color = new Color(BuildMineButton_Icon.color.r, BuildMineButton_Icon.color.g, BuildMineButton_Icon.color.b, 0.5f);
+            BuildMineButton_Text.color = new Color(BuildMineButton_Text.color.r, BuildMineButton_Text.color.g, BuildMineButton_Text.color.b, 0.5f);
+        }
+
+        //Update gold cap
+        int capAmount = MainGameBoard.CenterDragon.GoldCoinCap;
+        CapMaxText.text = CAP_PREFIX + capAmount.ToString("N0");
+        float capPoint = Mathf.Clamp01((float)(capAmount - MainGameBoard.MineCapBonus) / (float)(MainGameBoard.CenterDragon.MaxGoldCoins - MainGameBoard.MineCapBonus));
+
+        float yOffset = CapEnd.rectTransform.anchoredPosition.y - CapStart.rectTransform.anchoredPosition.y;
+        float yPos = CapStart.rectTransform.anchoredPosition.y + (yOffset * capPoint);
+        CapLine.rectTransform.anchoredPosition = new Vector2(CapLine.rectTransform.anchoredPosition.x, yPos);
+
+        //CapLine.transform.position = Vector3.Lerp(CapStart.transform.position, CapEnd.transform.position, capPoint);
     }
 
     public void ClickedDesire1()

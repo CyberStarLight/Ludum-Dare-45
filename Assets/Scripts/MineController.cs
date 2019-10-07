@@ -15,11 +15,15 @@ public class MineController : MonoBehaviour
     [SerializeField] Collider2D MainCollider;
     [SerializeField] SpriteRenderer deathMarkRenderer;
     private GameBoard board;
+
+    private bool isTargeted;
     
     void Start()
     {
         if (board == null)
             board = FindObjectOfType<GameBoard>();
+
+        board.MineCount += 1;
 
         var closestRoadPos = board.GetClosestPoint(spawnPoint.position).PointPosition;
 
@@ -88,5 +92,15 @@ public class MineController : MonoBehaviour
         //disable collider
         if (MainCollider != null)
             MainCollider.enabled = false;
+
+        isTargeted = true;
+    }
+
+    private void OnDestroy()
+    {
+        if (isTargeted)
+            board.CenterDragon.PlayFireballHitSound();
+
+        board.MineCount -= 1;
     }
 }

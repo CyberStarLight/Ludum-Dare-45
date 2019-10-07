@@ -4853,7 +4853,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fec0355067ec4940a4b47a9d17b0170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 0.65
+  Speed: 0.8
   MainRenderer: {fileID: 565793531071843580}
   currentRoad: {fileID: 0}
   currentTargetPointIndex: 0
@@ -5092,7 +5092,7 @@ SpriteRenderer:
   m_SortingLayerID: 706673823
   m_SortingLayer: 4
   m_SortingOrder: 12
-  m_Sprite: {fileID: 21300000, guid: 1bb7e1a68fda15740be1b00f09afcab9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0fe2761b863bc6c45a36e57c22c46ee5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

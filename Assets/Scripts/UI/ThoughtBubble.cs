@@ -24,14 +24,20 @@ public class ThoughtBubble : MonoBehaviour
 
     public void BubbleSpawned()
     {
-        BubbleAnimator.SetBool("HasWanted", desired != null && desired.Value != Treasure.None);
-        BubbleAnimator.SetBool("HasUnwanted", undesired != null && undesired.Value != Treasure.None);
+        if(desired != null && desired.Value != Treasure.None)
+        {
+            BubbleAnimator.SetBool("HasWanted", true);
+        }
+        if(undesired != null && undesired.Value != Treasure.None)
+        {
+            BubbleAnimator.SetBool("HasUnwanted", true);
+        }
 
-        if(undesired != null)
+        if(undesired != null && undesired.Value != Treasure.None)
         {
             TreasureImage.sprite = undesired.UISprite;
         }
-        else if (desired != null)
+        else if (desired != null && desired.Value != Treasure.None)
         {
             TreasureImage.sprite = desired.UISprite;
         }
@@ -41,7 +47,7 @@ public class ThoughtBubble : MonoBehaviour
     {
         CenterDragon.DesiredTreasure3 = null;
 
-        if (desired != null)
+        if (desired != null && desired.Value != Treasure.None)
             TreasureImage.sprite = desired.UISprite;
 
         if(repeatedDesired != null && repeatedDesired.Value != Treasure.None)
