@@ -568,6 +568,11 @@ public class GameBoard : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
     IEnumerator _MineDragCoroutine;
     IEnumerator MineDragCoroutine(int fingerId)
     {
