@@ -63,3 +63,8 @@ crashlytics-build.properties
 
 Assets/Keystore/KeystorePassword.txt
 Assets/Keystore/KeystorePassword.txt.meta
+Assets/Keystore/user.keystore
+Assets/Keystore/user.keystore.meta
+Assets/Keystore/Old.meta
+Assets/Keystore/Old/user.keystore
+Assets/Keystore/Old/user.keystore.meta
