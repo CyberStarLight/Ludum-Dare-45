@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameUI : MonoBehaviour
 {
@@ -12,8 +13,6 @@ public class GameUI : MonoBehaviour
     [Header("UI References")]
     public GameBoard MainGameBoard;
     public Sprite TranparentSprite;
-    public Image PanicBar;
-    public Image MinPanicBar;
     public Image RageBar;
     public TextMeshProUGUI GoldText;
     public Image Desire01;
@@ -22,8 +21,9 @@ public class GameUI : MonoBehaviour
     public Image PauseButton;
     public Sprite PauseSprite;
     public Sprite PlaySprite;
+    public GameObject MenuPanel;
     public GameObject PauseOverlay;
-    public AudioClip PauseMusic;
+    public GameObject PauseText;
     public Button BuildMineButton;
     public Image BuildMineButton_Icon;
     public Image BuildMineButton_Icon2;
@@ -34,12 +34,30 @@ public class GameUI : MonoBehaviour
     public Image CapStart;
     public Image CapEnd;
     public Image CapLine;
+    public TextMeshProUGUI ScoreText;
+    public StageClearScreen ClearScreen;
 
     public Dragon Dragon;
 
+    [Header("Inventory")]
+    public Button ClearScreenButton;
+    public Button SpeedUpButton;
+    public Button DoubleTreasureButton;
+    public TextMeshProUGUI ClearScreenItemAmount;
+    public TextMeshProUGUI SpeedItemAmount;
+    public TextMeshProUGUI DoubleTreasureItemAmount;
+
+
     private bool isGamePaused;
-    private AudioClip PreviousMusic;
+    private bool isMenuOpened;
+    private Music PreviousMusic;
     private float PreviousMusicPos;
+
+    private void Start()
+    {
+        BuildMineButton_Text.text = string.Format("-{0:n0} Gold", GameSettings.LevelConfig.MineCost);
+        BuildMineButton_Text2.text = string.Format("+{0:n0} Cap", GameSettings.LevelConfig.Mine_CapBonus);
+    }
 
     private void Update()
     {
@@ -48,17 +66,17 @@ public class GameUI : MonoBehaviour
 
     public void UpdateUI()
     {
-        PanicBar.fillAmount = Dragon.PanicRatio;
-        MinPanicBar.fillAmount = Dragon.RageRatio * 0.5f;
+        //PanicBar.fillAmount = Dragon.PanicRatio;
+        //MinPanicBar.fillAmount = Dragon.RageRatio * 0.5f;
         RageBar.fillAmount = Dragon.RageRatio;
-        GoldText.text = GOLD_COUNTER_PREFIX + Dragon.GoldCoins.ToString("N0");
+        GoldText.text = GOLD_COUNTER_PREFIX + MainGameBoard.GoldCoins.ToString("N0");
 
         //Update desires
         Desire01.sprite = Dragon.DesiredTreasure1 == null || Dragon.DesiredTreasure1.Value == Treasure.None ? TranparentSprite : Dragon.DesiredTreasure1.UISprite;
         Desire02.sprite = Dragon.DesiredTreasure2 == null || Dragon.DesiredTreasure2.Value == Treasure.None ? TranparentSprite : Dragon.DesiredTreasure2.UISprite;
         Desire03.sprite = Dragon.DesiredTreasure3 == null || Dragon.DesiredTreasure3.Value == Treasure.None ? TranparentSprite : Dragon.DesiredTreasure3.UISprite;
 
-        if(Dragon.GoldCoins >= MainGameBoard.MineCost)
+        if(MainGameBoard.CanAffordMine)
         {
             BuildMineButton.interactable = true;
             MineButtonAnimator.SetBool("Available", true);
@@ -78,67 +96,120 @@ public class GameUI : MonoBehaviour
         }
 
         //Update gold cap
-        int capAmount = MainGameBoard.CenterDragon.GoldCoinCap;
+        int capAmount = MainGameBoard.GoldCoinCap;
+
+        if(capAmount <= 600000)
+        {
+            CapMaxText.rectTransform.pivot = new Vector2(0.5f, 0f);
+            CapMaxText.rectTransform.anchoredPosition = new Vector2(0f, 0f);
+            CapMaxText.margin = new Vector4(0f, 0f, 0f, 0f);
+        }
+        else if(capAmount < 1000000)
+        {
+            CapMaxText.rectTransform.pivot = new Vector2(0.5f, 1f);
+            CapMaxText.rectTransform.anchoredPosition = new Vector2(0f, 0f);
+            CapMaxText.margin = new Vector4(0f, 15f, 0f, 0f);
+        }
+        else
+        {
+            CapMaxText.gameObject.SetActive(false);
+        }
+
         CapMaxText.text = CAP_PREFIX + capAmount.ToString("N0");
-        float capPoint = Mathf.Clamp01((float)(capAmount - MainGameBoard.MineCapBonus) / (float)(MainGameBoard.CenterDragon.MaxGoldCoins - MainGameBoard.MineCapBonus));
+        float capPoint = Mathf.Clamp01((float)(capAmount - GameSettings.LevelConfig.Mine_CapBonus) / (float)(GameSettings.LevelConfig.Gold_Max - GameSettings.LevelConfig.Mine_CapBonus));
 
         float yOffset = CapEnd.rectTransform.anchoredPosition.y - CapStart.rectTransform.anchoredPosition.y;
         float yPos = CapStart.rectTransform.anchoredPosition.y + (yOffset * capPoint);
         CapLine.rectTransform.anchoredPosition = new Vector2(CapLine.rectTransform.anchoredPosition.x, yPos);
 
-        //CapLine.transform.position = Vector3.Lerp(CapStart.transform.position, CapEnd.transform.position, capPoint);
+        //Update score
+        ScoreText.text = string.Format("Score: {0}", Mathf.FloorToInt(MainGameBoard.CurrentScore));
+
+        //Update inventory
+        ClearScreenItemAmount.text = "x" + MainGameBoard.ClearScreenItemAmount.ToString("00");
+        SpeedItemAmount.text = "x" + MainGameBoard.SpeedItemAmount.ToString("00");
+        DoubleTreasureItemAmount.text = "x" + MainGameBoard.DoubleTreasureItemAmount.ToString("00");
+
+        ClearScreenButton.interactable = Time.time > MainGameBoard.NoClearBeforeTime && MainGameBoard.ExistingFollowers.Count > 0 && MainGameBoard.ClearScreenItemAmount > 0;
+        SpeedUpButton.interactable = MainGameBoard.SpeedItemAmount > 0;
+        DoubleTreasureButton.interactable = MainGameBoard.DoubleTreasureItemAmount > 0;
     }
-
-    public void ClickedDesire1()
+    
+    //Menu
+    public void ToggleMenu()
     {
-        if (Dragon.DesiredTreasure1 == null || Dragon.DesiredTreasure1.Value == Treasure.None)
-            return;
-
-        MainGameBoard.SetBrushToTreasure(Dragon.DesiredTreasure1);
-    }
-
-    public void ClickedDesire2()
-    {
-        if (Dragon.DesiredTreasure2 == null || Dragon.DesiredTreasure2.Value == Treasure.None)
-            return;
-
-        MainGameBoard.SetBrushToTreasure(Dragon.DesiredTreasure2);
-    }
-
-    public void ClickedDesire3()
-    {
-        if (Dragon.DesiredTreasure3 == null || Dragon.DesiredTreasure3.Value == Treasure.None)
-            return;
-
-        MainGameBoard.SetBrushToTreasure(Dragon.DesiredTreasure3);
-    }
-
-    public void TogglePauseGame()
-    {
-        if(isGamePaused)
+        if(isMenuOpened)
         {
             Time.timeScale = 1f;
             PauseButton.sprite = PauseSprite;
             PauseOverlay.SetActive(false);
+            PauseText.SetActive(false);
+            MenuPanel.SetActive(false);
+            
+            AudioManager.Play(PreviousMusic, PreviousMusicPos);
+            
+            isMenuOpened = false;
             isGamePaused = false;
-
-            MainGameBoard.MusicAudioSource.clip = PreviousMusic;
-            MainGameBoard.MusicAudioSource.time = PreviousMusicPos;
-            MainGameBoard.MusicAudioSource.Play();
         }
         else
         {
             Time.timeScale = 0f;
             PauseButton.sprite = PlaySprite;
             PauseOverlay.SetActive(true);
+            PauseText.SetActive(false);
+            MenuPanel.SetActive(true);
 
-            PreviousMusic = MainGameBoard.MusicAudioSource.clip;
-            PreviousMusicPos = MainGameBoard.MusicAudioSource.time;
+            if (!isGamePaused)
+            {
+                PreviousMusic = AudioManager.CurrentMusic;
+                PreviousMusicPos = AudioManager.CurrentMusicTime;
 
-            MainGameBoard.MusicAudioSource.clip = PauseMusic;
-            MainGameBoard.MusicAudioSource.Play();
+                AudioManager.Play(Music.MenuMusic);
+            }
+
+            isGamePaused = false;
+            isMenuOpened = true;
+        }
+    }
+
+    public void TogglePauseGame()
+    {
+        if(isMenuOpened)
+        {
+            ToggleMenu();
+            return;
+        }
+
+        if(isGamePaused)
+        {
+            Time.timeScale = 1f;
+            PauseButton.sprite = PauseSprite;
+            PauseOverlay.SetActive(false);
+            PauseText.SetActive(false);
+
+            AudioManager.Play(PreviousMusic, PreviousMusicPos);
+            
+            isGamePaused = false;
+        }
+        else
+        {
+            Time.timeScale = 0f;
+            PauseButton.sprite = PlaySprite;
+            PauseOverlay.SetActive(true);
+            PauseText.SetActive(true);
+
+            PreviousMusic = AudioManager.CurrentMusic;
+            PreviousMusicPos = AudioManager.CurrentMusicTime;
+            
+            AudioManager.Play(Music.MenuMusic);
 
             isGamePaused = true;
         }
+    }
+    
+    public void Exit()
+    {
+        SceneManager.LoadScene("MainMenu");
+        Time.timeScale = 1f;
     }
 }

@@ -128,7 +128,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d97c405e0dccc3458f02880fb58afbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnRate: 3
+  MinSpawnDelay: 14
+  MaxSpawnDelay: 18
   TrashRate: 0.1
   ore:
     Name: 
@@ -138,7 +139,7 @@ MonoBehaviour:
     IsTrash: 0
   MainRenderer: {fileID: 7027902669277756402}
   treasureSprite: {fileID: 1936906327735860549}
-  isRandom: 0
+  isRandom: 1
   spawnPoint: {fileID: 7895491452131697756}
   MainCollider: {fileID: 1848436028439043569}
   deathMarkRenderer: {fileID: 3668583094541597147}

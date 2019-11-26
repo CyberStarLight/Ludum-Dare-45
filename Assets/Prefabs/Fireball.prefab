@@ -135,6 +135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 7
   MainAnimator: {fileID: 2100023073757198743}
+  MainSpriteRenderer: {fileID: 2381224644521789675}
   Target: {fileID: 0}
   LastKnownPosition: {x: 0, y: 0}
 --- !u!95 &2100023073757198743

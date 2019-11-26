@@ -1,0 +1,116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2409407009243105885
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2412020759464468707}
+  - component: {fileID: 3493046680071944258}
+  m_Layer: 0
+  m_Name: GameSettings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2412020759464468707
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2409407009243105885}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3493046680071944258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2409407009243105885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bff6a401821b63408016493085bb20e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UniqueName: GameSettings
+  Tags: []
+  DefaultLevelConfig:
+    MineCost: 25000
+    MineCount: 9
+    ScorePerSecond: 5
+    FollowerSpawnDelay_Min: 2.5
+    FollowerSpawnDelay_Max: 3.5
+    FollowerTrashRatio: 0.22
+    Gold_Min: 0
+    Gold_Max: 1000000
+    Gold_RequiredMineCount: 9
+    Treasure_GoldBonus: 10000
+    Treasure_RagePenalty: 4
+    Treasure_TrashRagePenalty: 6
+    Dragon_DesireIntervalMin: 9
+    Dragon_DesireIntervalMax: 13
+  DefaultTreasures:
+  - Name: Gem_Green
+    Value: 1
+    Sprite: {fileID: 21300000, guid: ab68fdfd843d5604fb6a5c54eb25aab4, type: 3}
+    UISprite: {fileID: 21300000, guid: a04c0ac1c9540f6429f06e9183eac6ad, type: 3}
+    IsTrash: 0
+  - Name: Gem_Red
+    Value: 2
+    Sprite: {fileID: 21300000, guid: b6204318ed7da384cb9c1bb19c1dd278, type: 3}
+    UISprite: {fileID: 21300000, guid: c7fc170d5339d624cbe656885e12bff7, type: 3}
+    IsTrash: 0
+  - Name: Gem_Purple
+    Value: 3
+    Sprite: {fileID: 21300000, guid: ac55dc12286815649982c1f9805a65a1, type: 3}
+    UISprite: {fileID: 21300000, guid: e535c58181bd97a4e9489f8b5eead3da, type: 3}
+    IsTrash: 0
+  - Name: Metal_Gold
+    Value: 4
+    Sprite: {fileID: 21300000, guid: ad5b013d6889ae74ebd6a9f3e412db50, type: 3}
+    UISprite: {fileID: 21300000, guid: ed4836beeb2fbbe43931307c20fe1afa, type: 3}
+    IsTrash: 0
+  - Name: Metal_Silver
+    Value: 5
+    Sprite: {fileID: 21300000, guid: c1e95bbd372217e49bf112298875be27, type: 3}
+    UISprite: {fileID: 21300000, guid: 56847858d9091394e8cf414c95b6fa78, type: 3}
+    IsTrash: 0
+  - Name: Trash_Poop
+    Value: 6
+    Sprite: {fileID: 21300000, guid: 820e633a3003409419a6f03394ae1372, type: 3}
+    UISprite: {fileID: 0}
+    IsTrash: 1
+  - Name: Trash_Worm
+    Value: 7
+    Sprite: {fileID: 21300000, guid: 62e6eada92363694fa0913b195ba6877, type: 3}
+    UISprite: {fileID: 0}
+    IsTrash: 1
+  - Name: Trash_Cockroach
+    Value: 8
+    Sprite: {fileID: 21300000, guid: 34c0219e89c16c7479b5a8b314c52b65, type: 3}
+    UISprite: {fileID: 0}
+    IsTrash: 1
+  Dragon_MaxRage: 100
+  Dragon_MaxPanic: 100
+  MinRoadDistanceForMines: 0.6
+  Item_FastScore_FollowerSpeedMultiplier: 1.5
+  Item_FastScore_ScoreMultiplier: 5
+  Item_FastScore_Duration: 15
+  Item_DoubleTreasure_Duration: 30
+  MinePrefab: {fileID: 3811666851388335470, guid: 59ef01a38bcaabc429f500f77960fe92,
+    type: 3}
+  FollowerPrefab: {fileID: 1817265141133969158, guid: 772e17f4544c2054e8505042e0a5dac1,
+    type: 3}
+  FollowerDoublePrefab: {fileID: 1817265141133969158, guid: a3255d29047c3914983e25893a6bf4c1,
+    type: 3}

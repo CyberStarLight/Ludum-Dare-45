@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class MineController : MonoBehaviour
 {
-    [SerializeField] float spawnRate;
+    public float MinSpawnDelay;
+    public float MaxSpawnDelay;
     [SerializeField] float TrashRate;
 
     public TreasureInfo ore;
@@ -17,7 +18,8 @@ public class MineController : MonoBehaviour
     private GameBoard board;
 
     private bool isTargeted;
-    
+    private float nextSpawnTime = 0f;
+
     void Start()
     {
         if (board == null)
@@ -41,43 +43,32 @@ public class MineController : MonoBehaviour
         {
             treasureSprite.sprite = ore.UISprite;
         }
-        
-        StartCoroutine(spawnCycle());
+
+        nextSpawnTime = Time.time + Random.Range(MinSpawnDelay, MaxSpawnDelay);
     }
-    IEnumerator spawnCycle()
+
+    private void FixedUpdate()
     {
-        while (true)
+        if(!board.HasGameEnded && Time.time >= nextSpawnTime)
         {
-            if (board == null)
-                board = FindObjectOfType<GameBoard>();
-
-            while (board.HasGameEnded)
-            {
-                yield return null;
-            }
-
-            if (Random.Range(0f, 1f) <= TrashRate)
-            {
-                //Spawn trash
-                board.spawnFollower(spawnPoint.position, board.GetRandomTrash());
-            }
-            else
-            {
-                //Spawn treasure
-                if(isRandom)
-                {
-                    board.spawnFollower(spawnPoint.position, board.GetRandomTreasure());
-                }
-                else
-                {
-                    board.spawnFollower(spawnPoint.position, ore);
-                }
-            }
-
-            yield return new WaitForSeconds(60 / spawnRate);
+            SpawnFollower();
+            nextSpawnTime = Time.time + Random.Range(MinSpawnDelay, MaxSpawnDelay);
         }
     }
 
+    private void SpawnFollower()
+    {
+        if (Time.time < board.NoSpawnBeforeTime)
+            return;
+
+        TreasureInfo treasure = Random.Range(0f, 1f) <= TrashRate ? board.GetRandomTrash() : board.GetRandomTreasure();
+
+        if (isRandom)
+            board.spawnFollower(spawnPoint.position, treasure);
+        else
+            board.spawnFollower(spawnPoint.position, ore);
+    }
+    
     public void OnTargeted()
     {
         //show death mark

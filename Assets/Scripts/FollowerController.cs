@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 public class FollowerController : RoadWalker
 {
+    public bool IsTargeted { get; private set; }
+    public bool IsSpeciaKill { get; private set; }
+
     public float PanicAmountOnDeath = 2.5f;
     public float MaxPanicSpeedBonus = 2f;
 
@@ -13,57 +16,60 @@ public class FollowerController : RoadWalker
 
     //private Treasure treasureHeld;
     public SpriteRenderer TreasureRenderer;
+    public SpriteRenderer TreasureRenderer2;
     [SerializeField] SpriteRenderer deathMarkRenderer;
     [SerializeField] Collider2D MainCollider;
+    [SerializeField] Collider2D TouchScreenCollider;
     private static Dictionary<Treasure, Sprite> spritesByTresureTypes;
     [SerializeField] Sprite[] tresureSprites;
-    //private void initSpritesByTresureTypes()
-    //{
-    //    spritesByTresureTypes = new Dictionary<Treasure, Sprite>();
-    //    for (int i = 0; i < tresureSprites.Length; i++)
-    //    {
-    //        spritesByTresureTypes.Add((Treasure)i + 1, tresureSprites[i]);
-    //    }
-    //}
+
     public TreasureInfo TreasureHeld;
-    //{
-    //    get => treasureHeld;
-    //    set
-    //    {
-    //        if (spritesByTresureTypes == null) initSpritesByTresureTypes();
-    //        treasureHeld = value;
-    //        treasureSprite.sprite = spritesByTresureTypes[value];
-    //    }
-    //}
+
     private void Start()
     {
         Master = FindObjectOfType<Dragon>();
     }
-    public void Panic()
+    public void OnKilled()
     {
-        Master.Panic += PanicAmountOnDeath;
+        if (IsSpeciaKill)
+            return;
+
+        Master.TreasureDestroyed(TreasureHeld);
         Master.PlayMoleDeath();
     }
     
-    public void OnTargeted()
+    public void OnTargeted(bool isSpecialKill = false)
     {
+        IsTargeted = true;
+        IsSpeciaKill = isSpecialKill;
+
         //show death mark
         deathMarkRenderer.gameObject.SetActive(true);
 
         //push sprites to the back
         MainRenderer.sortingOrder -= 10;
         TreasureRenderer.sortingOrder -= 10;
+        if(TreasureRenderer2 != null)
+            TreasureRenderer2.sortingOrder -= 10;
         deathMarkRenderer.sortingOrder -= 10;
 
         //disable collider
         MainCollider.enabled = false;
+        TouchScreenCollider.enabled = false;
+    }
+
+    public void SetTouchScreenCollider()
+    {
+        MainCollider.enabled = false;
+        TouchScreenCollider.enabled = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Dragon")
         {
-            Master.GiveTreasure(TreasureHeld);
+            bool isDoubleTreasure = TreasureRenderer2 != null;
+            Master.GiveTreasure(TreasureHeld, isDoubleTreasure);
             Destroy(gameObject);
         }
     }

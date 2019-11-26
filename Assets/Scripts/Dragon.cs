@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -8,56 +9,35 @@ using Random = UnityEngine.Random;
 
 public class Dragon : MonoBehaviour
 {
-    [Header("Testing")]
-    public int StartingGold;
-
-    private int _goldCoins;
-    public int GoldCoins
-    {
-        get { return Mathf.Clamp(_goldCoins, 0, Mathf.Min(GoldCoinCap, MaxGoldCoins)); }
-        set { _goldCoins = Mathf.Clamp(value, 0, Mathf.Min(GoldCoinCap, MaxGoldCoins)); }
-    }
-
-    [Header("Config")]
-    public int MaxGoldCoins;
-    public int GoldCoinCap { get { return Mathf.Clamp((MainGameBoard.MineCount+1) * MainGameBoard.MineCapBonus, 0, MaxGoldCoins); } }
-    public float GoldRatio { get { return (float)GoldCoins / (float)MaxGoldCoins; } }
-
     private float _rage;
     public float Rage
     {
         get { return _rage; }
-        set { _rage = Mathf.Clamp(value, 0f, MaxRage); }
+        set { _rage = Mathf.Clamp(value, 0f, GameSettings.Instance.Dragon_MaxRage); }
     }
-    public float MaxRage;
-    public float RageRatio { get { return Rage / MaxRage; } }
+    public float RageRatio { get { return Rage / GameSettings.Instance.Dragon_MaxRage; } }
 
+    public float PanicEditorDisplay; //for testing
     private float _panic;
     public float Panic
     {
         get { return _panic; }
-        set { _panic = Mathf.Clamp(value, MinPanic, MaxPanic); }
+        set { _panic = Mathf.Clamp(value, MinPanic, GameSettings.Instance.Dragon_MaxPanic); }
     }
-    public float MaxPanic;
-    public float MinPanic { get { return MaxPanic * (RageRatio * 0.5f); } }
-    public float PanicRatio { get { return Panic / MaxPanic; } }
+    public float MinPanic { get { return GameSettings.Instance.Dragon_MaxPanic * (RageRatio * 0.5f); } }
+    public float PanicRatio { get { return Panic / GameSettings.Instance.Dragon_MaxPanic; } }
 
-    public float DesireIntervalMin = 1f;
-    public float DesireIntervalMax = 5f;
-
-    public float PanicDownPerSec = 0.5f;
-    public int GoldCoinsPerTreasue = 1000;
-    public float RagePerUnwantedTreasue = 10;
-    public float RagePerTrash = 20;
     public TreasureInfo DesiredTreasure1;
     public TreasureInfo DesiredTreasure2;
     public TreasureInfo DesiredTreasure3;
+
+    [HideInInspector]
+    public TreasureInfo UndesiredInThoughtBubble;
 
     [Header("References")]
     public GameBoard MainGameBoard;
     public Transform FireballOrigin;
     public Animator BubbleAnimator;
-    public CircleCollider2D FireballArea;
     public Fireball FireballPrefab;
     public GameObject[] GoldPiles;
     public Animator DragonAnimator;
@@ -69,16 +49,7 @@ public class Dragon : MonoBehaviour
     public SpriteRenderer ThoughtBubbleTreasure;
     public ThoughtBubble ThoughtBubbleAnimation;
     public Animator DragonHuff;
-
-
-    [Header("Audio")]
-    public AudioSource SoundEffectsSource;
-    public AudioClip PositiveTreasureSound;
-    public AudioClip NegativeTreasureSound;
-    public AudioClip NegativeBuildSound;
-    public AudioClip FireballSound;
-    public AudioClip FireballHitSound;
-    public AudioClip MoleDeathSound;
+    public Transform[] ClearScreenDummyTargets;
 
     //State variables
     private float nextDesireChangeTime = 0f;
@@ -88,7 +59,6 @@ public class Dragon : MonoBehaviour
 
     private void Start()
     {
-        GoldCoins = StartingGold;
         DesiredTreasure1 = DesiredTreasure2 = DesiredTreasure3 = null;
     }
 
@@ -97,33 +67,41 @@ public class Dragon : MonoBehaviour
         if (MainGameBoard.HasGameEnded)
             return;
 
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            ClearScreenAttack();
+        }
+
+        bool hasClick;
+        if(MainGameBoard.IsTouchScreen())
+            hasClick = MainGameBoard.CurrentPointerPosition.HasValue;
+        else
+            hasClick = Input.GetKeyDown(KeyCode.Mouse0);
+
         //Shoot fire ball when right clicking on followers within range
         if (
-            Input.GetKeyDown(KeyCode.Mouse0) && 
+            hasClick && 
             !MainGameBoard.IsBuildingAMine &&
-            !fireballInProgress &&
-            !EventSystem.current.IsPointerOverGameObject()
+            !fireballInProgress
             )
         {
-            var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            //var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            //var mousePos = MainGameBoard.CurrentPointerPosition;
+            var pointerPosition = MainGameBoard.CurrentPointerPosition;
 
-            if(FireballArea.OverlapPoint(mousePos))
+            if (pointerPosition.HasValue)
             {
-                RaycastHit2D hit = Physics2D.Raycast(new Vector2(mousePos.x, mousePos.y), Vector2.zero, 0f, LayerMask.GetMask("Follower", "Mine"));
+                RaycastHit2D hit = Physics2D.Raycast(new Vector2(pointerPosition.Value.x, pointerPosition.Value.y), Vector2.zero, 0f, LayerMask.GetMask("Follower"));
                 
                 if (hit)
                 {
-
                     var target = hit.transform;
 
                     if(target.gameObject.tag == "Follower")
                         target.GetComponent<FollowerController>().OnTargeted();
-                    else if(target.gameObject.tag == "Mine")
-                        target.GetComponent<MineController>().OnTargeted();
                     
-
                     //Flip dragon in the right direction
-                    transform.localScale = mousePos.x < transform.position.x ? new Vector3(-1f, 1f, 1f) : new Vector3(1f, 1f, 1f);
+                    transform.localScale = pointerPosition.Value.x < transform.position.x ? new Vector3(-1f, 1f, 1f) : new Vector3(1f, 1f, 1f);
 
                     _fireballTarget = target;
                     fireballInProgress = true;
@@ -134,7 +112,7 @@ public class Dragon : MonoBehaviour
         }
 
         //Update gold piles
-        int pileCount = Mathf.FloorToInt(GoldRatio * 10f);
+        int pileCount = Mathf.FloorToInt(MainGameBoard.GoldRatio * 10f);
         for (int i = 0; i < 10; i++)
         {
             GoldPiles[i].SetActive(i < pileCount);
@@ -144,11 +122,17 @@ public class Dragon : MonoBehaviour
         if(Time.time >= nextDesireChangeTime && !thoughtInProgress)
         {
             GenerateNewDesire();
-            nextDesireChangeTime = Time.time + Random.Range(DesireIntervalMin, DesireIntervalMax);
+            nextDesireChangeTime = Time.time + Random.Range(GameSettings.LevelConfig.Dragon_DesireIntervalMin, GameSettings.LevelConfig.Dragon_DesireIntervalMax);
         }
 
         //Update panic
-        Panic -= PanicDownPerSec * Time.deltaTime;
+        if(Panic < MainGameBoard.CapRatio * GameSettings.Instance.Dragon_MaxPanic)
+        {
+            Panic += 0.4f * Time.deltaTime;
+        }
+        //Panic = CapRatio * MaxPanic;
+        PanicEditorDisplay = Panic;
+        //Panic -= PanicDownPerSec * Time.deltaTime;
 
         //Check victory / defeat
         if (RageRatio > 0.999f)
@@ -156,7 +140,7 @@ public class Dragon : MonoBehaviour
             //Game over
             MainGameBoard.GameOver();
         }
-        else if (GoldRatio > 0.999f)
+        else if (MainGameBoard.GoldRatio > 0.999f)
         {
             //Victory
             MainGameBoard.Victory();
@@ -164,26 +148,60 @@ public class Dragon : MonoBehaviour
 
     }
 
-    public void GiveTreasure(TreasureInfo t)
+    public void GiveTreasure(TreasureInfo t, bool isDouble)
     {
-        if(
-            !t.IsTrash &&
-            (
-            (DesiredTreasure1 != null && DesiredTreasure1.Value == t.Value) ||
-            (DesiredTreasure2 != null && DesiredTreasure2.Value == t.Value) || 
-            (DesiredTreasure3 != null && DesiredTreasure3.Value == t.Value)
-            )
-            )
+        int desireLevel = GetDesireLevel(t);
+
+        if (!t.IsTrash && desireLevel > 0)
         {
-            GoldCoins += GoldCoinsPerTreasue;
+            MainGameBoard.GoldCoins += GameSettings.LevelConfig.Treasure_GoldBonus * desireLevel * (isDouble ? 2 : 1);
             PlayPositiveTreasure();
+            MainGameBoard.TreasureCollected();
         }
         else
         {
-            Rage += (t.IsTrash ? RagePerTrash : RagePerUnwantedTreasue);
+            Rage += (t.IsTrash ? GameSettings.LevelConfig.Treasure_TrashRagePenalty * (isDouble ? 2 : 1) : GameSettings.LevelConfig.Treasure_RagePenalty * (isDouble ? 2 : 1));
             PlayNegativeTreasure();
             DragonHuff.SetTrigger("Show");
+
+            if(t.IsTrash)
+                MainGameBoard.CollectedTrash();
+            else
+                MainGameBoard.WrongTreasureCollected();
         }
+    }
+
+    public void TreasureDestroyed(TreasureInfo t)
+    {
+        int desireLevel = GetDesireLevel(t);
+
+        if (!t.IsTrash && desireLevel > 0 && t != UndesiredInThoughtBubble)
+        {
+            PlayNegativeTreasure();
+            Rage += GameSettings.LevelConfig.Treasure_RagePenalty / 2f;
+            MainGameBoard.WrongTreasureDestroyed();
+        }
+    }
+    
+    public void DesireChanged()
+    {
+        PlayDesireChangedSound();
+    }
+
+    public int GetDesireLevel(TreasureInfo t)
+    {
+        int desire = 0;
+
+        if (DesiredTreasure1 != null && DesiredTreasure1.Value == t.Value)
+            desire++;
+
+        if (DesiredTreasure2 != null && DesiredTreasure2.Value == t.Value)
+            desire++;
+
+        if (DesiredTreasure3 != null && DesiredTreasure3.Value == t.Value)
+            desire++;
+
+        return desire;
     }
 
     public void GenerateNewDesire()
@@ -237,13 +255,39 @@ public class Dragon : MonoBehaviour
             DesiredTreasure1 = DesiredTreasure2;
             DesiredTreasure2 = DesiredTreasure3;
             DesiredTreasure3 = oldDesire;
-
-            //BubbleAnimator.SetTrigger("Spawn");
-            //_ThoughtBubbleCorutine = ThoughtBubbleCorutine(wantedTresure, unwantedTreasure);
-            //StartCoroutine(_ThoughtBubbleCorutine);
         }
     }
     
+    public void ClearScreenAttack()
+    {
+        if (MainGameBoard.ExistingFollowers.Count(x => x != null) == 0)
+            return;
+
+        PlayFireballSound();
+
+        foreach (var follower in MainGameBoard.ExistingFollowers.Where(x => !x.IsTargeted))
+        {
+            var newFireball = Instantiate(FireballPrefab, FireballOrigin.position, Quaternion.identity, null);
+            newFireball.Target = follower.transform;
+            newFireball.LastKnownPosition = follower.transform.position;
+            follower.OnTargeted(true);
+            newFireball.SetInvisible();
+            newFireball.Speed *= 0.85f;
+        }
+
+        foreach (var target in ClearScreenDummyTargets)
+        {
+            var newFireball = Instantiate(FireballPrefab, FireballOrigin.position, Quaternion.identity, null);
+            newFireball.Target = null;
+            newFireball.LastKnownPosition = target.position;
+            newFireball.transform.localScale *= 1.5f;
+            newFireball.Speed *= 0.85f;
+        }
+
+        MainGameBoard.NoClearBeforeTime = MainGameBoard.NoSpawnBeforeTime = Time.time + 3f;
+    }
+
+    //Corutine
     IEnumerator _ThoughtBubbleCorutine;
     IEnumerator ThoughtBubbleCorutine(TreasureInfo desired, TreasureInfo undesired)
     {
@@ -251,6 +295,8 @@ public class Dragon : MonoBehaviour
 
         if (undesired != null)
         {
+            UndesiredInThoughtBubble = undesired;
+
             //Show a thought buble for unwanted treasure first
             ThoughtBubble.gameObject.SetActive(true);
             ThoughtBubbleXMark.gameObject.SetActive(true);
@@ -279,6 +325,8 @@ public class Dragon : MonoBehaviour
 
             ThoughtBubble.gameObject.SetActive(false);
             ThoughtBubbleXMark.gameObject.SetActive(false);
+
+            UndesiredInThoughtBubble = null;
         }
         
         if(desired != null)
@@ -316,6 +364,9 @@ public class Dragon : MonoBehaviour
     //Animation
     private void actuallyShootFireball()
     {
+        if (_fireballTarget == null)
+            return;
+
         var newFireball = Instantiate(FireballPrefab, FireballOrigin.position, Quaternion.identity, null);
         newFireball.Target = _fireballTarget;
         newFireball.LastKnownPosition = _fireballTarget.position;
@@ -326,6 +377,7 @@ public class Dragon : MonoBehaviour
     private void fireballAnimationFinished()
     {
         fireballInProgress = false;
+        _fireballTarget = null;
     }
 
     public void ThoughtEnded()
@@ -336,27 +388,32 @@ public class Dragon : MonoBehaviour
     //Sounds
     public void PlayPositiveTreasure()
     {
-        SoundEffectsSource.PlayOneShot(PositiveTreasureSound, 3f);
+        AudioManager.Play(Sounds.PositiveTreasure);
     }
 
     public void PlayNegativeTreasure()
     {
-        SoundEffectsSource.PlayOneShot(NegativeTreasureSound, 5f);
+        AudioManager.Play(Sounds.NegativeTreasure);
     }
 
     public void PlayNegativeBuild()
     {
-        SoundEffectsSource.PlayOneShot(NegativeBuildSound, 5f);
+        AudioManager.Play(Sounds.BuildFailed);
     }
 
     public void PlayFireballSound()
     {
-        SoundEffectsSource.PlayOneShot(FireballSound, 1f);
+        AudioManager.Play(Sounds.FireballShoot);
     }
 
     public void PlayFireballHitSound()
     {
-        SoundEffectsSource.PlayOneShot(FireballHitSound, 1f);
+        AudioManager.Play(Sounds.FireballExplode);
+    }
+
+    public void PlayDesireChangedSound()
+    {
+        AudioManager.Play(Sounds.DragonChoiceChange);
     }
 
     public void PlayMoleDeath()
@@ -368,7 +425,6 @@ public class Dragon : MonoBehaviour
 
     private void PlayDelayedMoleDeath()
     {
-        SoundEffectsSource.PlayOneShot(MoleDeathSound, 1f);
+        AudioManager.Play(Sounds.MoleDeath);
     }
-
 }

@@ -4767,6 +4767,7 @@ GameObject:
   - component: {fileID: 4469285462554485088}
   - component: {fileID: -4207057694710852863}
   - component: {fileID: 2044852316835185727}
+  - component: {fileID: 8385811772617288830}
   m_Layer: 9
   m_Name: Follower
   m_TagString: Follower
@@ -4853,7 +4854,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fec0355067ec4940a4b47a9d17b0170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 0.8
+  Speed: 0.9
   MainRenderer: {fileID: 565793531071843580}
   currentRoad: {fileID: 0}
   currentTargetPointIndex: 0
@@ -4865,8 +4866,10 @@ MonoBehaviour:
   Dust: {fileID: 3767855182444866345}
   MainAnimator: {fileID: 2044852316835185727}
   TreasureRenderer: {fileID: 8805424281198790186}
+  TreasureRenderer2: {fileID: 0}
   deathMarkRenderer: {fileID: 8079004070106738290}
-  MainCollider: {fileID: 4469285462554485088}
+  MainCollider: {fileID: 8385811772617288830}
+  TouchScreenCollider: {fileID: 8385811772617288830}
   tresureSprites:
   - {fileID: -7400427947525412896, guid: 9cd0ed98d516b0d4c9d8897562775d0e, type: 3}
   - {fileID: -3326622904683057523, guid: 9cd0ed98d516b0d4c9d8897562775d0e, type: 3}
@@ -4884,13 +4887,13 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5627882543108714615}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0045826435, y: 0.33864504}
+  m_Offset: {x: 0.0058289766, y: 0.354977}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.46458608, y: 0.21447541}
@@ -4901,7 +4904,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.78709793, y: 1.1099846}
+  m_Size: {x: 0.7942016, y: 1.2027521}
   m_EdgeRadius: 0
 --- !u!50 &-4207057694710852863
 Rigidbody2D:
@@ -4943,6 +4946,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!58 &8385811772617288830
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5627882543108714615}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.02098602, y: 0.3}
+  serializedVersion: 2
+  m_Radius: 0.7434639
 --- !u!1 &5903347503311409417
 GameObject:
   m_ObjectHideFlags: 0

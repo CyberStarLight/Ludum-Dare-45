@@ -36,10 +36,16 @@ public class ThoughtBubble : MonoBehaviour
         if(undesired != null && undesired.Value != Treasure.None)
         {
             TreasureImage.sprite = undesired.UISprite;
+            CenterDragon.UndesiredInThoughtBubble = undesired;
         }
         else if (desired != null && desired.Value != Treasure.None)
         {
             TreasureImage.sprite = desired.UISprite;
+        }
+
+        if ((desired == null || desired.Value == Treasure.None) && (undesired == null || undesired.Value == Treasure.None))
+        {
+            print("Error! bubble showing, but no new desire or undesire is set!");
         }
     }
     
@@ -56,6 +62,9 @@ public class ThoughtBubble : MonoBehaviour
             CenterDragon.DesiredTreasure2 = CenterDragon.DesiredTreasure1;
             CenterDragon.DesiredTreasure1 = repeatedDesired;
         }
+
+        CenterDragon.PlayDesireChangedSound();
+        CenterDragon.UndesiredInThoughtBubble = undesired;
     }
 
     public void DesireShown()
@@ -63,6 +72,7 @@ public class ThoughtBubble : MonoBehaviour
         CenterDragon.DesiredTreasure3 = CenterDragon.DesiredTreasure2;
         CenterDragon.DesiredTreasure2 = CenterDragon.DesiredTreasure1;
         CenterDragon.DesiredTreasure1 = desired;
+        CenterDragon.PlayDesireChangedSound();
     }
 
     public void WasHidden()
@@ -72,7 +82,4 @@ public class ThoughtBubble : MonoBehaviour
 
         CenterDragon.ThoughtEnded();
     }
-
-
-    
 }

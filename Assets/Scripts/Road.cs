@@ -36,6 +36,9 @@ public class Road : MonoBehaviour
             //Get distance the walker needs to walk this frame
             float currentSpeed = walker.Speed + (walker.Master.PanicRatio * walker.MaxPanicSpeedBonus);
 
+            currentSpeed *= GameSettings.LevelConfig.FollowerSpeedMultiplier;
+            currentSpeed *= MainGameBoard.SpeedItemMultiplier;
+
             walker.MainAnimator.speed = currentSpeed * 2;
             
             float distanceToTravel = currentSpeed * Time.fixedDeltaTime;
@@ -76,7 +79,6 @@ public class Road : MonoBehaviour
             }
         }
     }
-
 
     public void RegisterWalker(FollowerController walker, int targetPointIndex)
     {

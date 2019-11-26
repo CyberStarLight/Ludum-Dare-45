@@ -9,6 +9,8 @@ public class Fireball : MonoBehaviour
     public float Speed;
 
     public Animator MainAnimator;
+    public SpriteRenderer MainSpriteRenderer;
+
     [HideInInspector]
     public Transform Target;
     [HideInInspector]
@@ -33,6 +35,11 @@ public class Fireball : MonoBehaviour
             Expload();
     }
 
+    public void SetInvisible()
+    {
+        MainAnimator.SetBool("Invisible", true);
+    }
+
     public void Expload()
     {
         MainAnimator.SetTrigger("Explode");
@@ -40,7 +47,7 @@ public class Fireball : MonoBehaviour
         if (Target != null)
         {
             if(Target.gameObject.tag  == "Follower")
-                Target.GetComponent<FollowerController>().Panic();
+                Target.GetComponent<FollowerController>().OnKilled();
 
             Destroy(Target.gameObject);
         }
