@@ -78,6 +78,10 @@ MonoBehaviour:
   Plugins: []
   MasterBanks:
   - Master
-  Banks: []
+  Banks:
+  - Gameplay_SFX
+  - Level1
+  - Menu
+  - UI_SFX
   BanksToLoad: []
   LiveUpdatePort: 9264
