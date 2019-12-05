@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioManager : SoundManager<AudioManager, Sounds, Music>
+public class FMODManager : BaseFMODManager<FMODManager, Sounds, Music>
 {
     public override void Awake()
     {
         base.Awake();
     }
 
-    protected override AudioManager GetSingletonInstance()
+    protected override FMODManager GetSingletonInstance()
     {
         return this;
     }
@@ -37,27 +37,27 @@ public class AudioManager : SoundManager<AudioManager, Sounds, Music>
     }
 }
 
-//public enum Sounds
-//{
-//    DragonChoiceChange,
-//    MoleDeath,
-//    FireballShoot,
-//    FireballExplode,
-//    LoseFanfare,
-//    WinFanfare,
-//    PositiveTreasure,
-//    BuildFailed,
-//    NegativeTreasure,
-//    MinePlaced,
+public enum Sounds
+{
+    DragonChoiceChange,
+    MoleDeath,
+    FireballShoot,
+    FireballExplode,
+    LoseFanfare,
+    WinFanfare,
+    PositiveTreasure,
+    BuildFailed,
+    NegativeTreasure,
+    MinePlaced,
 
-//    //UI
-//    ButtonClick,
-//}
+    //UI
+    ButtonClick,
+}
 
-//public enum Music
-//{
-//    MenuMusic,
-//    GameMusicIntro,
-//    GameMusic,
-//    GameMusicFast,
-//}
+public enum Music
+{
+    MenuMusic,
+    GameMusicIntro,
+    GameMusic,
+    GameMusicFast,
+}

@@ -7,6 +7,7 @@ public class LevelSelectScreen : MonoBehaviour
 {
     public void LoadMainMenu()
     {
+        FMODManager.Play(Sounds.ButtonClick);
         SceneManager.LoadScene("MainMenu");
     }
 }

@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: event:/Menu/menu_music
   guid: 70aa8759cd57c2488c126a50ed26aec9
   Banks:
-  - {fileID: -807064400449887663}
+  - {fileID: -7363229465884020017}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -41,6 +41,41 @@ MonoBehaviour:
   LoadResult: 0
   FileSizes: []
   Exists: 0
+--- !u!114 &-7509902697689357255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/panic_Music1/speed
+  m_EditorClassIdentifier: 
+  Name: speed
+  Min: 0
+  Max: 3
+  Default: 0
+  Exists: 1
+--- !u!114 &-7363229465884020017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Menu.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/Audio/FMOD/Draconomics/Build/Desktop/Menu.bank
+  SubDir: 
+  lastModified: 637111389755603682
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
 --- !u!114 &-6626812884778953813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,8 +126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Gameplay_SFX/dragon_choice_change
   guid: f082506356277945bd9e22b3a9b7fced
-  Banks:
-  - {fileID: -1834663935490476688}
+  Banks: []
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -115,7 +149,7 @@ MonoBehaviour:
   Path: event:/Gameplay_SFX/fireball_explosion
   guid: 3bce732453ce614d8f6f96646e67d222
   Banks:
-  - {fileID: -1834663935490476688}
+  - {fileID: 4401681061845535999}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -140,7 +174,7 @@ MonoBehaviour:
   lastModified: 637108935198411640
   LoadResult: 0
   FileSizes: []
-  Exists: 1
+  Exists: 0
 --- !u!114 &-807064400449887663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,7 +192,7 @@ MonoBehaviour:
   lastModified: 637108935199211960
   LoadResult: 0
   FileSizes: []
-  Exists: 1
+  Exists: 0
 --- !u!114 &-670594806071292955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,7 +210,30 @@ MonoBehaviour:
   lastModified: 637108935197471863
   LoadResult: 0
   FileSizes: []
-  Exists: 1
+  Exists: 0
+--- !u!114 &-386441753806882861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UI_SFX/dragon_choice_change
+  m_EditorClassIdentifier: 
+  Path: event:/UI_SFX/dragon_choice_change
+  guid: f082506356277945bd9e22b3a9b7fced
+  Banks:
+  - {fileID: 2155048640283906508}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 708
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,11 +248,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EditorBanks:
   - {fileID: 7515948707924227349}
-  - {fileID: -1834663935490476688}
-  - {fileID: 7776340769070078631}
-  - {fileID: -670594806071292955}
-  - {fileID: -807064400449887663}
-  - {fileID: 3254388896525877908}
+  - {fileID: 4401681061845535999}
+  - {fileID: 1869078506006453461}
+  - {fileID: 1108880117539670438}
+  - {fileID: -7363229465884020017}
+  - {fileID: 2155048640283906508}
   EditorEvents:
   - {fileID: -1897139709156973011}
   - {fileID: 5021783616315990884}
@@ -203,7 +260,6 @@ MonoBehaviour:
   - {fileID: 2374196918167102544}
   - {fileID: 4842721382027600279}
   - {fileID: 7789480305747823018}
-  - {fileID: -2190827690706263715}
   - {fileID: 8876668270715002936}
   - {fileID: 9127555494249405821}
   - {fileID: -9191804116156249699}
@@ -212,12 +268,14 @@ MonoBehaviour:
   - {fileID: 5172619830164494779}
   - {fileID: 80575470057980169}
   - {fileID: 7134825979579734986}
+  - {fileID: 8872740558306395757}
+  - {fileID: -386441753806882861}
   EditorParameters: []
   MasterBanks:
-  - {fileID: -670594806071292955}
+  - {fileID: 1108880117539670438}
   StringsBanks:
   - {fileID: 7515948707924227349}
-  stringsBankWriteTime: 637108935197521649
+  stringsBankWriteTime: 637111389755563703
   cacheVersion: 3
 --- !u!114 &80575470057980169
 MonoBehaviour:
@@ -234,7 +292,7 @@ MonoBehaviour:
   Path: event:/UI_SFX/place_mine
   guid: 9d2870a3dd2cd64290fba546c2ba33d5
   Banks:
-  - {fileID: 3254388896525877908}
+  - {fileID: 2155048640283906508}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -260,6 +318,24 @@ MonoBehaviour:
   LoadResult: 0
   FileSizes: []
   Exists: 0
+--- !u!114 &1108880117539670438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/Audio/FMOD/Draconomics/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637103544798740742
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
 --- !u!114 &1797294908435831669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,6 +354,42 @@ MonoBehaviour:
   LoadResult: 0
   FileSizes: []
   Exists: 0
+--- !u!114 &1869078506006453461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Level1.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/Audio/FMOD/Draconomics/Build/Desktop/Level1.bank
+  SubDir: 
+  lastModified: 637111389755543704
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
+--- !u!114 &2155048640283906508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/UI_SFX.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/Audio/FMOD/Draconomics/Build/Desktop/UI_SFX.bank
+  SubDir: 
+  lastModified: 637111389755613689
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
 --- !u!114 &2374196918167102544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293,7 +405,7 @@ MonoBehaviour:
   Path: event:/Gameplay_SFX/mole_death
   guid: 8e2840ef1cb5d8499518e748ee631e8f
   Banks:
-  - {fileID: -1834663935490476688}
+  - {fileID: 4401681061845535999}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -340,7 +452,7 @@ MonoBehaviour:
   lastModified: 637108935197941636
   LoadResult: 0
   FileSizes: []
-  Exists: 1
+  Exists: 0
 --- !u!114 &4093383566571782520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -356,7 +468,7 @@ MonoBehaviour:
   Path: event:/UI_SFX/negative_build_ding
   guid: 145c9918a605414fb35be94119171f35
   Banks:
-  - {fileID: 3254388896525877908}
+  - {fileID: 2155048640283906508}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -364,6 +476,24 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 2730
+--- !u!114 &4401681061845535999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Gameplay_SFX.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/Audio/FMOD/Draconomics/Build/Desktop/Gameplay_SFX.bank
+  SubDir: 
+  lastModified: 637111389755473725
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
 --- !u!114 &4842721382027600279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,7 +509,7 @@ MonoBehaviour:
   Path: event:/Gameplay_SFX/big_roar
   guid: 9ef4a45c07b4df44b50ff500c9467031
   Banks:
-  - {fileID: -1834663935490476688}
+  - {fileID: 4401681061845535999}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -420,7 +550,7 @@ MonoBehaviour:
   Path: event:/Gameplay_SFX/fireball_launch
   guid: 48a92ba7650c334786beecae94e8c7d9
   Banks:
-  - {fileID: -1834663935490476688}
+  - {fileID: 4401681061845535999}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -443,7 +573,7 @@ MonoBehaviour:
   Path: event:/UI_SFX/negative_score_ding
   guid: 856e17a7eb6d0b4e86b8a036e38d93e4
   Banks:
-  - {fileID: 3254388896525877908}
+  - {fileID: 2155048640283906508}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -466,7 +596,7 @@ MonoBehaviour:
   Path: event:/UI_SFX/button_click
   guid: 2fcf0fb0040c2948bddf59c1fc28181c
   Banks:
-  - {fileID: 3254388896525877908}
+  - {fileID: 2155048640283906508}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -507,7 +637,7 @@ MonoBehaviour:
   Path: event:/UI_SFX/positive_score_ding
   guid: ed06a7437d4acf4ea12955cc015eff21
   Banks:
-  - {fileID: 3254388896525877908}
+  - {fileID: 2155048640283906508}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -547,11 +677,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: Assets/Audio/FMOD/Draconomics/Build/Desktop/Master.strings.bank
   SubDir: 
-  lastModified: 637108935197521649
+  lastModified: 637111389755563703
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 1628
+    Value: 1730
   Exists: 1
 --- !u!114 &7776340769070078631
 MonoBehaviour:
@@ -570,7 +700,7 @@ MonoBehaviour:
   lastModified: 637108935198831643
   LoadResult: 0
   FileSizes: []
-  Exists: 1
+  Exists: 0
 --- !u!114 &7789480305747823018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -586,7 +716,7 @@ MonoBehaviour:
   Path: event:/Gameplay_SFX/win_fanfare
   guid: a59df27d2ba873489951a5d2f28d000d
   Banks:
-  - {fileID: -1834663935490476688}
+  - {fileID: 4401681061845535999}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -609,7 +739,7 @@ MonoBehaviour:
   Path: event:/Gameplay_SFX/lose_fanfare
   guid: 6ee4c4c2e23082479c72e08d75b01ea3
   Banks:
-  - {fileID: -1834663935490476688}
+  - {fileID: 4401681061845535999}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -639,6 +769,30 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 32000
+--- !u!114 &8872740558306395757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Level1/panic_Music1
+  m_EditorClassIdentifier: 
+  Path: event:/Level1/panic_Music1
+  guid: 8bc336617b73a942a3020e5cdb8104e5
+  Banks:
+  - {fileID: 1869078506006453461}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -7509902697689357255}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 20571
 --- !u!114 &8876668270715002936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -654,7 +808,7 @@ MonoBehaviour:
   Path: event:/Gameplay_SFX/explosive_mole_death
   guid: f08e5d07c1862b42b5f62a6a47ed20f0
   Banks:
-  - {fileID: -1834663935490476688}
+  - {fileID: 4401681061845535999}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -677,7 +831,7 @@ MonoBehaviour:
   Path: event:/Level1/Music1
   guid: e8034c764239b84e92665cfce6141e26
   Banks:
-  - {fileID: 7776340769070078631}
+  - {fileID: 1869078506006453461}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0

@@ -145,8 +145,8 @@ public class GameUI : MonoBehaviour
             PauseOverlay.SetActive(false);
             PauseText.SetActive(false);
             MenuPanel.SetActive(false);
-            
-            AudioManager.Play(PreviousMusic, PreviousMusicPos);
+
+            FMODManager.Play(PreviousMusic, PreviousMusicPos);
             
             isMenuOpened = false;
             isGamePaused = false;
@@ -161,10 +161,10 @@ public class GameUI : MonoBehaviour
 
             if (!isGamePaused)
             {
-                PreviousMusic = AudioManager.CurrentMusic;
-                PreviousMusicPos = AudioManager.CurrentMusicTime;
+                PreviousMusic = FMODManager.CurrentMusic;
+                PreviousMusicPos = FMODManager.CurrentMusicTime;
 
-                AudioManager.Play(Music.MenuMusic);
+                FMODManager.Play(Music.MenuMusic);
             }
 
             isGamePaused = false;
@@ -187,7 +187,7 @@ public class GameUI : MonoBehaviour
             PauseOverlay.SetActive(false);
             PauseText.SetActive(false);
 
-            AudioManager.Play(PreviousMusic, PreviousMusicPos);
+            FMODManager.Play(PreviousMusic, PreviousMusicPos);
             
             isGamePaused = false;
         }
@@ -198,10 +198,10 @@ public class GameUI : MonoBehaviour
             PauseOverlay.SetActive(true);
             PauseText.SetActive(true);
 
-            PreviousMusic = AudioManager.CurrentMusic;
-            PreviousMusicPos = AudioManager.CurrentMusicTime;
-            
-            AudioManager.Play(Music.MenuMusic);
+            PreviousMusic = FMODManager.CurrentMusic;
+            PreviousMusicPos = FMODManager.CurrentMusicTime;
+
+            FMODManager.Play(Music.MenuMusic);
 
             isGamePaused = true;
         }

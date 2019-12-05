@@ -1,0 +1,94 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7521565335081903806
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7521565335081903805}
+  - component: {fileID: 8206306517115059142}
+  m_Layer: 0
+  m_Name: FMODManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7521565335081903805
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7521565335081903806}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8206306517115059142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7521565335081903806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6764e5f5c8d305c4aa3684792abd1e92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UniqueName: FMODManager
+  Tags: []
+  SoundsList:
+  - Name: DragonChoiceChange
+    EventPath: event:/UI_SFX/dragon_choice_change
+    volume: 1
+  - Name: MoleDeath
+    EventPath: event:/Gameplay_SFX/mole_death
+    volume: 1
+  - Name: FireballShoot
+    EventPath: event:/Gameplay_SFX/fireball_launch
+    volume: 1
+  - Name: FireballExplode
+    EventPath: event:/Gameplay_SFX/fireball_explosion
+    volume: 1
+  - Name: LoseFanfare
+    EventPath: event:/Gameplay_SFX/lose_fanfare
+    volume: 1
+  - Name: WinFanfare
+    EventPath: event:/Gameplay_SFX/win_fanfare
+    volume: 1
+  - Name: PositiveTreasure
+    EventPath: event:/UI_SFX/positive_score_ding
+    volume: 1
+  - Name: BuildFailed
+    EventPath: event:/UI_SFX/negative_build_ding
+    volume: 1
+  - Name: NegativeTreasure
+    EventPath: event:/UI_SFX/negative_score_ding
+    volume: 1
+  - Name: MinePlaced
+    EventPath: event:/UI_SFX/place_mine
+    volume: 1
+  - Name: ButtonClick
+    EventPath: event:/UI_SFX/button_click
+    volume: 1
+  MusicList:
+  - Name: MenuMusic
+    EventPath: event:/Menu/menu_music
+    volume: 1
+  - Name: GameMusicIntro
+    EventPath: 
+    volume: 1
+  - Name: GameMusic
+    EventPath: event:/Level1/Music1
+    volume: 1
+  - Name: GameMusicFast
+    EventPath: event:/Level1/panic_Music1
+    volume: 1

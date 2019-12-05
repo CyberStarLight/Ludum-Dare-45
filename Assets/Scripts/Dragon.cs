@@ -37,6 +37,7 @@ public class Dragon : MonoBehaviour
     [Header("References")]
     public GameBoard MainGameBoard;
     public Transform FireballOrigin;
+    public Transform ClearScreenOrigin;
     public Animator BubbleAnimator;
     public Fireball FireballPrefab;
     public GameObject[] GoldPiles;
@@ -275,11 +276,16 @@ public class Dragon : MonoBehaviour
             newFireball.Speed *= 0.85f;
         }
 
-        foreach (var target in ClearScreenDummyTargets)
+        int numberOfObjects = 16;
+        float angleOffset = 360f / numberOfObjects;
+        float radius = 10;
+        for (int i = 0; i < numberOfObjects; i++)
         {
-            var newFireball = Instantiate(FireballPrefab, FireballOrigin.position, Quaternion.identity, null);
+            Vector3 pos = transform.position + (Quaternion.AngleAxis(i * angleOffset, Vector3.forward) * (Vector3.right * radius));
+            var newFireball = Instantiate(FireballPrefab, ClearScreenOrigin.position, Quaternion.identity, null);
+            //newFireball.MainSpriteRenderer.sortingOrder = 32767;
             newFireball.Target = null;
-            newFireball.LastKnownPosition = target.position;
+            newFireball.LastKnownPosition = pos;
             newFireball.transform.localScale *= 1.5f;
             newFireball.Speed *= 0.85f;
         }
@@ -388,32 +394,32 @@ public class Dragon : MonoBehaviour
     //Sounds
     public void PlayPositiveTreasure()
     {
-        AudioManager.Play(Sounds.PositiveTreasure);
+        FMODManager.Play(Sounds.PositiveTreasure);
     }
 
     public void PlayNegativeTreasure()
     {
-        AudioManager.Play(Sounds.NegativeTreasure);
+        FMODManager.Play(Sounds.NegativeTreasure);
     }
 
     public void PlayNegativeBuild()
     {
-        AudioManager.Play(Sounds.BuildFailed);
+        FMODManager.Play(Sounds.BuildFailed);
     }
 
     public void PlayFireballSound()
     {
-        AudioManager.Play(Sounds.FireballShoot);
+        FMODManager.Play(Sounds.FireballShoot);
     }
 
     public void PlayFireballHitSound()
     {
-        AudioManager.Play(Sounds.FireballExplode);
+        FMODManager.Play(Sounds.FireballExplode);
     }
 
     public void PlayDesireChangedSound()
     {
-        AudioManager.Play(Sounds.DragonChoiceChange);
+        FMODManager.Play(Sounds.DragonChoiceChange);
     }
 
     public void PlayMoleDeath()
@@ -425,6 +431,6 @@ public class Dragon : MonoBehaviour
 
     private void PlayDelayedMoleDeath()
     {
-        AudioManager.Play(Sounds.MoleDeath);
+        FMODManager.Play(Sounds.MoleDeath);
     }
 }

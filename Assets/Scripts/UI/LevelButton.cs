@@ -64,6 +64,7 @@ public class LevelButton : MonoBehaviour
 
     public void PlayLevel()
     {
+        FMODManager.Play(Sounds.ButtonClick);
         SceneManager.LoadScene(LevelID);
     }
 }

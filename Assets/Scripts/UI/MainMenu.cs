@@ -31,8 +31,8 @@ public class MainMenu : MonoBehaviour
     {
         Time.timeScale = 1f;
 
-        if(!AudioManager.IsMusicPlaying)
-            AudioManager.Play(Music.MenuMusic);
+        if(!FMODManager.IsMusicPlaying)
+            FMODManager.Play(Music.MenuMusic);
 
         UpdateUI();
     }
@@ -81,25 +81,25 @@ public class MainMenu : MonoBehaviour
     public void ClickedPlay()
     {
         PlayButton.interactable = false;
-        AudioManager.Play(Sounds.ButtonClick, LoadGame);
+        FMODManager.Play(Sounds.ButtonClick, LoadGame);
     }
 
     public void ClickedCredits()
     {
         CreditsButton.interactable = false;
-        AudioManager.Play(Sounds.ButtonClick, LoadCredits);
+        FMODManager.Play(Sounds.ButtonClick, LoadCredits);
     }
 
     public void ClickedHowTo()
     {
         HowToPlayButton.interactable = false;
-        AudioManager.Play(Sounds.ButtonClick, LoadHowTo);
+        FMODManager.Play(Sounds.ButtonClick, LoadHowTo);
     }
 
     public void ClickedExit()
     {
         ExitButton.interactable = false;
-        AudioManager.Play(Sounds.ButtonClick, Exit);
+        FMODManager.Play(Sounds.ButtonClick, Exit);
     }
 
     public void GetItem_ClearScreen()

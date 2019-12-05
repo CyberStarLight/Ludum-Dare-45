@@ -82,7 +82,7 @@ public class GameBoard : MonoBehaviour
     {
         ExistingFollowers = new List<FollowerController>();
 
-        AudioManager.Play(Music.GameMusic);
+        FMODManager.Play(Music.GameMusic);
 
         StageTrackers.LevelID = LevelID;
     }
@@ -159,7 +159,7 @@ public class GameBoard : MonoBehaviour
             if (AbleToPlaceMineAt(CurrentPointerPosition.Value, Input.mousePosition))
                 PlaceMine();
             else
-                AudioManager.Play(Sounds.BuildFailed);
+                FMODManager.Play(Sounds.BuildFailed);
         }
 
         if(Input.GetKeyDown(KeyCode.Mouse1))
@@ -172,7 +172,7 @@ public class GameBoard : MonoBehaviour
         {
             wasPanicMusic = true;
 
-            AudioManager.Play(Music.GameMusicFast);
+            FMODManager.Play(Music.GameMusicFast);
         }
 
         //Tracking
@@ -375,7 +375,7 @@ public class GameBoard : MonoBehaviour
 
             Invoke("StopBuildingMine", 0.1f);
 
-            AudioManager.Play(Sounds.MinePlaced);
+            FMODManager.Play(Sounds.MinePlaced);
         }
         else
         {
@@ -524,9 +524,9 @@ public class GameBoard : MonoBehaviour
     public void GameOver()
     {
         HasGameEnded = true;
-        AudioManager.StopMusic();
+        FMODManager.StopMusic();
 
-        AudioManager.Play(Sounds.LoseFanfare, () => {
+        FMODManager.Play(Sounds.LoseFanfare, () => {
             SceneManager.LoadScene("GameOver");
         });
     }
@@ -534,8 +534,8 @@ public class GameBoard : MonoBehaviour
     public void Victory()
     {
         HasGameEnded = true;
-        AudioManager.StopMusic();
-        AudioManager.Play(Sounds.WinFanfare);
+        FMODManager.StopMusic();
+        FMODManager.Play(Sounds.WinFanfare);
 
         StageTrackers.ScoreAmount = Mathf.RoundToInt(CurrentScore);
 

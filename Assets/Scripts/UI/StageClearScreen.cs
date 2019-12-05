@@ -68,26 +68,26 @@ public class StageClearScreen : MonoBehaviour
         {
             yield return new WaitForSeconds(timePerStar);
             Star1.gameObject.SetActive(true);
-            AudioManager.Play(Sounds.PositiveTreasure);
+            FMODManager.Play(Sounds.PositiveTreasure);
         }
         if (p.Stars > 1)
         {
             yield return new WaitForSeconds(timePerStar);
             Star2.gameObject.SetActive(true);
-            AudioManager.Play(Sounds.PositiveTreasure);
+            FMODManager.Play(Sounds.PositiveTreasure);
         }
         if (p.Stars > 2)
         {
             yield return new WaitForSeconds(timePerStar);
             Star3.gameObject.SetActive(true);
-            AudioManager.Play(Sounds.PositiveTreasure);
+            FMODManager.Play(Sounds.PositiveTreasure);
         }
 
         if(levelRecord != null && levelRecord.Stars < p.Stars)
         {
             levelRecord.Stars = p.Stars;
             StarsNewRecord.SetActive(true);
-            AudioManager.Play(Sounds.PositiveTreasure);
+            FMODManager.Play(Sounds.PositiveTreasure);
         }
 
         //Score
@@ -109,7 +109,7 @@ public class StageClearScreen : MonoBehaviour
         {
             levelRecord.Score = (uint)p.ScoreAmount;
             ScoreNewRecord.SetActive(true);
-            AudioManager.Play(Sounds.PositiveTreasure);
+            FMODManager.Play(Sounds.PositiveTreasure);
         }
 
         //Accuracy
@@ -131,7 +131,7 @@ public class StageClearScreen : MonoBehaviour
         {
             levelRecord.FireballIncorrect = p.FireballIncorrectAmount;
             AccuracyNewRecord.SetActive(true);
-            AudioManager.Play(Sounds.PositiveTreasure);
+            FMODManager.Play(Sounds.PositiveTreasure);
         }
 
         //Time
@@ -153,7 +153,7 @@ public class StageClearScreen : MonoBehaviour
         {
             levelRecord.Time = p.Time;
             TimeNewRecord.SetActive(true);
-            AudioManager.Play(Sounds.PositiveTreasure);
+            FMODManager.Play(Sounds.PositiveTreasure);
         }
 
         //Save highscores to file
