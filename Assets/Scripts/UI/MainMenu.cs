@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
-using TMPro;
 
 public class MainMenu : MonoBehaviour
 {

@@ -82,6 +82,7 @@ public class Dragon : MonoBehaviour
         //Shoot fire ball when right clicking on followers within range
         if (
             hasClick && 
+            !MainGameBoard.IsFireballDisabled &&
             !MainGameBoard.IsBuildingAMine &&
             !fireballInProgress
             )
@@ -120,7 +121,7 @@ public class Dragon : MonoBehaviour
         }
 
         //Update desires
-        if(Time.time >= nextDesireChangeTime && !thoughtInProgress)
+        if(!MainGameBoard.ProgressPause && Time.time >= nextDesireChangeTime && !thoughtInProgress)
         {
             GenerateNewDesire();
             nextDesireChangeTime = Time.time + Random.Range(GameSettings.LevelConfig.Dragon_DesireIntervalMin, GameSettings.LevelConfig.Dragon_DesireIntervalMax);

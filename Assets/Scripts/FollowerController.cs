@@ -17,11 +17,11 @@ public class FollowerController : RoadWalker
     //private Treasure treasureHeld;
     public SpriteRenderer TreasureRenderer;
     public SpriteRenderer TreasureRenderer2;
-    [SerializeField] SpriteRenderer deathMarkRenderer;
-    [SerializeField] Collider2D MainCollider;
-    [SerializeField] Collider2D TouchScreenCollider;
+    public SpriteRenderer deathMarkRenderer;
+    public Collider2D MainCollider;
+    public Collider2D TouchScreenCollider;
     private static Dictionary<Treasure, Sprite> spritesByTresureTypes;
-    [SerializeField] Sprite[] tresureSprites;
+    public Sprite[] tresureSprites;
 
     public TreasureInfo TreasureHeld;
 

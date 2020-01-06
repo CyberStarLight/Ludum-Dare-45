@@ -33,6 +33,7 @@ public class GameBoard : MonoBehaviour
     public float GoldRatio { get { return (float)GoldCoins / (float)GameSettings.LevelConfig.Gold_Max; } }
 
     public bool HasGameEnded { get; set; }
+    public bool ProgressPause { get; set; }
     public bool CanAffordMine { get { return GoldCoins >= GameSettings.LevelConfig.MineCost; } }
 
     [Header("References")]
@@ -58,6 +59,8 @@ public class GameBoard : MonoBehaviour
     public int MineCount = 0;
 
     public List<FollowerController> ExistingFollowers { get; set; }
+    public bool IsSpawnDisabled { get; set; }
+    public bool IsFireballDisabled { get; set; }
     public float NoSpawnBeforeTime { get; set; }
     public float NoClearBeforeTime { get; set; }
 
@@ -76,11 +79,11 @@ public class GameBoard : MonoBehaviour
     private void Awake()
     {
         GameSettings.LevelConfig.LevelOverride = LevelOverride;
+        ExistingFollowers = new List<FollowerController>();
     }
 
     private void Start()
     {
-        ExistingFollowers = new List<FollowerController>();
 
         FMODManager.Play(Music.GameMusic);
 
@@ -92,13 +95,13 @@ public class GameBoard : MonoBehaviour
         ExistingFollowers.RemoveAll(x => x == null);
         
         //score
-        if(!HasGameEnded)
+        if(!HasGameEnded && !ProgressPause)
         {
             CurrentScore += Time.deltaTime * (GameSettings.LevelConfig.ScorePerSecond * (speedItemActive ? SpeedScoreMultiplier : 1f));
         }
 
         //Spawn followers
-        if (Time.time >= NoSpawnBeforeTime && Time.time >= nextFollowerSpawn)
+        if (Time.time >= NoSpawnBeforeTime && !IsSpawnDisabled && Time.time >= nextFollowerSpawn)
         {
             TreasureInfo followerTresure = Random.Range(0f, 1f) > GameSettings.LevelConfig.FollowerTrashRatio ? GetRandomTreasure() : GetRandomTrash();
             Vector3 spawnPos = SpawnPoints.GetRandom().position;
@@ -176,7 +179,7 @@ public class GameBoard : MonoBehaviour
         }
 
         //Tracking
-        if (!HasGameEnded)
+        if (!HasGameEnded && !ProgressPause)
         {
             StageTrackers.Time += Time.deltaTime;
         }
@@ -306,7 +309,7 @@ public class GameBoard : MonoBehaviour
 
         spawnMine(CurrentPointerPosition.Value);
     }
-    public void spawnFollower(Vector3 position, TreasureInfo tresureHeld)
+    public FollowerController spawnFollower(Vector3 position, TreasureInfo tresureHeld)
     {
         var followerPrefab = doubleTreasureItemActive ? GameSettings.Instance.FollowerDoublePrefab : GameSettings.Instance.FollowerPrefab;
         var newFollower = Instantiate(followerPrefab, position, Quaternion.identity, null);
@@ -322,6 +325,8 @@ public class GameBoard : MonoBehaviour
         newFollower.Master = CenterDragon;
 
         ExistingFollowers.Add(newFollower);
+
+        return newFollower;
     }
 
     public bool IsPointOverUI(Vector3 screenPos)
@@ -424,7 +429,17 @@ public class GameBoard : MonoBehaviour
 
         return trashTreasure[Random.Range(0, trashTreasure.Length)];
     }
-    
+
+    public TreasureInfo GetUnwantedTreasure()
+    {
+        var unwantedTreasures = GameSettings.Treasures.Where(x => CenterDragon.GetDesireLevel(x) == 0).ToArray(); 
+
+        if (unwantedTreasures.Length == 0)
+            return GetRandomTrash();
+        else
+            return unwantedTreasures[Random.Range(0, unwantedTreasures.Length)];
+    }
+
     private Vector2 randomVector()
     {
         return new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));

@@ -6,15 +6,15 @@ public class MineController : MonoBehaviour
 {
     public float MinSpawnDelay;
     public float MaxSpawnDelay;
-    [SerializeField] float TrashRate;
+    public float TrashRate;
 
     public TreasureInfo ore;
     public SpriteRenderer MainRenderer;
     public SpriteRenderer treasureSprite;
     public bool isRandom;
-    [SerializeField] Transform spawnPoint;
-    [SerializeField] Collider2D MainCollider;
-    [SerializeField] SpriteRenderer deathMarkRenderer;
+    public Transform spawnPoint;
+    public Collider2D MainCollider;
+    public SpriteRenderer deathMarkRenderer;
     private GameBoard board;
 
     private bool isTargeted;
@@ -49,7 +49,7 @@ public class MineController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(!board.HasGameEnded && Time.time >= nextSpawnTime)
+        if(!board.HasGameEnded && !board.ProgressPause && !board.IsSpawnDisabled && Time.time >= nextSpawnTime)
         {
             SpawnFollower();
             nextSpawnTime = Time.time + Random.Range(MinSpawnDelay, MaxSpawnDelay);

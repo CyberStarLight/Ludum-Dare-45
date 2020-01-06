@@ -498,12 +498,12 @@ public class RobustSerializer : SimpleByteWriter
         }
     }
 
-    public byte[] ToArray()
+    public new byte[] ToArray()
     {
         return memoryStream.ToArray();
     }
 
-    public void Dispose()
+    public new void Dispose()
     {
         memoryStream.Dispose();
     }

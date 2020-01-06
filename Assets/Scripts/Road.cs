@@ -24,7 +24,7 @@ public class Road : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (MainGameBoard.HasGameEnded)
+        if (MainGameBoard.HasGameEnded || MainGameBoard.ProgressPause)
             return;
 
         //Move all walkers registered to this path forward along this path.
@@ -34,7 +34,7 @@ public class Road : MonoBehaviour
                 continue;
             
             //Get distance the walker needs to walk this frame
-            float currentSpeed = walker.Speed + (walker.Master.PanicRatio * walker.MaxPanicSpeedBonus);
+            float currentSpeed = walker.Speed < 0.001f ? 0f : walker.Speed + (walker.Master.PanicRatio * walker.MaxPanicSpeedBonus);
 
             currentSpeed *= GameSettings.LevelConfig.FollowerSpeedMultiplier;
             currentSpeed *= MainGameBoard.SpeedItemMultiplier;
