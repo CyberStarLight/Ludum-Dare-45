@@ -49,6 +49,9 @@ public enum Sounds
     BuildFailed,
     NegativeTreasure,
     MinePlaced,
+    Item_ClearScreen,
+    Item_DoubleTreasure,
+    Item_SpeedUp,
 
     //UI
     ButtonClick,

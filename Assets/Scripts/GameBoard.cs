@@ -504,6 +504,7 @@ public class GameBoard : MonoBehaviour
         {
             GameSaveManager.PlayerData.Item_ClearScreen_Amount--;
             GameSaveManager.SaveToDisk();
+            FMODManager.Play(Sounds.Item_ClearScreen);
 
             CenterDragon.ClearScreenAttack();
         }
@@ -515,6 +516,7 @@ public class GameBoard : MonoBehaviour
         {
             GameSaveManager.PlayerData.Item_FastScore_Amount--;
             GameSaveManager.SaveToDisk();
+            FMODManager.Play(Sounds.Item_SpeedUp);
 
             _SpeedItemCoroutine = SpeedItemCoroutine();
             StartCoroutine(_SpeedItemCoroutine);
@@ -527,6 +529,7 @@ public class GameBoard : MonoBehaviour
         {
             GameSaveManager.PlayerData.Item_DoubleTreasure_Amount--;
             GameSaveManager.SaveToDisk();
+            FMODManager.Play(Sounds.Item_DoubleTreasure);
 
             //TODO: activate item here
             _DoubleTreasureItemCoroutine = DoubleTreasureItemCoroutine();

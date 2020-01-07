@@ -76,6 +76,15 @@ MonoBehaviour:
   - Name: MinePlaced
     EventPath: event:/UI_SFX/place_mine
     volume: 1
+  - Name: Item_ClearScreen
+    EventPath: event:/Gameplay_SFX/clear_screen
+    volume: 1
+  - Name: Item_DoubleTreasure
+    EventPath: event:/Gameplay_SFX/potion
+    volume: 1
+  - Name: Item_SpeedUp
+    EventPath: event:/Gameplay_SFX/speed_boost
+    volume: 1
   - Name: ButtonClick
     EventPath: event:/UI_SFX/button_click
     volume: 1
