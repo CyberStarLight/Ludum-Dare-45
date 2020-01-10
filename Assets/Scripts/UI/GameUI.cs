@@ -24,9 +24,8 @@ public class GameUI : MonoBehaviour
     public GameObject MenuPanel;
     public GameObject PauseOverlay;
     public GameObject PauseText;
-    public Button BuildMineButton;
+    public AdvancedButton BuildMineButton;
     public Image BuildMineButton_Icon;
-    public Image BuildMineButton_Icon2;
     public TextMeshProUGUI BuildMineButton_Text;
     public TextMeshProUGUI BuildMineButton_Text2;
     public Animator MineButtonAnimator;
@@ -40,9 +39,9 @@ public class GameUI : MonoBehaviour
     public Dragon Dragon;
 
     [Header("Inventory")]
-    public Button ClearScreenButton;
-    public Button SpeedUpButton;
-    public Button DoubleTreasureButton;
+    public AdvancedButton ClearScreenButton;
+    public AdvancedButton SpeedUpButton;
+    public AdvancedButton DoubleTreasureButton;
     public TextMeshProUGUI ClearScreenItemAmount;
     public TextMeshProUGUI SpeedItemAmount;
     public TextMeshProUGUI DoubleTreasureItemAmount;
@@ -76,23 +75,24 @@ public class GameUI : MonoBehaviour
         Desire02.sprite = Dragon.DesiredTreasure2 == null || Dragon.DesiredTreasure2.Value == Treasure.None ? TranparentSprite : Dragon.DesiredTreasure2.UISprite;
         Desire03.sprite = Dragon.DesiredTreasure3 == null || Dragon.DesiredTreasure3.Value == Treasure.None ? TranparentSprite : Dragon.DesiredTreasure3.UISprite;
 
-        if(MainGameBoard.CanAffordMine)
+        //update mine button
+        if(MainGameBoard.CanAffordMine && !MainGameBoard.BuildingDisabeld && MainGameBoard.MineCount < GameSettings.LevelConfig.Gold_RequiredMineCount)
         {
-            BuildMineButton.interactable = true;
+            BuildMineButton.SetInteractable(true);
             MineButtonAnimator.SetBool("Available", true);
-            BuildMineButton_Icon.color = new Color(BuildMineButton_Icon.color.r, BuildMineButton_Icon.color.g, BuildMineButton_Icon.color.b, 1f);
-            BuildMineButton_Icon2.color = new Color(BuildMineButton_Icon2.color.r, BuildMineButton_Icon2.color.g, BuildMineButton_Icon2.color.b, 1f);
-            BuildMineButton_Text.color = new Color(BuildMineButton_Text.color.r, BuildMineButton_Text.color.g, BuildMineButton_Text.color.b, 1f);
-            BuildMineButton_Text2.color = new Color(BuildMineButton_Text2.color.r, BuildMineButton_Text2.color.g, BuildMineButton_Text2.color.b, 1f);
+            //BuildMineButton_Icon.color = new Color(BuildMineButton_Icon.color.r, BuildMineButton_Icon.color.g, BuildMineButton_Icon.color.b, 1f);
+            //BuildMineButton_Icon2.color = new Color(BuildMineButton_Icon2.color.r, BuildMineButton_Icon2.color.g, BuildMineButton_Icon2.color.b, 1f);
+            //BuildMineButton_Text.color = new Color(BuildMineButton_Text.color.r, BuildMineButton_Text.color.g, BuildMineButton_Text.color.b, 1f);
+            //BuildMineButton_Text2.color = new Color(BuildMineButton_Text2.color.r, BuildMineButton_Text2.color.g, BuildMineButton_Text2.color.b, 1f);
         }
         else
         {
-            BuildMineButton.interactable = false;
+            BuildMineButton.SetInteractable(false);
             MineButtonAnimator.SetBool("Available", false);
-            BuildMineButton_Icon.color = new Color(BuildMineButton_Icon.color.r, BuildMineButton_Icon.color.g, BuildMineButton_Icon.color.b, 0.5f);
-            BuildMineButton_Icon2.color = new Color(BuildMineButton_Icon2.color.r, BuildMineButton_Icon2.color.g, BuildMineButton_Icon2.color.b, 0.5f);
-            BuildMineButton_Text.color = new Color(BuildMineButton_Text.color.r, BuildMineButton_Text.color.g, BuildMineButton_Text.color.b, 0.5f);
-            BuildMineButton_Text2.color = new Color(BuildMineButton_Text2.color.r, BuildMineButton_Text2.color.g, BuildMineButton_Text2.color.b, 0.5f);
+            //BuildMineButton_Icon.color = new Color(BuildMineButton_Icon.color.r, BuildMineButton_Icon.color.g, BuildMineButton_Icon.color.b, 0.5f);
+            //BuildMineButton_Icon2.color = new Color(BuildMineButton_Icon2.color.r, BuildMineButton_Icon2.color.g, BuildMineButton_Icon2.color.b, 0.5f);
+            //BuildMineButton_Text.color = new Color(BuildMineButton_Text.color.r, BuildMineButton_Text.color.g, BuildMineButton_Text.color.b, 0.5f);
+            //BuildMineButton_Text2.color = new Color(BuildMineButton_Text2.color.r, BuildMineButton_Text2.color.g, BuildMineButton_Text2.color.b, 0.5f);
         }
 
         //Update gold cap
@@ -130,9 +130,9 @@ public class GameUI : MonoBehaviour
         SpeedItemAmount.text = "x" + MainGameBoard.SpeedItemAmount.ToString("00");
         DoubleTreasureItemAmount.text = "x" + MainGameBoard.DoubleTreasureItemAmount.ToString("00");
 
-        ClearScreenButton.interactable = Time.time > MainGameBoard.NoClearBeforeTime && MainGameBoard.ExistingFollowers.Count > 0 && MainGameBoard.ClearScreenItemAmount > 0;
-        SpeedUpButton.interactable = MainGameBoard.SpeedItemAmount > 0;
-        DoubleTreasureButton.interactable = MainGameBoard.DoubleTreasureItemAmount > 0;
+        ClearScreenButton.SetInteractable(!MainGameBoard.ItemsDisabeld && Time.time > MainGameBoard.NoClearBeforeTime && MainGameBoard.ExistingFollowers.Count > 0 && MainGameBoard.ClearScreenItemAmount > 0);
+        SpeedUpButton.SetInteractable(!MainGameBoard.ItemsDisabeld && MainGameBoard.SpeedItemAmount > 0);
+        DoubleTreasureButton.SetInteractable(!MainGameBoard.ItemsDisabeld && MainGameBoard.DoubleTreasureItemAmount > 0);
     }
     
     //Menu

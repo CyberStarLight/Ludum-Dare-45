@@ -43,6 +43,7 @@ public class TutorialManager : MonoBehaviour
     private void Start()
     {
         MainBoard.IsSpawnDisabled = true;
+        MainBoard.ItemsDisabeld = true;
 
         _TutorialCorutine = TutorialCorutine();
         StartCoroutine(_TutorialCorutine);
@@ -75,7 +76,12 @@ public class TutorialManager : MonoBehaviour
         if (Finishedtutorial)
             return;
 
-        print("stopTutorial()");
+        if (FirstTrashFollower != null)
+            Destroy(FirstTrashFollower.gameObject);
+
+        if (FirstTreasureFollower != null)
+            Destroy(FirstTreasureFollower.gameObject);
+
         Finishedtutorial = true;
         StopCoroutine(_TutorialCorutine);
 
@@ -89,6 +95,9 @@ public class TutorialManager : MonoBehaviour
         MainBoard.IsSpawnDisabled = false;
         MainBoard.IsFireballDisabled = false;
         MainBoard.ProgressPause = false;
+        MainBoard.BuildingDisabeld = false;
+        MainBoard.ItemsDisabeld = false;
+        MainBoard.DesiresDisabeld = false;
         Time.timeScale = 1f;
     }
 
@@ -97,18 +106,24 @@ public class TutorialManager : MonoBehaviour
         Background.SetActive(true);
         TutorialUIOverlay.gameObject.SetActive(true);
 
+        MainBoard.BuildingDisabeld = true;
+        MainBoard.ItemsDisabeld = true;
+
         if (stopTime)
             Time.timeScale = 0f;
         else
             MainBoard.ProgressPause = true;
     }
 
-    private void stopTutorialPause()
+    private void stopTutorialPause(bool allowMinesAndItems = false)
     {
         Background.SetActive(false);
         TutorialUIOverlay.gameObject.SetActive(false);
         Time.timeScale = 1f;
         MainBoard.ProgressPause = false;
+
+        MainBoard.BuildingDisabeld = false;
+        MainBoard.ItemsDisabeld = false;
     }
 
     IEnumerator _TutorialCorutine;
@@ -130,10 +145,13 @@ public class TutorialManager : MonoBehaviour
 
         Message_WantedTreasure.SetActive(false);
         stopTutorialPause();
+        MainBoard.BuildingDisabeld = true;
+        MainBoard.ItemsDisabeld = true;
 
         //Get treasure message
         MainBoard.IsFireballDisabled = true;
         FirstTreasureFollower = MainBoard.spawnFollower(FirstTreasureFollowerOrigin.position, MainBoard.CenterDragon.DesiredTreasure1);
+        FirstTreasureFollower.Speed *= 2;
 
         yield return new WaitForSeconds(DelayBeforeTreasureMessage);
 
@@ -148,6 +166,8 @@ public class TutorialManager : MonoBehaviour
         FinishMessage = false;
 
         stopTutorialPause();
+        MainBoard.BuildingDisabeld = true;
+        MainBoard.ItemsDisabeld = true;
         Destroy(currentMessage.gameObject);
 
         while (FirstTreasureFollower != null)
@@ -166,6 +186,8 @@ public class TutorialManager : MonoBehaviour
 
         Message_Hoard.SetActive(false);
         stopTutorialPause();
+        MainBoard.BuildingDisabeld = true;
+        MainBoard.ItemsDisabeld = true;
 
         //Mines message
         Message_Mines.SetActive(true);
@@ -178,9 +200,12 @@ public class TutorialManager : MonoBehaviour
 
         Message_Mines.SetActive(false);
         stopTutorialPause();
+        MainBoard.ItemsDisabeld = true;
 
-        //Destroy trash message
+        //Destroy unwanted treasure message
+        MainBoard.DesiresDisabeld = true;
         FirstTrashFollower = MainBoard.spawnFollower(new Vector3(-10f, -5f, 0f), MainBoard.GetUnwantedTreasure());
+        FirstTrashFollower.Speed *= 2;
 
         yield return new WaitForSeconds(DelayBeforeDestroyMessage);
 
@@ -193,7 +218,7 @@ public class TutorialManager : MonoBehaviour
         MainBoard.IsFireballDisabled = false;
 
         FinishMessage = false;
-        while (!FinishMessage && FirstTrashFollower != null)
+        while (!FirstTrashFollower.IsTargeted && FirstTrashFollower != null)
         {
             yield return new WaitForSeconds(0.2f);
         }
@@ -201,6 +226,7 @@ public class TutorialManager : MonoBehaviour
 
         Destroy(currentMessage.gameObject);
         stopTutorialPause();
+        MainBoard.ItemsDisabeld = true;
 
         while (FirstTrashFollower != null)
         {
@@ -220,6 +246,8 @@ public class TutorialManager : MonoBehaviour
 
         Message_Rage.SetActive(false);
         stopTutorialPause();
+        MainBoard.ItemsDisabeld = true;
+        MainBoard.DesiresDisabeld = false;
 
         //Items message
         Message_Items.SetActive(true);

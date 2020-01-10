@@ -35,10 +35,14 @@ public class GameBoard : MonoBehaviour
     public bool HasGameEnded { get; set; }
     public bool ProgressPause { get; set; }
     public bool CanAffordMine { get { return GoldCoins >= GameSettings.LevelConfig.MineCost; } }
+    public bool BuildingDisabeld { get; set; }
+    public bool ItemsDisabeld { get; set; }
+    public bool DesiresDisabeld { get; set; }
 
     [Header("References")]
     public Dragon CenterDragon;
     public Road[] Roads;
+    public HashSet<MineController> Mines =  new HashSet<MineController>();
     public Transform[] SpawnPoints;
     public Camera GameCamera;
     public Camera ScreenCamera;
@@ -89,7 +93,15 @@ public class GameBoard : MonoBehaviour
 
         StageTrackers.LevelID = LevelID;
     }
-    
+
+    private void FixedUpdate()
+    {
+        foreach (var mine in Mines)
+        {
+            mine.FixedUpdate_Managed();
+        }
+    }
+
     private void Update()
     {
         ExistingFollowers.RemoveAll(x => x == null);
@@ -245,11 +257,21 @@ public class GameBoard : MonoBehaviour
         }
     }
 
-    public Vector3? GetGameScreenPointerPosition(Touch? touch = null)
+    public Vector3? GetGameScreenPointerPosition(Touch? touch = null, Vector3? offsetInInches = null)
     {
-        pointerData.position = Input.mousePosition;
+        Vector3 offset = Vector3.zero;
+        Vector2 offsetV2 = Vector2.zero;
+        if (offsetInInches.HasValue)
+        {
+            var offsetInPixels = offsetInInches.Value * (float)DisplayMetricsAndroid.DensityDPI;
+            offset = offsetInPixels;
+            offsetV2 = offset;
+        }
+
+        pointerData.position = Input.mousePosition + offset;
         EventSystem.current.RaycastAll(pointerData, results);
-        
+        pointerData.position = Input.mousePosition;
+
         bool isMouseDirectlyOverGameScreen = results.Count != 0 && results.Last().gameObject == GameScreen.gameObject;
         if (!isMouseDirectlyOverGameScreen)
             return null;
@@ -270,11 +292,11 @@ public class GameBoard : MonoBehaviour
                 touch = touches[0];
             }
 
-            pointerPosition = touch.Value.position;
+            pointerPosition = touch.Value.position + offsetV2;
         }
         else
         {
-            pointerPosition = Input.mousePosition;
+            pointerPosition = Input.mousePosition + offset;
         }
 
         var screenWorldPos = ScreenCamera.ScreenToWorldPoint(pointerPosition);
@@ -339,11 +361,20 @@ public class GameBoard : MonoBehaviour
         return results.Count == 0 || results.First().gameObject.name != "GameScreen";
     }
 
-    public bool AbleToPlaceMineAt(Vector2 pos, Vector3? screenPos = null)
+    public bool AbleToPlaceMineAt(Vector2 pos, Vector3? screenPos = null, Vector3? screenOffsetInInches = null)
     {
+        Vector3 offset = Vector3.zero;
+        Vector2 offsetV2 = Vector2.zero;
+        if (screenOffsetInInches.HasValue)
+        {
+            var offsetInPixels = screenOffsetInInches.Value * (float)DisplayMetricsAndroid.DensityDPI;
+            offset = offsetInPixels;
+            offsetV2 = offset;
+        }
+
         bool ableToPlace = true;
 
-        if (screenPos.HasValue && IsPointOverUI(screenPos.Value))
+        if (screenPos.HasValue && IsPointOverUI(screenPos.Value + offset))
             return false;
 
         foreach (var G in FindObjectsOfType<MineController>())
@@ -357,8 +388,8 @@ public class GameBoard : MonoBehaviour
         }
 
         //Check that the mine is not too close to a road
-        var offset = new Vector2(0f, -0.2f);
-        if (GetClosestPoint(pos + offset).Distance < GameSettings.Instance.MinRoadDistanceForMines)
+        var mineOffset = new Vector2(0f, -0.2f);
+        if (GetClosestPoint(pos + mineOffset).Distance < GameSettings.Instance.MinRoadDistanceForMines)
         {
             ableToPlace = false;
         }
@@ -418,21 +449,21 @@ public class GameBoard : MonoBehaviour
 
     public TreasureInfo GetRandomTreasure()
     {
-        var goodTreasure = GameSettings.Treasures.Where(x => !x.IsTrash).ToArray();
+        var goodTreasure = GameSettings.LevelConfig.Treasures.Where(x => !x.IsTrash).ToArray();
 
         return goodTreasure[Random.Range(0, goodTreasure.Length)];
     }
 
     public TreasureInfo GetRandomTrash()
     {
-        var trashTreasure = GameSettings.Treasures.Where(x => x.IsTrash).ToArray();
+        var trashTreasure = GameSettings.LevelConfig.Treasures.Where(x => x.IsTrash).ToArray();
 
         return trashTreasure[Random.Range(0, trashTreasure.Length)];
     }
 
     public TreasureInfo GetUnwantedTreasure()
     {
-        var unwantedTreasures = GameSettings.Treasures.Where(x => CenterDragon.GetDesireLevel(x) == 0).ToArray(); 
+        var unwantedTreasures = GameSettings.LevelConfig.Treasures.Where(x => !x.IsTrash && x != CenterDragon.ThoughtBubbleAnimation.desired && CenterDragon.GetDesireLevel(x) == 0).ToArray(); 
 
         if (unwantedTreasures.Length == 0)
             return GetRandomTrash();
@@ -455,7 +486,7 @@ public class GameBoard : MonoBehaviour
         if (IsTouchScreen())
             return;
 
-        if (!IsBuildingAMine)
+        if (!IsBuildingAMine && MineCount < GameSettings.LevelConfig.Gold_RequiredMineCount)
         {
             if (GoldCoins >= GameSettings.LevelConfig.MineCost)
             {
@@ -477,7 +508,7 @@ public class GameBoard : MonoBehaviour
         if (!IsTouchScreen() || !MainGameUI.BuildMineButton.interactable)
             return;
         
-        if (!IsBuildingAMine)
+        if (!IsBuildingAMine && MineCount < GameSettings.LevelConfig.Gold_RequiredMineCount)
         {
             if (GoldCoins >= GameSettings.LevelConfig.MineCost)
             {
@@ -598,10 +629,10 @@ public class GameBoard : MonoBehaviour
             yield break;
         
         IsBuildingAMine = true;
-        MainGameUI.BuildMineButton.interactable = false;
-        MineCursor.gameObject.SetActive(true);
+        //MainGameUI.BuildMineButton.SetInteractable(false);
+        MainGameUI.BuildMineButton.SetInteractable(false);
         MainGameUI.BuildMineButton_Icon.gameObject.SetActive(false);
-        MainGameUI.BuildMineButton_Icon2.gameObject.SetActive(false);
+        MineCursor.gameObject.SetActive(true);
 
         Vector3? lastValidPosition = null;
         while (true)
@@ -611,12 +642,20 @@ public class GameBoard : MonoBehaviour
                 break;
 
             var touch = touches.First();
-            
-            var pointerPosition = GetGameScreenPointerPosition(touch);
-            if (!pointerPosition.HasValue)
-                break;
 
-            bool isValidPos = AbleToPlaceMineAt(pointerPosition.Value, touch.position);
+            var fingerOffset = new Vector3(-0.25f, 0.25f, 0f);
+
+            var pointerPosition = GetGameScreenPointerPosition(touch, fingerOffset);
+            if (!pointerPosition.HasValue)
+            {
+                yield return null;
+                continue;
+            }
+
+            //pointerPosition += new Vector3(-1f, 1f, 0f);
+            //var pointerScreenPosition = touch.position + new Vector2(-1f, 1f);
+
+            bool isValidPos = AbleToPlaceMineAt(pointerPosition.Value, touch.position, fingerOffset);
             if(isValidPos)
             {
                 lastValidPosition = pointerPosition.Value;
@@ -627,6 +666,19 @@ public class GameBoard : MonoBehaviour
             }
 
             MineCursor.transform.position = pointerPosition.Value;
+
+            var closestRoadPos = GetClosestPoint(MineCursor.transform.position).PointPosition;
+
+            //Flip mine
+            if (closestRoadPos.x < MineCursor.transform.position.x)
+            {
+                MineCursor.flipX = true;
+            }
+            else
+            {
+                MineCursor.flipX = false;
+            }
+
             if (isValidPos)
                 MineCursor.color = Color.white;
             else
@@ -639,11 +691,12 @@ public class GameBoard : MonoBehaviour
             spawnMine(lastValidPosition.Value);
 
         MineCursor.color = Color.white;
+        MineCursor.flipX = false;
         IsBuildingAMine = false;
-        MainGameUI.BuildMineButton.interactable = true;
-        MineCursor.gameObject.SetActive(false);
         MainGameUI.BuildMineButton_Icon.gameObject.SetActive(true);
-        MainGameUI.BuildMineButton_Icon2.gameObject.SetActive(true);
+        MainGameUI.BuildMineButton.SetInteractable(true);
+        MainGameUI.BuildMineButton_Icon.color = Color.white;
+        MineCursor.gameObject.SetActive(false);
     }
 
     IEnumerator _SpeedItemCoroutine;

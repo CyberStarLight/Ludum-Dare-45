@@ -9,7 +9,7 @@ public class ThoughtBubble : MonoBehaviour
     public Animator BubbleAnimator;
     public Image TreasureImage;
 
-    private TreasureInfo desired;
+    public TreasureInfo desired { get; private set; }
     private TreasureInfo undesired;
     private TreasureInfo repeatedDesired;
 

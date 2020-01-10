@@ -121,7 +121,7 @@ public class Dragon : MonoBehaviour
         }
 
         //Update desires
-        if(!MainGameBoard.ProgressPause && Time.time >= nextDesireChangeTime && !thoughtInProgress)
+        if(!MainGameBoard.DesiresDisabeld && !MainGameBoard.ProgressPause && Time.time >= nextDesireChangeTime && !thoughtInProgress)
         {
             GenerateNewDesire();
             nextDesireChangeTime = Time.time + Random.Range(GameSettings.LevelConfig.Dragon_DesireIntervalMin, GameSettings.LevelConfig.Dragon_DesireIntervalMax);

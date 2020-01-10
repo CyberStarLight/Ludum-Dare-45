@@ -62,6 +62,14 @@ public class LevelConfig
     private int _treasure_TrashRagePenalty = 6;
     public int Treasure_TrashRagePenalty { get { return LevelOverride.OverrideTreasure_TrashRagePenalty ? LevelOverride.Treasure_TrashRagePenalty : _treasure_TrashRagePenalty; } }
 
+    [SerializeField]
+    private TreasureInfo[] _treasures;
+    public TreasureInfo[] Treasures { get { return LevelOverride.OverrideTreasure_Treasures ? LevelOverride.Treasures : _treasures; } }
+
+    //[SerializeField]
+    //private TreasureInfo[] _trash;
+    //public TreasureInfo[] Trash { get { return LevelOverride.OverrideTreasure_Trash ? LevelOverride.Trash : _trash; } }
+
     [Header("Dragon")]
     [SerializeField]
     private float _dragon_DesireIntervalMin = 9f;
@@ -106,6 +114,10 @@ public class LevelConfigOverride
     public int Treasure_RagePenalty = 0;
     public bool OverrideTreasure_TrashRagePenalty;
     public int Treasure_TrashRagePenalty = 0;
+    public bool OverrideTreasure_Treasures;
+    public TreasureInfo[] Treasures;
+    //public bool OverrideTreasure_Trash;
+    //public TreasureInfo[] Trash;
 
     [Header("Dragon")]
     public bool OverrideDragon_DesireIntervalMin;

@@ -45,9 +45,11 @@ public class MineController : MonoBehaviour
         }
 
         nextSpawnTime = Time.time + Random.Range(MinSpawnDelay, MaxSpawnDelay);
+
+        board.Mines.Add(this);
     }
 
-    private void FixedUpdate()
+    public void FixedUpdate_Managed()
     {
         if(!board.HasGameEnded && !board.ProgressPause && !board.IsSpawnDisabled && Time.time >= nextSpawnTime)
         {

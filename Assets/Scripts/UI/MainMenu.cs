@@ -62,8 +62,8 @@ public class MainMenu : MonoBehaviour
     //UI triggers
     public void ShowItemsPanel()
     {
-        foreach (var panel in AllPanels)
-            panel.SetActive(false);
+        //foreach (var panel in AllPanels)
+        //    panel.SetActive(false);
 
         ItemsPanel.SetActive(true);
     }
