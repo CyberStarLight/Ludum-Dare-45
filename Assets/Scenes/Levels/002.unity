@@ -642,6 +642,11 @@ PrefabInstance:
       propertyPath: LevelOverride.Gold_RequiredMineCount
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.OverrideTreasure_Treasures
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1941665573278310967, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: m_Name

@@ -46,20 +46,92 @@ MonoBehaviour:
   UniqueName: GameSettings
   Tags: []
   DefaultLevelConfig:
-    MineCost: 25000
-    MineCount: 9
-    ScorePerSecond: 5
-    FollowerSpawnDelay_Min: 2.5
-    FollowerSpawnDelay_Max: 3.5
-    FollowerTrashRatio: 0.22
-    Gold_Min: 0
-    Gold_Max: 1000000
-    Gold_RequiredMineCount: 9
-    Treasure_GoldBonus: 10000
-    Treasure_RagePenalty: 4
-    Treasure_TrashRagePenalty: 6
-    Dragon_DesireIntervalMin: 9
-    Dragon_DesireIntervalMax: 13
+    LevelOverride:
+      OverrideMineCost: 0
+      MineCost: 0
+      OverrideScorePerSecond: 0
+      ScorePerSecond: 0
+      OverrideFollowerSpeedMultiplier: 0
+      FollowerSpeedMultiplier: 0
+      OverrideFollowerSpawnDelay_Min: 0
+      FollowerSpawnDelay_Min: 0
+      OverrideFollowerSpawnDelay_Max: 0
+      FollowerSpawnDelay_Max: 0
+      OverrideFollowerTrashRatio: 0
+      FollowerTrashRatio: 0
+      OverrideGold_Min: 0
+      Gold_Min: 0
+      OverrideGold_Max: 0
+      Gold_Max: 0
+      OverrideGold_RequiredMineCount: 0
+      Gold_RequiredMineCount: 0
+      OverrideTreasure_GoldBonus: 0
+      Treasure_GoldBonus: 0
+      OverrideTreasure_RagePenalty: 0
+      Treasure_RagePenalty: 0
+      OverrideTreasure_TrashRagePenalty: 0
+      Treasure_TrashRagePenalty: 0
+      OverrideTreasure_Treasures: 0
+      Treasures: []
+      OverrideDragon_DesireIntervalMin: 0
+      Dragon_DesireIntervalMin: 0
+      OverrideDragon_DesireIntervalMax: 0
+      Dragon_DesireIntervalMax: 0
+    _scorePerSecond: 5
+    _followerSpeedMultiplier: 1
+    _followerSpawnDelay_Min: 2.5
+    _followerSpawnDelay_Max: 3.5
+    _followerTrashRatio: 0.22
+    _mineCost: 25000
+    _gold_Min: 0
+    _gold_Max: 1000000
+    _gold_RequiredMineCount: 9
+    _treasure_GoldBonus: 10000
+    _treasure_RagePenalty: 8
+    _treasure_TrashRagePenalty: 16
+    _treasures:
+    - Name: Gem_Green
+      Value: 1
+      Sprite: {fileID: 21300000, guid: ab68fdfd843d5604fb6a5c54eb25aab4, type: 3}
+      UISprite: {fileID: 21300000, guid: a04c0ac1c9540f6429f06e9183eac6ad, type: 3}
+      IsTrash: 0
+    - Name: Gem_Red
+      Value: 2
+      Sprite: {fileID: 21300000, guid: b6204318ed7da384cb9c1bb19c1dd278, type: 3}
+      UISprite: {fileID: 21300000, guid: c7fc170d5339d624cbe656885e12bff7, type: 3}
+      IsTrash: 0
+    - Name: Gem_Purple
+      Value: 3
+      Sprite: {fileID: 21300000, guid: ac55dc12286815649982c1f9805a65a1, type: 3}
+      UISprite: {fileID: 21300000, guid: e535c58181bd97a4e9489f8b5eead3da, type: 3}
+      IsTrash: 0
+    - Name: Metal_Gold
+      Value: 4
+      Sprite: {fileID: 21300000, guid: ad5b013d6889ae74ebd6a9f3e412db50, type: 3}
+      UISprite: {fileID: 21300000, guid: ed4836beeb2fbbe43931307c20fe1afa, type: 3}
+      IsTrash: 0
+    - Name: Metal_Silver
+      Value: 5
+      Sprite: {fileID: 21300000, guid: c1e95bbd372217e49bf112298875be27, type: 3}
+      UISprite: {fileID: 21300000, guid: 56847858d9091394e8cf414c95b6fa78, type: 3}
+      IsTrash: 0
+    - Name: Trash_Poop
+      Value: 6
+      Sprite: {fileID: 21300000, guid: 820e633a3003409419a6f03394ae1372, type: 3}
+      UISprite: {fileID: 0}
+      IsTrash: 1
+    - Name: Trash_Cockroach
+      Value: 8
+      Sprite: {fileID: 21300000, guid: 34c0219e89c16c7479b5a8b314c52b65, type: 3}
+      UISprite: {fileID: 0}
+      IsTrash: 1
+    - Name: Trash_Worm
+      Value: 7
+      Sprite: {fileID: 21300000, guid: 62e6eada92363694fa0913b195ba6877, type: 3}
+      UISprite: {fileID: 0}
+      IsTrash: 1
+    _dragon_DesireIntervalMin: 9
+    _dragon_DesireIntervalMax: 13
   DefaultTreasures:
   - Name: Gem_Green
     Value: 1

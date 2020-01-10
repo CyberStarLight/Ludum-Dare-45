@@ -11,4 +11,15 @@ public class TreasureInfo
     public Sprite Sprite;
     public Sprite UISprite;
     public bool IsTrash;
+
+    public TreasureInfo GetCopy()
+    {
+        return new TreasureInfo() { 
+            IsTrash = IsTrash,
+            Name = Name,
+            Sprite = Sprite,
+            Value = Value,
+            UISprite = UISprite,
+        };
+    }
 }
