@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="AudioFile" id="{078f2565-b360-4223-918a-0f07f5b0799c}">
+		<property name="assetPath">
+			<value>speedup_drummusic.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>3</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{4b745b5b-4039-41d6-96f8-c6c7544e9d05}</destination>
+		</relationship>
+	</object>
+</objects>
