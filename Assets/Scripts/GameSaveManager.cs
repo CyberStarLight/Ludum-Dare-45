@@ -97,6 +97,7 @@ public class PlayerData
 
     //Flags
     public bool Flag_TutorialGiftRecieved;
+    public bool Flag_TutorialDone;
 
     public class LevelBestRecords
     {
@@ -107,6 +108,7 @@ public class PlayerData
         public int TreasureCollected = 0;
         public int TrashCollected = 0;
         public int FireballIncorrect = int.MaxValue;
+        public uint TotalGoldCollected = 0;
 
         public byte[] ToBytes()
         {
@@ -118,6 +120,7 @@ public class PlayerData
                 writer.Write(TreasureCollected);
                 writer.Write(TrashCollected);
                 writer.Write(FireballIncorrect);
+                writer.Write(TotalGoldCollected);
 
                 return writer.ToArray();
             }
@@ -135,6 +138,7 @@ public class PlayerData
                     TreasureCollected = writer.ReadInt(),
                     TrashCollected = writer.ReadInt(),
                     FireballIncorrect = writer.ReadInt(),
+                    TotalGoldCollected = writer.ReadUInt(),
                 };
             }
         }
@@ -157,6 +161,7 @@ public class PlayerData
             writer.Write(Item_FastScore_Amount);
 
             writer.Write(Flag_TutorialGiftRecieved);
+            writer.Write(Flag_TutorialDone);
 
             return writer.ToArray();
         }
@@ -184,6 +189,7 @@ public class PlayerData
             result.Item_FastScore_Amount = writer.ReadUInt();
 
             result.Flag_TutorialGiftRecieved = writer.ReadBool();
+            result.Flag_TutorialDone = writer.ReadBool();
         }
 
         return result;

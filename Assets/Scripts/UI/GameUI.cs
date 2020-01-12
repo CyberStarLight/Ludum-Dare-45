@@ -28,8 +28,10 @@ public class GameUI : MonoBehaviour
     public Image BuildMineButton_Icon;
     public TextMeshProUGUI BuildMineButton_Text;
     public TextMeshProUGUI BuildMineButton_Text2;
+    public TextMeshProUGUI RemainingMines_Text;
     public Animator MineButtonAnimator;
     public TextMeshProUGUI CapMaxText;
+    public TextMeshProUGUI ScoreMultiplierText;
     public Image CapStart;
     public Image CapEnd;
     public Image CapLine;
@@ -54,8 +56,14 @@ public class GameUI : MonoBehaviour
 
     private void Start()
     {
-        BuildMineButton_Text.text = string.Format("-{0:n0} Gold", GameSettings.LevelConfig.MineCost);
         BuildMineButton_Text2.text = string.Format("+{0:n0} Cap", GameSettings.LevelConfig.Mine_CapBonus);
+
+        if (GameSettings.LevelConfig.IsEndless)
+        {
+            CapLine.gameObject.SetActive(false);
+            ScoreMultiplierText.gameObject.SetActive(true);
+            BuildMineButton_Text2.text = "Unlimited!";
+        }
     }
 
     private void Update()
@@ -76,23 +84,16 @@ public class GameUI : MonoBehaviour
         Desire03.sprite = Dragon.DesiredTreasure3 == null || Dragon.DesiredTreasure3.Value == Treasure.None ? TranparentSprite : Dragon.DesiredTreasure3.UISprite;
 
         //update mine button
-        if(MainGameBoard.CanAffordMine && !MainGameBoard.BuildingDisabeld && MainGameBoard.MineCount < GameSettings.LevelConfig.Gold_RequiredMineCount)
+        BuildMineButton_Text.text = string.Format("-{0:n0} Gold", MainGameBoard.NextMineCost);
+        if (MainGameBoard.CanAffordMine && !MainGameBoard.BuildingDisabeld && MainGameBoard.MineCount < GameSettings.LevelConfig.Gold_RequiredMineCount)
         {
             BuildMineButton.SetInteractable(true);
             MineButtonAnimator.SetBool("Available", true);
-            //BuildMineButton_Icon.color = new Color(BuildMineButton_Icon.color.r, BuildMineButton_Icon.color.g, BuildMineButton_Icon.color.b, 1f);
-            //BuildMineButton_Icon2.color = new Color(BuildMineButton_Icon2.color.r, BuildMineButton_Icon2.color.g, BuildMineButton_Icon2.color.b, 1f);
-            //BuildMineButton_Text.color = new Color(BuildMineButton_Text.color.r, BuildMineButton_Text.color.g, BuildMineButton_Text.color.b, 1f);
-            //BuildMineButton_Text2.color = new Color(BuildMineButton_Text2.color.r, BuildMineButton_Text2.color.g, BuildMineButton_Text2.color.b, 1f);
         }
         else
         {
             BuildMineButton.SetInteractable(false);
             MineButtonAnimator.SetBool("Available", false);
-            //BuildMineButton_Icon.color = new Color(BuildMineButton_Icon.color.r, BuildMineButton_Icon.color.g, BuildMineButton_Icon.color.b, 0.5f);
-            //BuildMineButton_Icon2.color = new Color(BuildMineButton_Icon2.color.r, BuildMineButton_Icon2.color.g, BuildMineButton_Icon2.color.b, 0.5f);
-            //BuildMineButton_Text.color = new Color(BuildMineButton_Text.color.r, BuildMineButton_Text.color.g, BuildMineButton_Text.color.b, 0.5f);
-            //BuildMineButton_Text2.color = new Color(BuildMineButton_Text2.color.r, BuildMineButton_Text2.color.g, BuildMineButton_Text2.color.b, 0.5f);
         }
 
         //Update gold cap
@@ -116,11 +117,21 @@ public class GameUI : MonoBehaviour
         }
 
         CapMaxText.text = CAP_PREFIX + capAmount.ToString("N0");
-        float capPoint = Mathf.Clamp01((float)(capAmount - GameSettings.LevelConfig.Mine_CapBonus) / (float)(GameSettings.LevelConfig.Gold_Max - GameSettings.LevelConfig.Mine_CapBonus));
+        RemainingMines_Text.text = "x " + (GameSettings.LevelConfig.Gold_RequiredMineCount - MainGameBoard.MineCount);
 
-        float yOffset = CapEnd.rectTransform.anchoredPosition.y - CapStart.rectTransform.anchoredPosition.y;
-        float yPos = CapStart.rectTransform.anchoredPosition.y + (yOffset * capPoint);
-        CapLine.rectTransform.anchoredPosition = new Vector2(CapLine.rectTransform.anchoredPosition.x, yPos);
+        if(!GameSettings.LevelConfig.IsEndless)
+        {
+            float capPoint = Mathf.Clamp01((float)(capAmount - GameSettings.LevelConfig.Mine_CapBonus) / (float)(GameSettings.LevelConfig.Gold_Max - GameSettings.LevelConfig.Mine_CapBonus));
+
+            float yOffset = CapEnd.rectTransform.anchoredPosition.y - CapStart.rectTransform.anchoredPosition.y;
+            float yPos = CapStart.rectTransform.anchoredPosition.y + (yOffset * capPoint);
+            CapLine.rectTransform.anchoredPosition = new Vector2(CapLine.rectTransform.anchoredPosition.x, yPos);
+
+        }
+        else
+        {
+            ScoreMultiplierText.text = "x " + Mathf.RoundToInt(MainGameBoard.ScoreMultiplier);
+        }
 
         //Update score
         ScoreText.text = string.Format("Score: {0}", Mathf.FloorToInt(MainGameBoard.CurrentScore));

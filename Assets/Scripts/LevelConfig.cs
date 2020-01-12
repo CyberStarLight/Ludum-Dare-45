@@ -12,10 +12,16 @@ public class LevelConfig
     private float _scorePerSecond = 5;
     public float ScorePerSecond { get { return LevelOverride.OverrideScorePerSecond ? LevelOverride.ScorePerSecond : _scorePerSecond; } }
 
+    public bool IsEndless { get { return LevelOverride.IsEndless; } }
+
     [Header("Followers")]
     [SerializeField]
     private float _followerSpeedMultiplier = 1f;
     public float FollowerSpeedMultiplier { get { return LevelOverride.OverrideFollowerSpeedMultiplier ? LevelOverride.FollowerSpeedMultiplier : _followerSpeedMultiplier; } }
+
+    [SerializeField]
+    private float _maxPanicSpeedBonus = 1.5f;
+    public float FollowerMaxPanicSpeedBonus { get { return LevelOverride.OverrideFollowerMaxPanicSpeedBonus ? LevelOverride.MaxPanicSpeedBonus : _maxPanicSpeedBonus; } }
 
     [SerializeField]
     private float _followerSpawnDelay_Min = 2.5f;
@@ -30,10 +36,19 @@ public class LevelConfig
     private float _followerTrashRatio = 0.22f;
     public float FollowerTrashRatio { get { return LevelOverride.OverrideFollowerTrashRatio ? LevelOverride.FollowerTrashRatio : _followerTrashRatio; } }
 
+    [SerializeField]
+    [Range(0, 1)]
+    private float _followerUnwantedRatio = 0.22f;
+    public float FollowerUnwantedRatio { get { return LevelOverride.OverrideFollowerUnwantedRatio ? LevelOverride.FollowerUnwantedRatio : _followerUnwantedRatio; } }
+
     [Header("Gold and Mines")]
     [SerializeField]
     private int _mineCost = 25000;
     public int MineCost { get { return LevelOverride.OverrideMineCost ? LevelOverride.MineCost : _mineCost; } }
+
+    [SerializeField]
+    private int[] _mineCosts = new int[0];
+    public int[] MineCosts { get { return LevelOverride.OverrideMineCost ? LevelOverride.MineCosts : _mineCosts; } }
 
     [SerializeField]
     private int _gold_Min = 0;
@@ -85,19 +100,27 @@ public class LevelConfigOverride
 {
     public bool OverrideMineCost;
     public int MineCost = 0;
+    public int[] MineCosts = new int[0];
 
     public bool OverrideScorePerSecond;
     public float ScorePerSecond = 0;
 
+    [Header("Endless")]
+    public bool IsEndless;
+
     [Header("Followers")]
     public bool OverrideFollowerSpeedMultiplier;
     public float FollowerSpeedMultiplier = 0f;
+    public bool OverrideFollowerMaxPanicSpeedBonus;
+    public float MaxPanicSpeedBonus = 0f;
     public bool OverrideFollowerSpawnDelay_Min;
     public float FollowerSpawnDelay_Min = 0f;
     public bool OverrideFollowerSpawnDelay_Max;
     public float FollowerSpawnDelay_Max = 0f;
     public bool OverrideFollowerTrashRatio;
     [Range(0, 1)] public float FollowerTrashRatio = 0f;
+    public bool OverrideFollowerUnwantedRatio;
+    [Range(0, 1)] public float FollowerUnwantedRatio = 0f;
 
     [Header("Gold and Mines")]
     public bool OverrideGold_Min;

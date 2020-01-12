@@ -584,6 +584,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
       propertyPath: LevelID
       value: 002
       objectReference: {fileID: 0}
@@ -646,6 +651,26 @@ PrefabInstance:
         type: 3}
       propertyPath: LevelOverride.OverrideTreasure_Treasures
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[0]
+      value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[1]
+      value: 25000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[2]
+      value: 50000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[3]
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 1941665573278310967, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}

@@ -331,6 +331,56 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3493046680071944258, guid: f4af9b2771c5d2346bebcc1b068e0421,
+        type: 3}
+      propertyPath: DefaultLevelConfig._mineCosts.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3493046680071944258, guid: f4af9b2771c5d2346bebcc1b068e0421,
+        type: 3}
+      propertyPath: DefaultLevelConfig._mineCosts.Array.data[0]
+      value: 2500
+      objectReference: {fileID: 0}
+    - target: {fileID: 3493046680071944258, guid: f4af9b2771c5d2346bebcc1b068e0421,
+        type: 3}
+      propertyPath: DefaultLevelConfig._mineCosts.Array.data[1]
+      value: 5000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3493046680071944258, guid: f4af9b2771c5d2346bebcc1b068e0421,
+        type: 3}
+      propertyPath: DefaultLevelConfig._mineCosts.Array.data[2]
+      value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3493046680071944258, guid: f4af9b2771c5d2346bebcc1b068e0421,
+        type: 3}
+      propertyPath: DefaultLevelConfig._mineCosts.Array.data[3]
+      value: 15000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3493046680071944258, guid: f4af9b2771c5d2346bebcc1b068e0421,
+        type: 3}
+      propertyPath: DefaultLevelConfig._mineCosts.Array.data[4]
+      value: 20000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3493046680071944258, guid: f4af9b2771c5d2346bebcc1b068e0421,
+        type: 3}
+      propertyPath: DefaultLevelConfig._mineCosts.Array.data[5]
+      value: 35000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3493046680071944258, guid: f4af9b2771c5d2346bebcc1b068e0421,
+        type: 3}
+      propertyPath: DefaultLevelConfig._mineCosts.Array.data[8]
+      value: 100000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3493046680071944258, guid: f4af9b2771c5d2346bebcc1b068e0421,
+        type: 3}
+      propertyPath: DefaultLevelConfig._mineCosts.Array.data[7]
+      value: 75000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3493046680071944258, guid: f4af9b2771c5d2346bebcc1b068e0421,
+        type: 3}
+      propertyPath: DefaultLevelConfig._mineCosts.Array.data[6]
+      value: 50000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f4af9b2771c5d2346bebcc1b068e0421, type: 3}
 --- !u!1001 &1443027240

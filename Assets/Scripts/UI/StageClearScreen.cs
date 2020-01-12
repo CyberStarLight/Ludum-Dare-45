@@ -12,6 +12,7 @@ public class StageClearScreen : MonoBehaviour
     public float StarCountDuration = 3f;
     public float ScoreCountDuration = 3f;
     public float AccuracyCountDuration = 1.5f;
+    public float GoldCountDuration = 3f;
     public float TimeCountDuration = 1.5f;
 
     [Header("References")]
@@ -24,13 +25,31 @@ public class StageClearScreen : MonoBehaviour
     public Sprite StarEmptySprite;
     public TextMeshProUGUI ScoreAmountText;
     public TextMeshProUGUI AccuracyText;
+    public TextMeshProUGUI GoldText;
     public TextMeshProUGUI TimeText;
+    public TextMeshProUGUI AccuracyLabel;
+    public TextMeshProUGUI GoldLabel;
 
     public Transform UnmovingElementsContainer;
     public GameObject StarsNewRecord;
     public GameObject ScoreNewRecord;
     public GameObject AccuracyNewRecord;
+    public GameObject GoldNewRecord;
     public GameObject TimeNewRecord;
+
+    private void Start()
+    {
+        if(GameSettings.LevelConfig.IsEndless)
+        {
+            AccuracyLabel.gameObject.SetActive(false);
+            GoldLabel.gameObject.SetActive(true);
+        }
+        else
+        {
+            AccuracyLabel.gameObject.SetActive(true);
+            GoldLabel.gameObject.SetActive(false);
+        }
+    }
 
     public void DisplayScreen(ClearStageParameters parameters, Action Callback = null)
     {
@@ -113,25 +132,53 @@ public class StageClearScreen : MonoBehaviour
         }
 
         //Accuracy
-        float currentAccuracy = 0;
-        AccuracyText.text = string.Format("{0} misses", Mathf.FloorToInt(currentAccuracy));
-        AccuracyText.gameObject.SetActive(true);
-
-        ratioPerSecond = 1f / AccuracyCountDuration;
-        endTime = Time.time + AccuracyCountDuration;
-        while (Time.time <= endTime)
+        if(!GameSettings.LevelConfig.IsEndless)
         {
-            currentAccuracy += ((float)p.FireballIncorrectAmount * ratioPerSecond) * Time.deltaTime;
+            float currentAccuracy = 0;
             AccuracyText.text = string.Format("{0} misses", Mathf.FloorToInt(currentAccuracy));
-            yield return null;
-        }
-        AccuracyText.text = string.Format("{0} misses", Mathf.FloorToInt(p.FireballIncorrectAmount));
+            AccuracyText.gameObject.SetActive(true);
 
-        if (levelRecord != null && levelRecord.FireballIncorrect > p.FireballIncorrectAmount)
+            ratioPerSecond = 1f / AccuracyCountDuration;
+            endTime = Time.time + AccuracyCountDuration;
+            while (Time.time <= endTime)
+            {
+                currentAccuracy += ((float)p.FireballIncorrectAmount * ratioPerSecond) * Time.deltaTime;
+                AccuracyText.text = string.Format("{0} misses", Mathf.FloorToInt(currentAccuracy));
+                yield return null;
+            }
+            AccuracyText.text = string.Format("{0} misses", Mathf.FloorToInt(p.FireballIncorrectAmount));
+
+            if (levelRecord != null && levelRecord.FireballIncorrect > p.FireballIncorrectAmount)
+            {
+                levelRecord.FireballIncorrect = p.FireballIncorrectAmount;
+                AccuracyNewRecord.SetActive(true);
+                FMODManager.Play(Sounds.PositiveTreasure);
+            }
+        }
+
+        //Treasure
+        if (GameSettings.LevelConfig.IsEndless)
         {
-            levelRecord.FireballIncorrect = p.FireballIncorrectAmount;
-            AccuracyNewRecord.SetActive(true);
-            FMODManager.Play(Sounds.PositiveTreasure);
+            float currentGold = 0;
+            GoldText.text = string.Format("{0}", Mathf.FloorToInt(currentGold));
+            GoldText.gameObject.SetActive(true);
+
+            ratioPerSecond = 1f / GoldCountDuration;
+            endTime = Time.time + GoldCountDuration;
+            while (Time.time <= endTime)
+            {
+                currentGold += ((float)p.TotalGoldCollected * ratioPerSecond) * Time.deltaTime;
+                GoldText.text = string.Format("{0}", Mathf.FloorToInt(currentGold));
+                yield return null;
+            }
+            GoldText.text = string.Format("{0}", Mathf.FloorToInt(p.TotalGoldCollected));
+
+            if (levelRecord != null && levelRecord.TotalGoldCollected < p.TotalGoldCollected)
+            {
+                levelRecord.TotalGoldCollected = p.TotalGoldCollected;
+                GoldNewRecord.SetActive(true);
+                FMODManager.Play(Sounds.PositiveTreasure);
+            }
         }
 
         //Time
@@ -149,11 +196,23 @@ public class StageClearScreen : MonoBehaviour
         }
         TimeText.text = string.Format("{0}m {1}s", Mathf.FloorToInt(p.Time / 60f), Mathf.FloorToInt(p.Time % 60f));
 
-        if (levelRecord != null && levelRecord.Time > p.Time)
+        if(GameSettings.LevelConfig.IsEndless)
         {
-            levelRecord.Time = p.Time;
-            TimeNewRecord.SetActive(true);
-            FMODManager.Play(Sounds.PositiveTreasure);
+            if (levelRecord != null && levelRecord.Time < p.Time)
+            {
+                levelRecord.Time = p.Time;
+                TimeNewRecord.SetActive(true);
+                FMODManager.Play(Sounds.PositiveTreasure);
+            }
+        }
+        else
+        {
+            if (levelRecord != null && levelRecord.Time > p.Time)
+            {
+                levelRecord.Time = p.Time;
+                TimeNewRecord.SetActive(true);
+                FMODManager.Play(Sounds.PositiveTreasure);
+            }
         }
 
         //Save highscores to file
@@ -172,6 +231,7 @@ public class StageClearScreen : MonoBehaviour
         public int FireballIncorrectAmount;
         public int TrashAmount;
         public int TreasureAmount;
+        public uint TotalGoldCollected;
         public float Time;
     }
 }
