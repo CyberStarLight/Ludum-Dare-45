@@ -15,7 +15,7 @@ MonoBehaviour:
   SwitchSettingsMigration: 1
   HasSourceProject: 1
   HasPlatforms: 1
-  sourceProjectPath: Assets/Audio/FMOD/Draconomics/Draconomics.fspro
+  sourceProjectPath: Assets\Audio\FMOD\Draconomics\Draconomics.fspro
   sourceBankPath: Assets\Audio\FMOD\Draconomics\Build
   SourceBankPathUnformatted: 
   AutomaticEventLoading: 1
@@ -46,7 +46,7 @@ MonoBehaviour:
     Value: 0
   OverlaySettings:
   - Platform: 1
-    Value: 0
+    Value: 1
   - Platform: 2
     Value: 0
   - Platform: 20
