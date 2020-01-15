@@ -157,8 +157,17 @@ public class Dragon : MonoBehaviour
         if (!t.IsTrash && desireLevel > 0)
         {
             MainGameBoard.GoldCoins += GameSettings.LevelConfig.Treasure_GoldBonus * desireLevel * (isDouble ? 2 : 1);
-            PlayPositiveTreasure();
             MainGameBoard.TreasureCollected();
+
+            if(MainGameBoard.GoldCoins == MainGameBoard.GoldCoinCap)
+            {
+                MainGameBoard.MainGameUI.ShakeCapLine();
+                PlayNegativeBuild();
+            }
+            else
+            {
+                PlayPositiveTreasure();
+            }
         }
         else
         {

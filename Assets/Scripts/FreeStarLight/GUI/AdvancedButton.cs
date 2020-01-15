@@ -13,6 +13,9 @@ public class AdvancedButton : Button {
     //    set { SetInteractable(value); base.interactable = value; }
     //}
 
+    private bool stateInitialized;
+    private SelectionState currentState = SelectionState.Normal;
+
     public void SetInteractable(bool isInteractable)
     {
         if (isInteractable != interactable)
@@ -44,6 +47,7 @@ public class AdvancedButton : Button {
         }
     }
 
+    IEnumerator _TweenColorFromCurrent;
     protected virtual IEnumerator TweenColorFromCurrent(Color ToColor, float duration)
     {
         var images = GetComponentsInChildren<Image>();
@@ -80,13 +84,21 @@ public class AdvancedButton : Button {
         }
     }
 
+
     protected override void DoStateTransition(SelectionState state, bool instant)
     {
         //if (forceNoInteraction)
         //    return;
+        if (stateInitialized && currentState == state)
+            return;
+
+        stateInitialized = true;
+        currentState = state;
 
         if (state == SelectionState.Pressed)
         {
+            print("SelectionState.Pressed");
+
             StopAllCoroutines();
             if (gameObject.activeInHierarchy)
                 StartCoroutine(TweenColorFromCurrent(this.colors.pressedColor, this.colors.fadeDuration));
@@ -95,6 +107,7 @@ public class AdvancedButton : Button {
         }
         else if (state == SelectionState.Highlighted)
         {
+            print("SelectionState.Highlighted");
             //StopAllCoroutines();
 
             if (gameObject.activeInHierarchy)
@@ -104,8 +117,12 @@ public class AdvancedButton : Button {
         }
         else if (state == SelectionState.Normal)
         {
+            print("SelectionState.Normal");
+
             _setInteractable(true);
             StopAllCoroutines();
+
+            InstantColorFromCurrent(this.colors.normalColor);
 
             if (gameObject.activeInHierarchy)
                 StartCoroutine(TweenColorFromCurrent(this.colors.normalColor, this.colors.fadeDuration));
@@ -114,8 +131,19 @@ public class AdvancedButton : Button {
         }
         else if (state == SelectionState.Disabled)
         {
+            print("SelectionState.Disabled");
+
             StopAllCoroutines();
             _setInteractable(false);
+        }
+        else
+        {
+            print("SelectionState.Selected");
+
+            if (gameObject.activeInHierarchy)
+                StartCoroutine(TweenColorFromCurrent(this.colors.selectedColor, this.colors.fadeDuration));
+            else
+                InstantColorFromCurrent(this.colors.selectedColor);
         }
     }
 }

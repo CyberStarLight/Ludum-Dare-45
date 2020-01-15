@@ -1,5 +1,8 @@
-﻿using System.Collections;
+﻿using FMOD.Studio;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class FMODManager : BaseFMODManager<FMODManager, Sounds, Music>
@@ -63,4 +66,5 @@ public enum Music
     GameMusicIntro,
     GameMusic,
     GameMusicFast,
+    FastScoreMusic,
 }

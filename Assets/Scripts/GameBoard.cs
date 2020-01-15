@@ -547,7 +547,6 @@ public class GameBoard : MonoBehaviour
         {
             GameSaveManager.PlayerData.Item_FastScore_Amount--;
             GameSaveManager.SaveToDisk();
-            FMODManager.Play(Sounds.Item_SpeedUp);
 
             _SpeedItemCoroutine = SpeedItemCoroutine();
             StartCoroutine(_SpeedItemCoroutine);
@@ -704,8 +703,21 @@ public class GameBoard : MonoBehaviour
     {
         speedItemActive = true;
 
-        yield return new WaitForSeconds(GameSettings.Instance.Item_FastScore_Duration);
+        float startTime = Time.time;
 
+        //FMODManager.StopMusic();
+        FMODManager.Play(Sounds.Item_SpeedUp);
+
+        yield return new WaitForSeconds(1f);
+
+        FMODManager.Play(Music.FastScoreMusic);
+
+        while (Time.time < startTime + GameSettings.Instance.Item_FastScore_Duration)
+        {
+            yield return null;
+        }
+
+        FMODManager.Play(Music.GameMusic);
         speedItemActive = false;
     }
 

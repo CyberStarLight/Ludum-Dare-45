@@ -29,6 +29,7 @@ public class GameUI : MonoBehaviour
     public TextMeshProUGUI BuildMineButton_Text;
     public TextMeshProUGUI BuildMineButton_Text2;
     public Animator MineButtonAnimator;
+    public Animator CapLineAnimator;
     public TextMeshProUGUI CapMaxText;
     public Image CapStart;
     public Image CapEnd;
@@ -79,7 +80,8 @@ public class GameUI : MonoBehaviour
         if(MainGameBoard.CanAffordMine && !MainGameBoard.BuildingDisabeld && MainGameBoard.MineCount < GameSettings.LevelConfig.Gold_RequiredMineCount)
         {
             BuildMineButton.SetInteractable(true);
-            MineButtonAnimator.SetBool("Available", true);
+            if (MineButtonAnimator.gameObject.activeSelf)
+                MineButtonAnimator.SetBool("Available", true);
             //BuildMineButton_Icon.color = new Color(BuildMineButton_Icon.color.r, BuildMineButton_Icon.color.g, BuildMineButton_Icon.color.b, 1f);
             //BuildMineButton_Icon2.color = new Color(BuildMineButton_Icon2.color.r, BuildMineButton_Icon2.color.g, BuildMineButton_Icon2.color.b, 1f);
             //BuildMineButton_Text.color = new Color(BuildMineButton_Text.color.r, BuildMineButton_Text.color.g, BuildMineButton_Text.color.b, 1f);
@@ -88,7 +90,8 @@ public class GameUI : MonoBehaviour
         else
         {
             BuildMineButton.SetInteractable(false);
-            MineButtonAnimator.SetBool("Available", false);
+            if(MineButtonAnimator.gameObject.activeSelf)
+                MineButtonAnimator.SetBool("Available", false);
             //BuildMineButton_Icon.color = new Color(BuildMineButton_Icon.color.r, BuildMineButton_Icon.color.g, BuildMineButton_Icon.color.b, 0.5f);
             //BuildMineButton_Icon2.color = new Color(BuildMineButton_Icon2.color.r, BuildMineButton_Icon2.color.g, BuildMineButton_Icon2.color.b, 0.5f);
             //BuildMineButton_Text.color = new Color(BuildMineButton_Text.color.r, BuildMineButton_Text.color.g, BuildMineButton_Text.color.b, 0.5f);
@@ -122,6 +125,8 @@ public class GameUI : MonoBehaviour
         float yPos = CapStart.rectTransform.anchoredPosition.y + (yOffset * capPoint);
         CapLine.rectTransform.anchoredPosition = new Vector2(CapLine.rectTransform.anchoredPosition.x, yPos);
 
+        CapLineAnimator.SetBool("Full", MainGameBoard.GoldCoins == MainGameBoard.GoldCoinCap);
+
         //Update score
         ScoreText.text = string.Format("Score: {0}", Mathf.FloorToInt(MainGameBoard.CurrentScore));
 
@@ -135,6 +140,12 @@ public class GameUI : MonoBehaviour
         DoubleTreasureButton.SetInteractable(!MainGameBoard.ItemsDisabeld && MainGameBoard.DoubleTreasureItemAmount > 0);
     }
     
+    //Cap line
+    public void ShakeCapLine()
+    {
+        CapLineAnimator.SetTrigger("Shake");
+    }
+
     //Menu
     public void ToggleMenu()
     {

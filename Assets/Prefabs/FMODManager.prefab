@@ -101,3 +101,6 @@ MonoBehaviour:
   - Name: GameMusicFast
     EventPath: event:/Level1/panic_Music1
     volume: 1
+  - Name: FastScoreMusic
+    EventPath: event:/Level1/speed_up_drums
+    volume: 1
