@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using FMOD.Studio;
-using System.Runtime.InteropServices;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -12,8 +11,8 @@ using UnityEditor;
 
 public abstract class BaseFMODManager<TManager, TSoundsEnum, TMusicEnum> : SmartBeheviourSingleton<TManager> where TManager : BaseFMODManager<TManager, TSoundsEnum, TMusicEnum>
 {
-    protected EventInstance MainAudioSource;
-    protected EventInstance SecondaryAudioSource;
+    private EventInstance MainAudioSource;
+    private EventInstance SecondaryAudioSource;
 
     [Header("Clips List")]
     public FMODClip[] SoundsList;
@@ -40,16 +39,6 @@ public abstract class BaseFMODManager<TManager, TSoundsEnum, TMusicEnum> : Smart
     {
         base.Awake();
         UpdateInspectorAndDictionaries();
-    }
-
-    public override void OnDestroy()
-    {
-        MainAudioSource.setUserData(IntPtr.Zero);
-        MainAudioSource.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-        MainAudioSource.release();
-        //timelineHandle.Free();
-
-        base.OnDestroy();
     }
 
 #if UNITY_EDITOR
@@ -89,12 +78,6 @@ public abstract class BaseFMODManager<TManager, TSoundsEnum, TMusicEnum> : Smart
     public static void StopMusic(FMOD.Studio.STOP_MODE mode = FMOD.Studio.STOP_MODE.IMMEDIATE)
     {
         Instance.MainAudioSource.stop(mode);
-        Instance.SecondaryAudioSource.stop(mode);
-    }
-
-    public static void StopSecondaryMusic(FMOD.Studio.STOP_MODE mode = FMOD.Studio.STOP_MODE.IMMEDIATE)
-    {
-        Instance.SecondaryAudioSource.stop(mode);
     }
 
     public static FMODClip Play(TSoundsEnum sound, Action SoundEndedCallback = null)
@@ -179,22 +162,7 @@ public abstract class BaseFMODManager<TManager, TSoundsEnum, TMusicEnum> : Smart
 
         return namedClip;
     }
-
-    public FMODClip playMusic_Secondary(TMusicEnum music, float time = 0f)
-    {
-        FMODClip namedClip = null;
-        if (MusicDictionary.TryGetValue(music, out namedClip) && namedClip != null && namedClip.EventPath != null)
-        {
-            SecondaryAudioSource.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            SecondaryAudioSource = FMODUnity.RuntimeManager.CreateInstance(namedClip.EventPath);
-            SecondaryAudioSource.setVolume(namedClip.volume);
-            SecondaryAudioSource.start();
-            currentMusic = music;
-        }
-
-        return namedClip;
-    }
-
+    
     public void UpdateInspectorAndDictionaries()
     {
         //Update sounds list
@@ -285,7 +253,6 @@ public abstract class BaseFMODManager<TManager, TSoundsEnum, TMusicEnum> : Smart
         return milisecondLength / 1000f;
     }
 
-
     //Courutines
     IEnumerator ClipCallcabkCorutine(float timeDelay, Action action)
     {
@@ -325,89 +292,6 @@ public abstract class BaseFMODManager<TManager, TSoundsEnum, TMusicEnum> : Smart
 
         _MusicCallcabkCorutine = null;
     }
-
-    ////Beat event handeling
-
-    //// Variables that are modified in the callback need to be part of a seperate class.
-    //// This class needs to be 'blittable' otherwise it can't be pinned in memory.
-    //[StructLayout(LayoutKind.Sequential)]
-    //protected class TimelineInfo
-    //{
-    //    public int currentMusicBar = 0;
-    //    public FMOD.StringWrapper lastMarker = new FMOD.StringWrapper();
-    //}
-
-    //protected TimelineInfo timelineInfo;
-    //protected GCHandle timelineHandle;
-
-    //protected EVENT_CALLBACK beatCallback;
-
-    //protected static bool hasPendingBeatMusic;
-    //protected static TMusicEnum pendingBeatMusic;
-
-    //public void PlayMusic_InBeat(TMusicEnum music)
-    //{
-    //    timelineInfo = new TimelineInfo();
-
-    //    // Explicitly create the delegate object and assign it to a member so it doesn't get freed
-    //    // by the garbage collected while it's being used
-    //    beatCallback = new FMOD.Studio.EVENT_CALLBACK(BeatEventCallback);
-
-    //    // Pin the class that will store the data modified during the callback
-    //    timelineHandle = GCHandle.Alloc(timelineInfo, GCHandleType.Pinned);
-
-    //    // Pass the object through the userdata of the instance
-    //    MainAudioSource.setUserData(GCHandle.ToIntPtr(timelineHandle));
-    //    MainAudioSource.setCallback(beatCallback, FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT);
-
-    //    pendingBeatMusic = music;
-    //    hasPendingBeatMusic = true;
-    //}
-
-
-    //[AOT.MonoPInvokeCallback(typeof(FMOD.Studio.EVENT_CALLBACK))]
-    //static FMOD.RESULT BeatEventCallback(FMOD.Studio.EVENT_CALLBACK_TYPE type, FMOD.Studio.EventInstance instance, IntPtr parameterPtr)
-    //{
-    //    // Retrieve the user data
-    //    IntPtr timelineInfoPtr;
-    //    FMOD.RESULT result = instance.getUserData(out timelineInfoPtr);
-    //    if (result != FMOD.RESULT.OK)
-    //    {
-    //        Debug.LogError("Timeline Callback error: " + result);
-    //    }
-    //    else if (timelineInfoPtr != IntPtr.Zero)
-    //    {
-    //        // Get the object to store beat and marker details
-    //        GCHandle timelineHandle = GCHandle.FromIntPtr(timelineInfoPtr);
-    //        TimelineInfo timelineInfo = (TimelineInfo)timelineHandle.Target;
-
-    //        switch (type)
-    //        {
-    //            case FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT:
-    //                {
-    //                    print("EVENT_CALLBACK_TYPE.TIMELINE_BEAT");
-    //                    var parameter = (FMOD.Studio.TIMELINE_BEAT_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(FMOD.Studio.TIMELINE_BEAT_PROPERTIES));
-    //                    timelineInfo.currentMusicBar = parameter.bar;
-
-    //                    if(hasPendingBeatMusic)
-    //                    {
-    //                        print("Playing music in beat");
-    //                        Instance.playMusic_Secondary(pendingBeatMusic);
-    //                        hasPendingBeatMusic = false;
-    //                    }
-    //                }
-    //                break;
-    //            case FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER:
-    //                {
-    //                    print("EVENT_CALLBACK_TYPE.TIMELINE_MARKER");
-    //                    var parameter = (FMOD.Studio.TIMELINE_MARKER_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(FMOD.Studio.TIMELINE_MARKER_PROPERTIES));
-    //                    timelineInfo.lastMarker = parameter.name;
-    //                }
-    //                break;
-    //        }
-    //    }
-    //    return FMOD.RESULT.OK;
-    //}
 }
 
 [System.Serializable]

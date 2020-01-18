@@ -49,10 +49,14 @@ MonoBehaviour:
     LevelOverride:
       OverrideMineCost: 0
       MineCost: 0
+      MineCosts: 
       OverrideScorePerSecond: 0
       ScorePerSecond: 0
+      IsEndless: 0
       OverrideFollowerSpeedMultiplier: 0
       FollowerSpeedMultiplier: 0
+      OverrideFollowerMaxPanicSpeedBonus: 0
+      MaxPanicSpeedBonus: 0
       OverrideFollowerSpawnDelay_Min: 0
       FollowerSpawnDelay_Min: 0
       OverrideFollowerSpawnDelay_Max: 0
@@ -79,10 +83,12 @@ MonoBehaviour:
       Dragon_DesireIntervalMax: 0
     _scorePerSecond: 5
     _followerSpeedMultiplier: 1
+    _maxPanicSpeedBonus: 1.5
     _followerSpawnDelay_Min: 2.5
     _followerSpawnDelay_Max: 3.5
     _followerTrashRatio: 0.22
     _mineCost: 25000
+    _mineCosts: 
     _gold_Min: 0
     _gold_Max: 1000000
     _gold_RequiredMineCount: 9

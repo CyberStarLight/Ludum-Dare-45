@@ -24,7 +24,7 @@ public class MineController : MonoBehaviour
     {
         if (board == null)
             board = FindObjectOfType<GameBoard>();
-
+        
         board.MineCount += 1;
 
         var closestRoadPos = board.GetClosestPoint(spawnPoint.position).PointPosition;
@@ -54,7 +54,9 @@ public class MineController : MonoBehaviour
         if(!board.HasGameEnded && !board.ProgressPause && !board.IsSpawnDisabled && Time.time >= nextSpawnTime)
         {
             SpawnFollower();
-            nextSpawnTime = Time.time + Random.Range(MinSpawnDelay, MaxSpawnDelay);
+            float spawnDelay = Random.Range(MinSpawnDelay, MaxSpawnDelay);
+            spawnDelay *= 1f - (board.CenterDragon.PanicRatio * 0.5f);
+            nextSpawnTime = Time.time + spawnDelay;
         }
     }
 

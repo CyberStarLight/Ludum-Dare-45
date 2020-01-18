@@ -29,19 +29,31 @@ public class TutorialManager : MonoBehaviour
     public GameObject Message_Rage;
     public GameObject Message_Hoard;
     public GameObject Message_Mines;
+    public GameObject Message_MinesEndless;
     public GameObject Message_Items;
 
     public bool Finishedtutorial { get; set; }
     public bool FinishMessage { get; set; }
 
-    private void Awake()
-    {
-        SkipTutorialButton.gameObject.SetActive(true);
-        SkipTutorialButton.onClick.AddListener(stopTutorial);
-    }
+    //private void Awake()
+    //{
+    //    if (!(GameSettings.LevelConfig.IsEndless && GameSaveManager.PlayerData.Flag_TutorialDone))
+    //    {
+    //    }
+    //}
 
     private void Start()
     {
+        if(GameSettings.LevelConfig.IsEndless && GameSaveManager.PlayerData.Flag_TutorialDone)
+        {
+            Finishedtutorial = true;
+            Destroy(gameObject);
+            return;
+        }
+
+        SkipTutorialButton.gameObject.SetActive(true);
+        SkipTutorialButton.onClick.AddListener(stopTutorial);
+
         MainBoard.IsSpawnDisabled = true;
         MainBoard.ItemsDisabeld = true;
 
@@ -176,21 +188,28 @@ public class TutorialManager : MonoBehaviour
         }
 
         //Hoard message
-        Message_Hoard.SetActive(true);
-        startTutorialPause();
+        if(!GameSettings.LevelConfig.IsEndless)
+        {
+            Message_Hoard.SetActive(true);
+            startTutorialPause();
 
-        FinishMessage = false;
-        while (!FinishMessage)
-            yield return null;
-        FinishMessage = false;
+            FinishMessage = false;
+            while (!FinishMessage)
+                yield return null;
+            FinishMessage = false;
 
-        Message_Hoard.SetActive(false);
-        stopTutorialPause();
-        MainBoard.BuildingDisabeld = true;
-        MainBoard.ItemsDisabeld = true;
+            Message_Hoard.SetActive(false);
+            stopTutorialPause();
+            MainBoard.BuildingDisabeld = true;
+            MainBoard.ItemsDisabeld = true;
+        }
 
         //Mines message
-        Message_Mines.SetActive(true);
+        if (GameSettings.LevelConfig.IsEndless)
+            Message_MinesEndless.SetActive(true);
+        else
+            Message_Mines.SetActive(true);
+
         startTutorialPause(false);
 
         FinishMessage = false;
@@ -199,6 +218,7 @@ public class TutorialManager : MonoBehaviour
         FinishMessage = false;
 
         Message_Mines.SetActive(false);
+        Message_MinesEndless.SetActive(false);
         stopTutorialPause();
         MainBoard.ItemsDisabeld = true;
 
@@ -262,6 +282,11 @@ public class TutorialManager : MonoBehaviour
         stopTutorialPause();
 
         //Tutorial End
+        if(GameSettings.LevelConfig.IsEndless)
+        {
+            GameSaveManager.PlayerData.Flag_TutorialDone = true;
+        }
+
         stopTutorial();
     }
 

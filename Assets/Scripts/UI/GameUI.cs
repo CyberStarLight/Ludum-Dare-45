@@ -28,9 +28,11 @@ public class GameUI : MonoBehaviour
     public Image BuildMineButton_Icon;
     public TextMeshProUGUI BuildMineButton_Text;
     public TextMeshProUGUI BuildMineButton_Text2;
+    public TextMeshProUGUI RemainingMines_Text;
     public Animator MineButtonAnimator;
     public Animator CapLineAnimator;
     public TextMeshProUGUI CapMaxText;
+    public TextMeshProUGUI ScoreMultiplierText;
     public Image CapStart;
     public Image CapEnd;
     public Image CapLine;
@@ -57,6 +59,13 @@ public class GameUI : MonoBehaviour
     {
         BuildMineButton_Text.text = string.Format("-{0:n0} Gold", GameSettings.LevelConfig.MineCost);
         BuildMineButton_Text2.text = string.Format("+{0:n0} Cap", GameSettings.LevelConfig.Mine_CapBonus);
+
+        if (GameSettings.LevelConfig.IsEndless)
+        {
+            CapLine.gameObject.SetActive(false);
+            ScoreMultiplierText.gameObject.SetActive(true);
+            BuildMineButton_Text2.text = "Unlimited!";
+        }
     }
 
     private void Update()
@@ -77,25 +86,18 @@ public class GameUI : MonoBehaviour
         Desire03.sprite = Dragon.DesiredTreasure3 == null || Dragon.DesiredTreasure3.Value == Treasure.None ? TranparentSprite : Dragon.DesiredTreasure3.UISprite;
 
         //update mine button
-        if(MainGameBoard.CanAffordMine && !MainGameBoard.BuildingDisabeld && MainGameBoard.MineCount < GameSettings.LevelConfig.Gold_RequiredMineCount)
+        BuildMineButton_Text.text = string.Format("-{0:n0} Gold", MainGameBoard.NextMineCost);
+        if (MainGameBoard.CanAffordMine && !MainGameBoard.BuildingDisabeld && MainGameBoard.MineCount < GameSettings.LevelConfig.Gold_RequiredMineCount)
         {
             BuildMineButton.SetInteractable(true);
             if (MineButtonAnimator.gameObject.activeSelf)
                 MineButtonAnimator.SetBool("Available", true);
-            //BuildMineButton_Icon.color = new Color(BuildMineButton_Icon.color.r, BuildMineButton_Icon.color.g, BuildMineButton_Icon.color.b, 1f);
-            //BuildMineButton_Icon2.color = new Color(BuildMineButton_Icon2.color.r, BuildMineButton_Icon2.color.g, BuildMineButton_Icon2.color.b, 1f);
-            //BuildMineButton_Text.color = new Color(BuildMineButton_Text.color.r, BuildMineButton_Text.color.g, BuildMineButton_Text.color.b, 1f);
-            //BuildMineButton_Text2.color = new Color(BuildMineButton_Text2.color.r, BuildMineButton_Text2.color.g, BuildMineButton_Text2.color.b, 1f);
         }
         else
         {
             BuildMineButton.SetInteractable(false);
-            if(MineButtonAnimator.gameObject.activeSelf)
+            if (MineButtonAnimator.gameObject.activeSelf)
                 MineButtonAnimator.SetBool("Available", false);
-            //BuildMineButton_Icon.color = new Color(BuildMineButton_Icon.color.r, BuildMineButton_Icon.color.g, BuildMineButton_Icon.color.b, 0.5f);
-            //BuildMineButton_Icon2.color = new Color(BuildMineButton_Icon2.color.r, BuildMineButton_Icon2.color.g, BuildMineButton_Icon2.color.b, 0.5f);
-            //BuildMineButton_Text.color = new Color(BuildMineButton_Text.color.r, BuildMineButton_Text.color.g, BuildMineButton_Text.color.b, 0.5f);
-            //BuildMineButton_Text2.color = new Color(BuildMineButton_Text2.color.r, BuildMineButton_Text2.color.g, BuildMineButton_Text2.color.b, 0.5f);
         }
 
         //Update gold cap
@@ -119,13 +121,21 @@ public class GameUI : MonoBehaviour
         }
 
         CapMaxText.text = CAP_PREFIX + capAmount.ToString("N0");
-        float capPoint = Mathf.Clamp01((float)(capAmount - GameSettings.LevelConfig.Mine_CapBonus) / (float)(GameSettings.LevelConfig.Gold_Max - GameSettings.LevelConfig.Mine_CapBonus));
+        RemainingMines_Text.text = "x " + (GameSettings.LevelConfig.Gold_RequiredMineCount - MainGameBoard.MineCount);
 
-        float yOffset = CapEnd.rectTransform.anchoredPosition.y - CapStart.rectTransform.anchoredPosition.y;
-        float yPos = CapStart.rectTransform.anchoredPosition.y + (yOffset * capPoint);
-        CapLine.rectTransform.anchoredPosition = new Vector2(CapLine.rectTransform.anchoredPosition.x, yPos);
+        if(!GameSettings.LevelConfig.IsEndless)
+        {
+            float capPoint = Mathf.Clamp01((float)(capAmount - GameSettings.LevelConfig.Mine_CapBonus) / (float)(GameSettings.LevelConfig.Gold_Max - GameSettings.LevelConfig.Mine_CapBonus));
 
-        CapLineAnimator.SetBool("Full", MainGameBoard.GoldCoins == MainGameBoard.GoldCoinCap);
+            float yOffset = CapEnd.rectTransform.anchoredPosition.y - CapStart.rectTransform.anchoredPosition.y;
+            float yPos = CapStart.rectTransform.anchoredPosition.y + (yOffset * capPoint);
+            CapLine.rectTransform.anchoredPosition = new Vector2(CapLine.rectTransform.anchoredPosition.x, yPos);
+            CapLineAnimator.SetBool("Full", MainGameBoard.GoldCoins == MainGameBoard.GoldCoinCap);
+        }
+        else
+        {
+            ScoreMultiplierText.text = "x " + Mathf.RoundToInt(MainGameBoard.ScoreMultiplier);
+        }
 
         //Update score
         ScoreText.text = string.Format("Score: {0}", Mathf.FloorToInt(MainGameBoard.CurrentScore));
@@ -139,7 +149,7 @@ public class GameUI : MonoBehaviour
         SpeedUpButton.SetInteractable(!MainGameBoard.ItemsDisabeld && MainGameBoard.SpeedItemAmount > 0);
         DoubleTreasureButton.SetInteractable(!MainGameBoard.ItemsDisabeld && MainGameBoard.DoubleTreasureItemAmount > 0);
     }
-    
+
     //Cap line
     public void ShakeCapLine()
     {
@@ -175,7 +185,7 @@ public class GameUI : MonoBehaviour
                 PreviousMusic = FMODManager.CurrentMusic;
                 PreviousMusicPos = FMODManager.CurrentMusicTime;
 
-                FMODManager.Play(Music.MenuMusic);
+                FMODManager.Play(Music.PauseMusic);
             }
 
             isGamePaused = false;
@@ -212,7 +222,7 @@ public class GameUI : MonoBehaviour
             PreviousMusic = FMODManager.CurrentMusic;
             PreviousMusicPos = FMODManager.CurrentMusicTime;
 
-            FMODManager.Play(Music.MenuMusic);
+            FMODManager.Play(Music.PauseMusic);
 
             isGamePaused = true;
         }

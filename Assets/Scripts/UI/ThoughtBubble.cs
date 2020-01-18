@@ -10,7 +10,7 @@ public class ThoughtBubble : MonoBehaviour
     public Image TreasureImage;
 
     public TreasureInfo desired { get; private set; }
-    private TreasureInfo undesired;
+    public TreasureInfo undesired { get; private set; }
     private TreasureInfo repeatedDesired;
 
     public void Show(TreasureInfo _desired, TreasureInfo _undesired, TreasureInfo repeatedDesire)

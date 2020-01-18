@@ -508,8 +508,8 @@ MonoBehaviour:
   SkipTutorialButton: {fileID: 1941665572774572977}
   FirstTrashFollowerOrigin: {fileID: 766259912}
   FirstTreasureFollowerOrigin: {fileID: 1614342495}
-  DelayBeforeTreasureMessage: 4
-  DelayBeforeDestroyMessage: 7
+  DelayBeforeTreasureMessage: 2
+  DelayBeforeDestroyMessage: 3.5
   Message_DestroyFollowerPrefab: {fileID: 2043169529946277991, guid: 7ae3829dd069ce24ab08d7eddde68f77,
     type: 3}
   Message_GetReasurePrefab: {fileID: 503624059369134247, guid: 9eac2e93071a8e449b9cfb6b1dd57d07,
@@ -1024,17 +1024,17 @@ PrefabInstance:
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.Treasures.Array.size
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.MineCosts.Array.size
-      value: 3
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: NextLevelScene
-      value: 002
+      value: MainMenu
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
@@ -1044,7 +1044,7 @@ PrefabInstance:
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.MineCost
-      value: 2500
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
@@ -1064,7 +1064,7 @@ PrefabInstance:
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.FollowerSpeedMultiplier
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
@@ -1084,7 +1084,7 @@ PrefabInstance:
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.Gold_Max
-      value: 100000
+      value: 2000000000
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
@@ -1094,91 +1094,93 @@ PrefabInstance:
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.Gold_RequiredMineCount
-      value: 3
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.Treasures.Array.data[3].Name
-      value: Trash_Poop
+      value: Metal_Gold
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.Treasures.Array.data[3].Value
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.Treasures.Array.data[3].Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 820e633a3003409419a6f03394ae1372,
+      objectReference: {fileID: 21300000, guid: ad5b013d6889ae74ebd6a9f3e412db50,
         type: 3}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.Treasures.Array.data[3].UISprite
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 21300000, guid: ed4836beeb2fbbe43931307c20fe1afa,
+        type: 3}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.Treasures.Array.data[4].Name
-      value: Trash_Worm
+      value: Metal_Silver
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.Treasures.Array.data[4].Value
-      value: 7
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.Treasures.Array.data[4].Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 34c0219e89c16c7479b5a8b314c52b65,
+      objectReference: {fileID: 21300000, guid: c1e95bbd372217e49bf112298875be27,
         type: 3}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.Treasures.Array.data[4].UISprite
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 21300000, guid: 56847858d9091394e8cf414c95b6fa78,
+        type: 3}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.Treasures.Array.data[4].IsTrash
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.Treasures.Array.data[5].Name
-      value: Trash_Cockroach
+      value: Trash_Poop
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.Treasures.Array.data[5].Value
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.Treasures.Array.data[5].Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 62e6eada92363694fa0913b195ba6877,
+      objectReference: {fileID: 21300000, guid: 820e633a3003409419a6f03394ae1372,
         type: 3}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.Treasures.Array.data[6].Name
-      value: Trash_Cockroach
+      value: Trash_Worm
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.Treasures.Array.data[6].Value
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.Treasures.Array.data[6].Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 62e6eada92363694fa0913b195ba6877,
+      objectReference: {fileID: 21300000, guid: 34c0219e89c16c7479b5a8b314c52b65,
         type: 3}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.Treasures.Array.data[3].IsTrash
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
@@ -1187,18 +1189,523 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
+      propertyPath: LevelID
+      value: Endless
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
       propertyPath: LevelOverride.MineCosts.Array.data[0]
-      value: 2500
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.MineCosts.Array.data[1]
-      value: 5000
+      value: 50000
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
       propertyPath: LevelOverride.MineCosts.Array.data[2]
-      value: 10000
+      value: 100000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[3]
+      value: 250000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[4]
+      value: 500000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[5]
+      value: 750000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[6]
+      value: 1000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[7]
+      value: 1000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[8]
+      value: 1000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[9]
+      value: 1000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[10]
+      value: 1500000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[11]
+      value: 1500000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[12]
+      value: 1500000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[13]
+      value: 1500000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[14]
+      value: 1500000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[15]
+      value: 1500000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[16]
+      value: 1500000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[17]
+      value: 1500000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[18]
+      value: 1500000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[19]
+      value: 1500000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[20]
+      value: 2000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[21]
+      value: 2000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[22]
+      value: 2000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[23]
+      value: 2000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[24]
+      value: 2000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[25]
+      value: 2000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[26]
+      value: 2000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[27]
+      value: 2000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[28]
+      value: 2000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[29]
+      value: 2000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[30]
+      value: 3000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[31]
+      value: 3000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[32]
+      value: 3000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[33]
+      value: 3000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[34]
+      value: 3000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[35]
+      value: 3000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[36]
+      value: 3000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[37]
+      value: 3000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[38]
+      value: 3000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[39]
+      value: 3000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[40]
+      value: 4000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[41]
+      value: 4000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[42]
+      value: 4000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[43]
+      value: 4000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[44]
+      value: 4000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[45]
+      value: 4000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[46]
+      value: 4000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[47]
+      value: 4000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[48]
+      value: 4000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[49]
+      value: 4000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[50]
+      value: 5000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[51]
+      value: 5000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[52]
+      value: 5000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[53]
+      value: 5000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[54]
+      value: 5000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[55]
+      value: 5000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[56]
+      value: 5000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[57]
+      value: 5000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[58]
+      value: 5000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[59]
+      value: 5000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[60]
+      value: 6000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[61]
+      value: 6000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[62]
+      value: 6000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[63]
+      value: 6000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[64]
+      value: 6000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[65]
+      value: 6000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[66]
+      value: 6000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[67]
+      value: 6000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[68]
+      value: 6000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[69]
+      value: 6000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[70]
+      value: 7000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[71]
+      value: 7000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[72]
+      value: 7000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[73]
+      value: 7000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[74]
+      value: 7000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[75]
+      value: 7000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[76]
+      value: 7000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[77]
+      value: 7000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[78]
+      value: 7000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[79]
+      value: 7000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[80]
+      value: 8000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[81]
+      value: 8000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[82]
+      value: 8000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[83]
+      value: 8000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[84]
+      value: 8000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[85]
+      value: 8000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[86]
+      value: 8000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[87]
+      value: 8000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[88]
+      value: 8000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[89]
+      value: 8000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[90]
+      value: 9000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[91]
+      value: 9000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[92]
+      value: 9000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[93]
+      value: 9000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[94]
+      value: 9000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[95]
+      value: 9000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[96]
+      value: 9000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[97]
+      value: 9000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[98]
+      value: 9000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MineCosts.Array.data[99]
+      value: 10000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.IsEndless
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.OverrideFollowerMaxPanicSpeedBonus
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665572957435486, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: LevelOverride.MaxPanicSpeedBonus
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1941665572993964383, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}
@@ -1999,6 +2506,56 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665574409375632, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -157.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665574409375632, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 217.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665574409375632, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 55.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665574409375633, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665574409375633, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 25.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665574409375633, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: m_fontSizeMin
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665574409375633, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: m_fontSizeMax
+      value: 30.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665574409375633, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: m_text
+      value: x 999,999,999
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665574409375633, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941665574409375633, guid: 34a3cd73b8c96d14aa4466331adbe50b,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1941665574410035902, guid: 34a3cd73b8c96d14aa4466331adbe50b,
         type: 3}

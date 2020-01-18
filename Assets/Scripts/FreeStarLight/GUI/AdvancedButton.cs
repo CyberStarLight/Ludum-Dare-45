@@ -5,7 +5,8 @@ using UnityEngine.UI;
 using System.Linq;
 using TMPro;
 
-public class AdvancedButton : Button {
+public class AdvancedButton : Button
+{
 
     //public new bool interactable
     //{
@@ -34,7 +35,7 @@ public class AdvancedButton : Button {
         var images = GetComponentsInChildren<Image>();
         foreach (var image in images)
         {
-            if(image.gameObject == gameObject)
+            if (image.gameObject == gameObject)
                 image.color = isInteractable ? this.colors.normalColor : this.colors.disabledColor;
             else
                 image.color = isInteractable ? new Color(image.color.r, image.color.g, image.color.b, this.colors.normalColor.a) : new Color(image.color.r, image.color.g, image.color.b, this.colors.disabledColor.a);
@@ -71,7 +72,7 @@ public class AdvancedButton : Button {
                 image.color = ToColor;
         }
     }
-    
+
     private void InstantColorFromCurrent(Color ToColor)
     {
         var images = GetComponentsInChildren<Image>();

@@ -24,7 +24,7 @@ public class Dragon : MonoBehaviour
         get { return _panic; }
         set { _panic = Mathf.Clamp(value, MinPanic, GameSettings.Instance.Dragon_MaxPanic); }
     }
-    public float MinPanic { get { return GameSettings.Instance.Dragon_MaxPanic * (RageRatio * 0.5f); } }
+    public float MinPanic { get { return GameSettings.LevelConfig.IsEndless ? 0f : GameSettings.Instance.Dragon_MaxPanic * (RageRatio * 0.5f); } }
     public float PanicRatio { get { return Panic / GameSettings.Instance.Dragon_MaxPanic; } }
 
     public TreasureInfo DesiredTreasure1;
@@ -128,9 +128,19 @@ public class Dragon : MonoBehaviour
         }
 
         //Update panic
-        if(Panic < MainGameBoard.CapRatio * GameSettings.Instance.Dragon_MaxPanic)
+        if(GameSettings.LevelConfig.IsEndless)
         {
-            Panic += 0.4f * Time.deltaTime;
+            if (Panic < GameSettings.Instance.Dragon_MaxPanic)
+            {
+                Panic += 0.01666f * Time.deltaTime;
+            }
+        }
+        else
+        {
+            if (Panic < MainGameBoard.CapRatio * GameSettings.Instance.Dragon_MaxPanic)
+            {
+                Panic += 0.4f * Time.deltaTime;
+            }
         }
         //Panic = CapRatio * MaxPanic;
         PanicEditorDisplay = Panic;
@@ -147,7 +157,6 @@ public class Dragon : MonoBehaviour
             //Victory
             MainGameBoard.Victory();
         }
-
     }
 
     public void GiveTreasure(TreasureInfo t, bool isDouble)
@@ -156,10 +165,12 @@ public class Dragon : MonoBehaviour
 
         if (!t.IsTrash && desireLevel > 0)
         {
-            MainGameBoard.GoldCoins += GameSettings.LevelConfig.Treasure_GoldBonus * desireLevel * (isDouble ? 2 : 1);
+            int goldToAdd = GameSettings.LevelConfig.Treasure_GoldBonus * desireLevel * (isDouble ? 2 : 1);
+            MainGameBoard.TotalGoldCollected += (uint)goldToAdd;
+            MainGameBoard.GoldCoins += goldToAdd;
             MainGameBoard.TreasureCollected();
 
-            if(MainGameBoard.GoldCoins == MainGameBoard.GoldCoinCap)
+            if (MainGameBoard.GoldCoins == MainGameBoard.GoldCoinCap)
             {
                 MainGameBoard.MainGameUI.ShakeCapLine();
                 PlayNegativeBuild();

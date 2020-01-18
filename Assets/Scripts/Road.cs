@@ -34,7 +34,7 @@ public class Road : MonoBehaviour
                 continue;
             
             //Get distance the walker needs to walk this frame
-            float currentSpeed = walker.Speed < 0.001f ? 0f : walker.Speed + (walker.Master.PanicRatio * walker.MaxPanicSpeedBonus);
+            float currentSpeed = walker.Speed < 0.001f ? 0f : walker.Speed + (walker.Master.PanicRatio * GameSettings.LevelConfig.FollowerMaxPanicSpeedBonus);
 
             currentSpeed *= GameSettings.LevelConfig.FollowerSpeedMultiplier;
             currentSpeed *= MainGameBoard.SpeedItemMultiplier;

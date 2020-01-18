@@ -104,3 +104,6 @@ MonoBehaviour:
   - Name: FastScoreMusic
     EventPath: event:/Level1/speed_up_drums
     volume: 1
+  - Name: PauseMusic
+    EventPath: event:/Level1/pause_menu
+    volume: 1

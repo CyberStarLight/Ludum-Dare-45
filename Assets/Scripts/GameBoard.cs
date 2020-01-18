@@ -30,14 +30,17 @@ public class GameBoard : MonoBehaviour
     }
     public int GoldCoinCap { get { return Mathf.Clamp((MineCount + 1) * GameSettings.LevelConfig.Mine_CapBonus, 0, GameSettings.LevelConfig.Gold_Max); } }
     public float CapRatio { get { return (float)GoldCoinCap / (float)GameSettings.LevelConfig.Gold_Max; } }
-    public float GoldRatio { get { return (float)GoldCoins / (float)GameSettings.LevelConfig.Gold_Max; } }
+    public float GoldRatio { get { return GameSettings.LevelConfig.IsEndless ? (float)(GoldCoins % 1000000) / 1000000f : (float)GoldCoins / (float)GameSettings.LevelConfig.Gold_Max; } }
+    public uint TotalGoldCollected { get; set; }
 
     public bool HasGameEnded { get; set; }
     public bool ProgressPause { get; set; }
-    public bool CanAffordMine { get { return GoldCoins >= GameSettings.LevelConfig.MineCost; } }
+    public int NextMineCost { get { return GameSettings.LevelConfig.MineCosts[Mathf.Min(MineCount, GameSettings.LevelConfig.MineCosts.LastIndex())]; } }
+    public bool CanAffordMine { get { return GoldCoins >= NextMineCost; } }
     public bool BuildingDisabeld { get; set; }
     public bool ItemsDisabeld { get; set; }
     public bool DesiresDisabeld { get; set; }
+    public float ScoreMultiplier { get { return 1f + MineCount; } }
 
     [Header("References")]
     public Dragon CenterDragon;
@@ -109,7 +112,9 @@ public class GameBoard : MonoBehaviour
         //score
         if(!HasGameEnded && !ProgressPause)
         {
-            CurrentScore += Time.deltaTime * (GameSettings.LevelConfig.ScorePerSecond * (speedItemActive ? SpeedScoreMultiplier : 1f));
+            float scoreToAdd = Time.deltaTime * (GameSettings.LevelConfig.ScorePerSecond * (speedItemActive ? SpeedScoreMultiplier : 1f));
+            scoreToAdd *= ScoreMultiplier;
+            CurrentScore += scoreToAdd;
         }
 
         //Spawn followers
@@ -118,8 +123,10 @@ public class GameBoard : MonoBehaviour
             TreasureInfo followerTresure = Random.Range(0f, 1f) > GameSettings.LevelConfig.FollowerTrashRatio ? GetRandomTreasure() : GetRandomTrash();
             Vector3 spawnPos = SpawnPoints.GetRandom().position;
             spawnFollower(spawnPos, followerTresure);
-            
-            nextFollowerSpawn = Time.time + Random.Range(GameSettings.LevelConfig.FollowerSpawnDelay_Min, GameSettings.LevelConfig.FollowerSpawnDelay_Max);
+
+            float spawnDelay = Random.Range(GameSettings.LevelConfig.FollowerSpawnDelay_Min, GameSettings.LevelConfig.FollowerSpawnDelay_Max);
+            spawnDelay *= 1f - (CenterDragon.PanicRatio * 0.5f);
+            nextFollowerSpawn = Time.time + spawnDelay;
         }
 
         CurrentPointerPosition = GetGameScreenPointerPosition();
@@ -382,7 +389,7 @@ public class GameBoard : MonoBehaviour
                 ableToPlace = false;
         
         //Check the player has enough gold to pay
-        if (GoldCoins < GameSettings.LevelConfig.MineCost)
+        if (!CanAffordMine)
         {
             ableToPlace = false;
         }
@@ -407,7 +414,7 @@ public class GameBoard : MonoBehaviour
             //newMine.ore = brush.treasureState;
             newMine.isRandom = true;
 
-            GoldCoins -= GameSettings.LevelConfig.MineCost;
+            GoldCoins -= NextMineCost;
 
             Invoke("StopBuildingMine", 0.1f);
 
@@ -447,6 +454,14 @@ public class GameBoard : MonoBehaviour
         StageTrackers.TrashAmount++;
     }
 
+    public TreasureInfo GetTreasureToSpawn()
+    {
+
+        var goodTreasure = GameSettings.LevelConfig.Treasures.Where(x => !x.IsTrash).ToArray();
+
+        return goodTreasure[Random.Range(0, goodTreasure.Length)];
+    }
+
     public TreasureInfo GetRandomTreasure()
     {
         var goodTreasure = GameSettings.LevelConfig.Treasures.Where(x => !x.IsTrash).ToArray();
@@ -456,9 +471,30 @@ public class GameBoard : MonoBehaviour
 
     public TreasureInfo GetRandomTrash()
     {
+        TreasureInfo result;
+
+        float rand = Random.value;
+        if (rand < GameSettings.LevelConfig.FollowerTrashRatio)
+            result = GetRandomTrash();
+        else if (rand < GameSettings.LevelConfig.FollowerUnwantedRatio)
+            result = GetUnwantedTreasure();
+        else
+            result = GetWantedTreasure();
+
+        TreasureInfo followerTresure = Random.Range(0f, 1f) > GameSettings.LevelConfig.FollowerTrashRatio ? GetRandomTreasure() : GetRandomTrash();
         var trashTreasure = GameSettings.LevelConfig.Treasures.Where(x => x.IsTrash).ToArray();
 
         return trashTreasure[Random.Range(0, trashTreasure.Length)];
+    }
+
+    public TreasureInfo GetWantedTreasure()
+    {
+        var wantedTreasures = GameSettings.LevelConfig.Treasures.Where(x => !x.IsTrash && x != CenterDragon.ThoughtBubbleAnimation.undesired && CenterDragon.GetDesireLevel(x) > 0).ToArray();
+
+        if (wantedTreasures.Length == 0)
+            return GetRandomTrash();
+        else
+            return wantedTreasures.GetRandom();
     }
 
     public TreasureInfo GetUnwantedTreasure()
@@ -547,6 +583,7 @@ public class GameBoard : MonoBehaviour
         {
             GameSaveManager.PlayerData.Item_FastScore_Amount--;
             GameSaveManager.SaveToDisk();
+            FMODManager.Play(Sounds.Item_SpeedUp);
 
             _SpeedItemCoroutine = SpeedItemCoroutine();
             StartCoroutine(_SpeedItemCoroutine);
@@ -571,6 +608,12 @@ public class GameBoard : MonoBehaviour
     //Win and Lose
     public void GameOver()
     {
+        if(GameSettings.LevelConfig.IsEndless)
+        {
+            Victory();
+            return;
+        }
+
         HasGameEnded = true;
         FMODManager.StopMusic();
 
@@ -586,19 +629,36 @@ public class GameBoard : MonoBehaviour
         FMODManager.Play(Sounds.WinFanfare);
 
         StageTrackers.ScoreAmount = Mathf.RoundToInt(CurrentScore);
+        StageTrackers.TotalGoldCollected = TotalGoldCollected;
 
-        if(StageTrackers.TrashAmount == 0 && StageTrackers.FireballIncorrectAmount == 0)
-            StageTrackers.Stars = 3;
-        else if(StageTrackers.FireballIncorrectAmount == 0)
-            StageTrackers.Stars = 2;
+        if (GameSettings.LevelConfig.IsEndless)
+        {
+            if (GoldCoins > 10000000)
+                StageTrackers.Stars = 3;
+            else if (GoldCoins > 5000000)
+                StageTrackers.Stars = 2;
+            else
+                StageTrackers.Stars = 1;
+        }
         else
-            StageTrackers.Stars = 1;
+        {
+            if (StageTrackers.TrashAmount == 0 && StageTrackers.FireballIncorrectAmount == 0)
+                StageTrackers.Stars = 3;
+            else if (StageTrackers.FireballIncorrectAmount == 0)
+                StageTrackers.Stars = 2;
+            else
+                StageTrackers.Stars = 1;
+        }
 
         //Save Highscore to save file
         PlayerData.LevelBestRecords record = null;
         if (!GameSaveManager.PlayerData.Levels.TryGetValue(LevelID, out record))
         {
             record = new PlayerData.LevelBestRecords();
+            if(GameSettings.LevelConfig.IsEndless)
+            {
+                record.Time = float.MinValue;
+            }
             GameSaveManager.PlayerData.Levels.Add(LevelID, record);
         }
 
