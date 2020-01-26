@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="ParameterPreset" id="{764a332d-e435-4852-a025-279ca961c6b8}">
+		<property name="name">
+			<value>potionOn</value>
+		</property>
+		<relationship name="folder">
+			<destination>{b7f16dfd-150a-4b7c-b279-61c3ac9ec7a6}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{15b0d09a-247c-41c4-8be6-7941d648abf5}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{15b0d09a-247c-41c4-8be6-7941d648abf5}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
