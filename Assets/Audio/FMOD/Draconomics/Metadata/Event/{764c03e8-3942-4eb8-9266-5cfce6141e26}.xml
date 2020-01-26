@@ -130,6 +130,9 @@
 		<property name="length">
 			<value>96</value>
 		</property>
+		<property name="volume">
+			<value>-4.5</value>
+		</property>
 		<relationship name="audioFile">
 			<destination>{6dab9f9f-ee9d-4be8-83b1-8ee8defdbf10}</destination>
 		</relationship>
@@ -159,6 +162,9 @@
 	<object class="SingleSound" id="{64bcf6ac-4abf-4530-bc2c-8be3a41c3e58}">
 		<property name="length">
 			<value>96</value>
+		</property>
+		<property name="volume">
+			<value>-4.5</value>
 		</property>
 		<relationship name="audioFile">
 			<destination>{d1c0de28-d6e1-425f-962a-5de33a204ba4}</destination>
